@@ -9,10 +9,10 @@
 <meta name="apple-mobile-web-app-title" content="Emma Swim">
 <meta name="theme-color" content="#002356">
 <title>Emma Swim</title>
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=3">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=3">
-<link rel="manifest" href="manifest.json?v=3">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-10-31.2208">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-10-31.2208">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-10-31.2208">
+<link rel="manifest" href="manifest.json?v=2026-10-31.2208">
 <style>
 :root{
   --bg:#f3f6f6; --surface:#ffffff; --surface2:#eef3f2; --ink:#14201f; --ink2:#4b5b59; --muted:#7c8a88;
@@ -128,7 +128,7 @@ nav.tabs button.on{color:var(--brand)}
 <div class="app">
   <header class="top">
     <div class="top-row">
-      <div class="brandrow"><img class="logo" src="logo.png?v=4" alt="Emma Swim"><button class="who" id="who"></button></div>
+      <div class="brandrow"><img class="logo" src="logo.png?v=2026-10-31.2208" alt="Emma Swim"><button class="who" id="who"></button></div>
       <button class="add-btn" id="addBtn" aria-label="Add swim">+</button>
     </div>
     <div class="seg" id="courseSeg"><button data-c="LCM">Long course</button><button data-c="SCM">Short course</button></div>
@@ -472,7 +472,8 @@ function renderMore(m){
   <h2 class="sec">Appearance</h2><div class="list">${['auto','light','dark'].map(t=>`<button class="item" data-theme="${t}"><div class="main"><div class="t1">${t==='auto'?'Match phone':t[0].toUpperCase()+t.slice(1)}</div></div><div class="right">${(DB.settings.theme||'auto')===t?'✓':''}</div></button>`).join('')}</div>
   <h2 class="sec">Data</h2>
   <div class="note">${DB.swims.length} swims across ${DB.meets.length} meets. ${esc(DB.importedFrom||'')}</div>
-  <button class="btn danger" id="reset">Reset to original Swim Track data</button>`;
+  <button class="btn danger" id="reset">Reset to original Swim Track data</button>
+  <div class="note" style="text-align:center;background:none;box-shadow:none">App version ${BUILD}</div>`;
   m.innerHTML=h;
   m.querySelectorAll('[data-nat]').forEach(inp=>inp.onchange=()=>{ const v=inp.value.trim(); if(v&&!parseTime(v)){toast('Not a valid time');return;} if(v) DB.standards.national.times[inp.dataset.nat]=fmt(parseTime(v)); else delete DB.standards.national.times[inp.dataset.nat]; save(); toast('National time saved'); });
   m.querySelectorAll('[data-sw]').forEach(b=>b.onclick=()=>{DB.settings.swimmer=b.dataset.sw;save();render();});
@@ -577,6 +578,22 @@ function toast(msg){ const t=document.createElement('div'); t.className='toast';
 function applyTheme(){ const t=DB.settings.theme||'auto'; if(t==='auto') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme',t); }
 
 /* ---------- Wire up ---------- */
+/* ---------- Auto-update: GitHub Pages lets phones cache the page ~10 min, so check for a newer build ---------- */
+const BUILD='2026-10-31.2208';
+async function checkUpdate(){
+  if(location.protocol==='file:') return;
+  try{
+    const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'}); if(!r.ok) return;
+    const v=(await r.json()).build;
+    if(v && v!==BUILD){
+      const k='emmaSwim.tried.'+v; if(sessionStorage.getItem(k)) return; sessionStorage.setItem(k,'1');
+      location.replace(location.pathname+'?v='+encodeURIComponent(v));
+    }
+  }catch(e){}
+}
+checkUpdate();
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') checkUpdate(); });
+
 load(); applyTheme();
 document.querySelectorAll('#courseSeg button').forEach(b=>b.onclick=()=>{DB.settings.course=b.dataset.c;UI.filter='All';save();render();});
 document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{UI.tab=b.dataset.tab;render();scrollTo(0,0);});
