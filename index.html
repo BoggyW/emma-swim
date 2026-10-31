@@ -9,10 +9,10 @@
 <meta name="apple-mobile-web-app-title" content="Emma Swim">
 <meta name="theme-color" content="#002356">
 <title>Emma Swim</title>
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-11-01.0838">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-11-01.0838">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-11-01.0838">
-<link rel="manifest" href="manifest.json?v=2026-11-01.0838">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-11-01.0849">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-11-01.0849">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-11-01.0849">
+<link rel="manifest" href="manifest.json?v=2026-11-01.0849">
 <style>
 :root{
   --bg:#f3f6f6; --surface:#ffffff; --surface2:#eef3f2; --ink:#14201f; --ink2:#4b5b59; --muted:#7c8a88;
@@ -121,6 +121,18 @@ nav.tabs button.on{color:var(--brand)}
 .toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;z-index:60}
 .gap-ok{color:var(--good);font-weight:600}
 .gap-no{color:var(--ink2)}
+.pbrow{align-items:center;padding:12px 14px}
+.pbrow.qnat{background:var(--qnat);color:var(--qnat-ink)}
+.pbrow.qstate{background:var(--qstate);color:var(--qstate-ink)}
+.pbrow .ev{font-size:18px;font-weight:700;margin-bottom:3px}
+.pbrow .ql{font-size:13px;line-height:1.45;font-variant-numeric:tabular-nums}
+.pbrow .pbt{font-size:24px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.pbrow .pbt.dim{color:var(--muted);font-weight:500}
+.pbrow .pbm{font-size:11px;opacity:.75;max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-left:auto}
+.pbrow .right{text-align:right}
+.pbrow.qnat .gap-ok,.pbrow.qstate .gap-ok{color:inherit;font-weight:700}
+.pbrow.qnat .gap-no,.pbrow.qstate .gap-no{color:inherit;opacity:.8}
+.muted-s{font-size:12px;opacity:.7}
 .time.qnat{background:var(--qnat);color:var(--qnat-ink);border-radius:10px;padding:3px 9px}
 .time.qstate{background:var(--qstate);color:var(--qstate-ink);border-radius:10px;padding:3px 9px}
 .tile.qnat{background:var(--qnat);color:var(--qnat-ink)}.tile.qnat .l{color:var(--qnat-ink);opacity:.8}
@@ -134,7 +146,7 @@ nav.tabs button.on{color:var(--brand)}
 <div class="app">
   <header class="top">
     <div class="top-row">
-      <div class="brandrow"><img class="logo" src="logo.png?v=2026-11-01.0838" alt="Emma Swim"><button class="who" id="who"></button></div>
+      <div class="brandrow"><img class="logo" src="logo.png?v=2026-11-01.0849" alt="Emma Swim"><button class="who" id="who"></button></div>
       <button class="add-btn" id="addBtn" aria-label="Add swim">+</button>
     </div>
     <div class="seg" id="courseSeg"><button data-c="LCM">Long course</button><button data-c="SCM">Short course</button></div>
@@ -426,23 +438,20 @@ function renderBests(m){
   }
   h+=`<h2 class="sec">${c==='LCM'?'Long course':'Short course'} personal bests</h2>
   <div style="font-size:12px;color:var(--ink2);margin:-2px 4px 8px">Best time colour:<span class="qkey" style="background:var(--qnat)"></span>National Time${c==='LCM'?'<span class="qkey" style="background:var(--qstate)"></span>State Time only':''}<span class="qkey" style="background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)"></span>Not yet</div><div class="list">`;
+  const gapTxt=(t,q)=>{ const g=t-q; return `<span class="${g<=0?'gap-ok':'gap-no'}">(${fmtGap(g)})</span>`; };
+  const sinceLbl=fdate(st.from,true);
   rows.forEach(r=>{
     const [d,s]=r.key.split(' '), mt=r.pb&&meetById(r.pb.meet);
-    let chips='';
-    if(c==='LCM'){
-      chips+=qtChip('State Time',r.sq,r.wb?r.wb.time:null);
-      chips+=qtChip('National Time',r.nq,r.pb?r.pb.time:null);
-      if(r.sq&&r.pb&&r.wb&&r.wb.id!==r.pb.id) chips+=`<span class="chip">Since ${fdate(st.from,true).replace(/ \d+$/,'')}: ${fmt(r.wb.time)}</span>`;
-      if(r.sq&&r.pb&&!r.wb) chips+=`<span class="chip near">No swim since ${fdate(st.from,true)}</span>`;
-    } else {
-      chips+=qtChip('National Time',r.nq,r.nwb?r.nwb.time:null);
-      if(r.nq&&r.pb&&!r.nwb) chips+=`<span class="chip near">No SC swim since ${fdate(natSC().from,true)}</span>`;
-    }
-    h+=`<button class="item" data-ev="${r.key}"><div class="main"><div class="t1">${r.key}</div>
-      <div class="t2">${r.pb?fdate(r.pb.date)+(mt?' · '+esc(mt.name):''):'Not swum yet'}</div>
-      ${chips?`<div class="chips">${chips}</div>`:''}</div>
-      <div class="right">${r.pb?`<div class="time ${qClass(r.nq,r.nwb,r.sq,r.wb)}">${fmt(r.pb.time)}</div>`:'<div class="time dim">—</div>'}
-      ${c==='SCM'&&r.pb?`<div class="time dim">≈ ${fmt(toLCM(r.pb.time,+d,s))}</div>`:''}</div></button>`;
+    const lines=[];
+    if(r.nq){ const t=c==='LCM'?(r.pb&&r.pb.time):(r.nwb&&r.nwb.time);
+      lines.push(`National Time ${fmt(r.nq)} `+(t!=null?gapTxt(t,r.nq):r.pb&&c==='SCM'?`<span class="gap-no">(none since ${fdate(natSC().from,true)})</span>`:'')); }
+    if(c==='LCM'&&r.sq){ const t=r.wb&&r.wb.time;
+      lines.push(`State Time ${fmt(r.sq)} `+(t!=null?gapTxt(t,r.sq)+(r.pb&&r.wb.id!==r.pb.id?` <span class="muted-s">· ${fmt(t)} since ${sinceLbl}</span>`:''):r.pb?`<span class="gap-no">(none since ${sinceLbl})</span>`:'')); }
+    if(c==='SCM'&&r.pb) lines.push(`<span class="muted-s">≈ ${fmt(toLCM(r.pb.time,+d,s))} long course</span>`);
+    const dd=r.pb?r.pb.date.split('-'):null;
+    h+=`<button class="item pbrow ${r.pb?qClass(r.nq,r.nwb,r.sq,r.wb):''}" data-ev="${r.key}">
+      <div class="main"><div class="ev">${r.key}</div>${lines.map(x=>`<div class="ql">${x}</div>`).join('')}</div>
+      <div class="right">${r.pb?`<div class="pbt">${fmt(r.pb.time)}</div><div class="pbm">${+dd[2]}/${+dd[1]}/${dd[0].slice(2)}</div>${mt?`<div class="pbm">${esc(mt.name)}</div>`:''}`:'<div class="pbt dim">—</div><div class="pbm">Not swum yet</div>'}</div></button>`;
   });
   h+='</div>';
   m.innerHTML=h;
@@ -787,7 +796,7 @@ function applyTheme(){ const t=DB.settings.theme||'auto'; if(t==='auto') documen
 
 /* ---------- Wire up ---------- */
 /* ---------- Auto-update: GitHub Pages lets phones cache the page ~10 min, so check for a newer build ---------- */
-const BUILD='2026-11-01.0838';
+const BUILD='2026-11-01.0849';
 async function checkUpdate(){
   if(location.protocol==='file:') return;
   try{
