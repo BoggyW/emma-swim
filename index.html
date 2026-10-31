@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Emma Swim">
+<title>Emma Swim</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f4f7fb;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+               "Segoe UI", sans-serif;
+  color: #172033;
+}
+
+.app {
+  max-width: 500px;
+  margin: auto;
+  min-height: 100vh;
+  padding-bottom: 100px;
+}
+
+.header {
+  background: linear-gradient(135deg,#087ee1,#14b9d6);
+  color: white;
+  padding: calc(22px + env(safe-area-inset-top)) 22px 26px;
+  border-radius: 0 0 30px 30px;
+}
+
+.small {
+  font-size: 14px;
+  opacity: .85;
+}
+
+h1 {
+  margin: 4px 0;
+  font-size: 32px;
+}
+
+.header p {
+  margin: 0;
+  opacity: .9;
+}
+
+.course-switch {
+  display: flex;
+  background: rgba(255,255,255,.18);
+  border-radius: 14px;
+  padding: 4px;
+  margin-top: 20px;
+}
+
+.course-switch button {
+  width: 50%;
+  border: 0;
+  background: transparent;
+  color: white;
+  padding: 11px;
+  border-radius: 11px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.course-switch button.active {
+  background: white;
+  color: #087ee1;
+}
+
+.content {
+  padding: 20px;
+}
+
+.section-title {
+  font-size: 21px;
+  font-weight: 800;
+  margin: 8px 0 14px;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.summary-card {
+  background: white;
+  border-radius: 17px;
+  padding: 15px 8px;
+  text-align: center;
+  box-shadow: 0 4px 18px rgba(20,50,90,.06);
+}
+
+.summary-number {
+  font-size: 24px;
+  font-weight: 800;
+  color: #087ee1;
+}
+
+.summary-label {
+  font-size: 11px;
+  color: #788395;
+  margin-top: 3px;
+}
+
+.event-card {
+  background: white;
+  border-radius: 20px;
+  padding: 17px;
+  margin-bottom: 13px;
+  box-shadow: 0 4px 18px rgba(20,50,90,.06);
+}
+
+.event-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event-name {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.stroke {
+  font-size: 12px;
+  color: #8992a3;
+  margin-top: 2px;
+}
+
+.pb-label {
+  font-size: 10px;
+  color: #8a94a5;
+  text-align: right;
+}
+
+.pb {
+  font-size: 21px;
+  font-weight: 800;
+  color: #087ee1;
+}
+
+.qualifying {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin-top: 15px;
+}
+
+.qual-box {
+  border-radius: 12px;
+  padding: 10px 11px;
+}
+
+.state {
+  background: #eef5ff;
+}
+
+.national {
+  background: #fff5e7;
+}
+
+.qual-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #6e7888;
+}
+
+.qual-time {
+  font-size: 16px;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.state .qual-time {
+  color: #2873ce;
+}
+
+.national .qual-time {
+  color: #df8b14;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 500px;
+  width: 100%;
+  background: rgba(255,255,255,.96);
+  border-top: 1px solid #e5e9ef;
+  padding: 9px 8px calc(9px + env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+}
+
+.nav {
+  text-align: center;
+  font-size: 11px;
+  color: #8b94a3;
+}
+
+.nav-icon {
+  font-size: 22px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.nav.active {
+  color: #087ee1;
+  font-weight: 700;
+}
+
+.add {
+  position: fixed;
+  right: max(20px, calc((100vw - 500px)/2 + 20px));
+  bottom: 90px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 0;
+  background: #087ee1;
+  color: white;
+  font-size: 34px;
+  box-shadow: 0 8px 25px rgba(8,126,225,.35);
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="header">
+    <div class="small">SWIM TRACKER</div>
+    <h1>Emma</h1>
+    <p>Personal bests & qualifying times</p>
+
+    <div class="course-switch">
+      <button class="active" onclick="setCourse('LC',this)">
+        Long Course
+      </button>
+      <button onclick="setCourse('SC',this)">
+        Short Course
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <div class="section-title">Overview</div>
+
+    <div class="summary">
+      <div class="summary-card">
+        <div class="summary-number">12</div>
+        <div class="summary-label">PERSONAL BESTS</div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-number">6</div>
+        <div class="summary-label">STATE TIMES</div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-number">2</div>
+        <div class="summary-label">NATIONAL TIMES</div>
+      </div>
+    </div>
+
+    <div class="section-title">Events</div>
+
+    <div id="events"></div>
+
+  </div>
+</div>
+
+<button class="add">+</button>
+
+<div class="bottom-nav">
+  <div class="nav active">
+    <span class="nav-icon">🏠</span>
+    Home
+  </div>
+
+  <div class="nav">
+    <span class="nav-icon">🏊‍♀️</span>
+    Events
+  </div>
+
+  <div class="nav">
+    <span class="nav-icon">📈</span>
+    Progress
+  </div>
+
+  <div class="nav">
+    <span class="nav-icon">⚙️</span>
+    Settings
+  </div>
+</div>
+
+<script>
+
+let course = "LC";
+
+const data = {
+
+LC: [
+ {
+  event:"50m Freestyle",
+  stroke:"Freestyle",
+  pb:"27.84",
+  state:"28.50",
+  national:"27.60"
+ },
+ {
+  event:"100m Freestyle",
+  stroke:"Freestyle",
+  pb:"1:01.42",
+  state:"1:02.50",
+  national:"59.90"
+ },
+ {
+  event:"50m Backstroke",
+  stroke:"Backstroke",
+  pb:"32.20",
+  state:"33.10",
+  national:"31.40"
+ },
+ {
+  event:"100m Backstroke",
+  stroke:"Backstroke",
+  pb:"1:09.80",
+  state:"1:11.50",
+  national:"1:07.50"
+ },
+ {
+  event:"50m Butterfly",
+  stroke:"Butterfly",
+  pb:"30.90",
+  state:"31.50",
+  national:"29.80"
+ },
+ {
+  event:"100m Butterfly",
+  stroke:"Butterfly",
+  pb:"1:09.40",
+  state:"1:11.00",
+  national:"1:06.80"
+ }
+],
+
+SC: [
+ {
+  event:"50m Freestyle",
+  stroke:"Freestyle",
+  pb:"27.20",
+  state:"27.90",
+  national:"26.90"
+ },
+ {
+  event:"100m Freestyle",
+  stroke:"Freestyle",
+  pb:"59.80",
+  state:"1:01.00",
+  national:"58.50"
+ },
+ {
+  event:"50m Backstroke",
+  stroke:"Backstroke",
+  pb:"31.40",
+  state:"32.50",
+  national:"30.70"
+ }
+]
+
+};
+
+function renderEvents(){
+
+ const holder=document.getElementById("events");
+ holder.innerHTML="";
+
+ data[course].forEach(e=>{
+
+  holder.innerHTML += `
+   <div class="event-card">
+
+    <div class="event-top">
+
+     <div>
+      <div class="event-name">${e.event}</div>
+      <div class="stroke">${e.stroke}</div>
+     </div>
+
+     <div>
+      <div class="pb-label">PERSONAL BEST</div>
+      <div class="pb">${e.pb}</div>
+     </div>
+
+    </div>
+
+    <div class="qualifying">
+
+     <div class="qual-box state">
+      <div class="qual-title">STATE</div>
+      <div class="qual-time">${e.state}</div>
+     </div>
+
+     <div class="qual-box national">
+      <div class="qual-title">NATIONAL</div>
+      <div class="qual-time">${e.national}</div>
+     </div>
+
+    </div>
+
+   </div>
+  `;
+
+ });
+
+}
+
+function setCourse(c,button){
+
+ course=c;
+
+ document
+ .querySelectorAll(".course-switch button")
+ .forEach(b=>b.classList.remove("active"));
+
+ button.classList.add("active");
+
+ renderEvents();
+
+}
+
+renderEvents();
+
+</script>
+
+</body>
+</html>
