@@ -9,10 +9,10 @@
 <meta name="apple-mobile-web-app-title" content="Emma Swim">
 <meta name="theme-color" content="#002356">
 <title>Emma Swim</title>
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-11-01.0816">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-11-01.0816">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-11-01.0816">
-<link rel="manifest" href="manifest.json?v=2026-11-01.0816">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-11-01.0818">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-11-01.0818">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-11-01.0818">
+<link rel="manifest" href="manifest.json?v=2026-11-01.0818">
 <style>
 :root{
   --bg:#f3f6f6; --surface:#ffffff; --surface2:#eef3f2; --ink:#14201f; --ink2:#4b5b59; --muted:#7c8a88;
@@ -129,7 +129,7 @@ nav.tabs button.on{color:var(--brand)}
 <div class="app">
   <header class="top">
     <div class="top-row">
-      <div class="brandrow"><img class="logo" src="logo.png?v=2026-11-01.0816" alt="Emma Swim"><button class="who" id="who"></button></div>
+      <div class="brandrow"><img class="logo" src="logo.png?v=2026-11-01.0818" alt="Emma Swim"><button class="who" id="who"></button></div>
       <button class="add-btn" id="addBtn" aria-label="Add swim">+</button>
     </div>
     <div class="seg" id="courseSeg"><button data-c="LCM">Long course</button><button data-c="SCM">Short course</button></div>
@@ -361,6 +361,7 @@ function pbFlags(){
 /* ---------- Render ---------- */
 const $=s=>document.querySelector(s);
 function render(){
+  const prevRow=document.querySelector('#main .filters'), prevScroll=prevRow?prevRow.scrollLeft:0, prevTab=render.lastTab; render.lastTab=UI.tab;
   const sw=swimmer(), c=DB.settings.course;
   const ageNow=sw&&sw.dob?ageOn(sw.dob,todayISO()):null;
   $('#who').innerHTML=`<b>${esc(sw?sw.first:'Emma')} ${esc(sw?sw.last:'Ward')}</b><span>${ageNow!=null?'Age '+ageNow+' · ':''}<span id="syncLbl" class="synclbl"></span></span>`;
@@ -371,6 +372,15 @@ function render(){
   const m=$('#main');
   if(!sw && UI.tab!=='more' && UI.tab!=='inbox'){ m.innerHTML=`<div class="note" style="margin-top:20px"><b>Connect this device to load Emma's swims.</b><br>Emma's data is stored privately in GitHub. Paste the access key once on this device.</div><button class="btn" onclick="UI.tab='more';render()">Connect now</button>`; return; }
   ({bests:renderBests,swims:renderSwims,progress:renderProgress,inbox:renderInbox,more:renderMore})[UI.tab](m);
+  // keep the event button row where it was, and make sure the selected button is in view
+  const row=m.querySelector('.filters');
+  if(row){
+    if(prevTab===UI.tab) row.scrollLeft=prevScroll;
+    const on=row.querySelector('button.on');
+    if(on){ const l=on.offsetLeft-row.offsetLeft, r=l+on.offsetWidth;
+      if(l<row.scrollLeft+16) row.scrollLeft=Math.max(0,l-16);
+      else if(r>row.scrollLeft+row.clientWidth-16) row.scrollLeft=r-row.clientWidth+16; }
+  }
 }
 
 function qtChip(label,qt,t){
@@ -770,7 +780,7 @@ function applyTheme(){ const t=DB.settings.theme||'auto'; if(t==='auto') documen
 
 /* ---------- Wire up ---------- */
 /* ---------- Auto-update: GitHub Pages lets phones cache the page ~10 min, so check for a newer build ---------- */
-const BUILD='2026-11-01.0816';
+const BUILD='2026-11-01.0818';
 async function checkUpdate(){
   if(location.protocol==='file:') return;
   try{
