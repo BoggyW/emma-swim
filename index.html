@@ -9,10 +9,10 @@
 <meta name="apple-mobile-web-app-title" content="Emma Swim">
 <meta name="theme-color" content="#002356">
 <title>Emma Swim</title>
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-10-31.2241">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-10-31.2241">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-10-31.2241">
-<link rel="manifest" href="manifest.json?v=2026-10-31.2241">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-10-31.2243">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-10-31.2243">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-10-31.2243">
+<link rel="manifest" href="manifest.json?v=2026-10-31.2243">
 <style>
 :root{
   --bg:#f3f6f6; --surface:#ffffff; --surface2:#eef3f2; --ink:#14201f; --ink2:#4b5b59; --muted:#7c8a88;
@@ -129,7 +129,7 @@ nav.tabs button.on{color:var(--brand)}
 <div class="app">
   <header class="top">
     <div class="top-row">
-      <div class="brandrow"><img class="logo" src="logo.png?v=2026-10-31.2241" alt="Emma Swim"><button class="who" id="who"></button></div>
+      <div class="brandrow"><img class="logo" src="logo.png?v=2026-10-31.2243" alt="Emma Swim"><button class="who" id="who"></button></div>
       <button class="add-btn" id="addBtn" aria-label="Add swim">+</button>
     </div>
     <div class="seg" id="courseSeg"><button data-c="LCM">Long course</button><button data-c="SCM">Short course</button></div>
@@ -366,7 +366,7 @@ function render(){
   updateSyncUI();
   document.querySelectorAll('#courseSeg button').forEach(b=>b.classList.toggle('on',b.dataset.c===c));
   document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===UI.tab));
-  $('#courseSeg').style.display=UI.tab==='more'?'none':'flex';
+  $('#courseSeg').style.display='flex';
   const m=$('#main');
   if(!sw && UI.tab!=='more'){ m.innerHTML=`<div class="note" style="margin-top:20px"><b>Connect this device to load Emma's swims.</b><br>Emma's data is stored privately in GitHub. Paste the access key once on this device.</div><button class="btn" onclick="UI.tab='more';render()">Connect now</button>`; return; }
   ({bests:renderBests,swims:renderSwims,progress:renderProgress,more:renderMore})[UI.tab](m);
@@ -554,20 +554,23 @@ function renderMore(m){
    `<div class="form" style="margin-top:10px"><label><span>GitHub key</span><input id="keyIn" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="github_pat_…" style="text-align:left"></label></div><button class="btn" id="keyGo">Connect</button>`}`;
   if(!sw){ m.innerHTML=h; wireSync(m); return; }
   const a=ageOn(sw.dob,st.ageDate);
-  h+=`<h2 class="sec">Qualifying times · ${esc(sw.first)}</h2>
+  if(DB.settings.course==='LCM'){
+  h+=`<h2 class="sec">Long course qualifying times</h2>
   <div class="note">State: <b>${esc(st.name)}</b>, female ${a>=18?'18 & over':a+' yrs'} (age at ${fdate(st.ageDate)}). National times are editable — tap a value to change it.</div>
   <div class="list" style="margin-top:10px;padding:2px 6px"><table class="qt-table"><thead><tr><th>Event</th><th>State</th><th>National</th><th>LCM PB</th></tr></thead><tbody>`;
   EVENTS.forEach(([d,s])=>{ const k=ek(d,s), sq=stateQT(k), pb=pbFor(k,'LCM');
     if(!sq && !nat.times[k] && !pb) return;
     h+=`<tr><td>${k}</td><td>${sq?fmt(sq):'—'}</td><td><input data-nat="${k}" value="${esc(nat.times[k]||'')}" placeholder="—" inputmode="decimal"></td><td>${pb?fmt(pb.time):'—'}</td></tr>`; });
-  h+=`</tbody></table></div>
-  <h2 class="sec">Short course national · ${esc(natSC().name)}</h2>
-  <div class="note">Women's open qualifying times. Short course swims since ${fdate(natSC().from)} count. No State short course qualifying.</div>
+  h+=`</tbody></table></div>`;
+  } else {
+  h+=`<h2 class="sec">Short course qualifying times</h2>
+  <div class="note"><b>${esc(natSC().name)}</b> — National only (no State short course). Women's open times; short course swims since ${fdate(natSC().from)} count. No State short course qualifying.</div>
   <div class="list" style="margin-top:10px;padding:2px 6px"><table class="qt-table"><thead><tr><th>Event</th><th>National SC</th><th>Best since</th><th></th></tr></thead><tbody>`;
   EVENTS.forEach(([d,s])=>{ const k=ek(d,s), q=natSCQT(k); if(!q) return; const b=scWindowBest(k);
     h+=`<tr><td>${k}</td><td>${fmt(q)}</td><td>${b?fmt(b.time):'—'}</td><td>${b&&b.time<=q?'<span class="gap-ok">✓</span>':b?`<span class="gap-no">${fmtGap(b.time-q)}</span>`:''}</td></tr>`; });
-  h+=`</tbody></table></div>
-  <h2 class="sec">Backup</h2>
+  h+=`</tbody></table></div>`;
+  }
+  h+=`<h2 class="sec">Backup</h2>
   <div class="note">GitHub keeps every version of the data. You can also save a copy to Files, or merge in an older backup (nothing gets removed).</div>
   <button class="btn ghost" id="exp">Export backup file</button>
   <button class="btn ghost" id="imp">Merge in a backup file</button>
@@ -689,7 +692,7 @@ function applyTheme(){ const t=DB.settings.theme||'auto'; if(t==='auto') documen
 
 /* ---------- Wire up ---------- */
 /* ---------- Auto-update: GitHub Pages lets phones cache the page ~10 min, so check for a newer build ---------- */
-const BUILD='2026-10-31.2241';
+const BUILD='2026-10-31.2243';
 async function checkUpdate(){
   if(location.protocol==='file:') return;
   try{
