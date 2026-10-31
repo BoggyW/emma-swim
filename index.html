@@ -9,10 +9,10 @@
 <meta name="apple-mobile-web-app-title" content="Emma Swim">
 <meta name="theme-color" content="#002356">
 <title>Emma Swim</title>
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-11-01.0836">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-11-01.0836">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-11-01.0836">
-<link rel="manifest" href="manifest.json?v=2026-11-01.0836">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-11-01.0838">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-11-01.0838">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-11-01.0838">
+<link rel="manifest" href="manifest.json?v=2026-11-01.0838">
 <style>
 :root{
   --bg:#f3f6f6; --surface:#ffffff; --surface2:#eef3f2; --ink:#14201f; --ink2:#4b5b59; --muted:#7c8a88;
@@ -134,7 +134,7 @@ nav.tabs button.on{color:var(--brand)}
 <div class="app">
   <header class="top">
     <div class="top-row">
-      <div class="brandrow"><img class="logo" src="logo.png?v=2026-11-01.0836" alt="Emma Swim"><button class="who" id="who"></button></div>
+      <div class="brandrow"><img class="logo" src="logo.png?v=2026-11-01.0838" alt="Emma Swim"><button class="who" id="who"></button></div>
       <button class="add-btn" id="addBtn" aria-label="Add swim">+</button>
     </div>
     <div class="seg" id="courseSeg"><button data-c="LCM">Long course</button><button data-c="SCM">Short course</button></div>
@@ -414,28 +414,28 @@ function renderBests(m){
     rows.push({key,pb,sq,nq,wb,nwb});
   });
   let h=`<div class="tiles"${c==='SCM'?' style="grid-template-columns:1fr 1fr"':''}>
-    ${c==='LCM'?`<div class="tile"><div class="v">${nState}<span style="font-size:15px;color:var(--muted)">/${nStateEv}</span></div><div class="l">State QTs<br>(${stAge}yrs)</div></div>`:''}
-    <div class="tile"><div class="v">${nNat}<span style="font-size:15px;color:var(--muted)">/${nNatEv}</span></div><div class="l">National<br>times${c==='SCM'?' (SC)':''}</div></div>
+    ${c==='LCM'?`<div class="tile"><div class="v">${nState}<span style="font-size:15px;color:var(--muted)">/${nStateEv}</span></div><div class="l">State Times<br>(${stAge}yrs)</div></div>`:''}
+    <div class="tile"><div class="v">${nNat}<span style="font-size:15px;color:var(--muted)">/${nNatEv}</span></div><div class="l">National<br>Times</div></div>
     <div class="tile"><div class="v">${recent}</div><div class="l">PBs set in<br>last 12 months</div></div>
   </div>`;
   if(c==='LCM'){
     const days=Math.ceil((new Date(st.closes)-new Date(todayISO()))/864e5);
     h+=`<div class="note"><b>${esc(st.name)}</b> · age ${stAge} as at ${fdate(st.ageDate)}. Only LCM swims since ${fdate(st.from)} count.${days>0?` Entries close ${fdate(st.closes)} (<b>${days} days</b>).`:''}</div>`;
   } else {
-    h+=`<div class="note"><b>${esc(natSC().name)}</b> national times (women, open). Only short course swims since ${fdate(natSC().from)} count. There is no State short course qualifying. Grey figures are an <b>estimated LCM equivalent</b>.</div>`;
+    h+=`<div class="note"><b>${esc(natSC().name)}</b> National Times (women, open). Only short course swims since ${fdate(natSC().from)} count. There is no State Time for short course. Grey figures are an <b>estimated LCM equivalent</b>.</div>`;
   }
   h+=`<h2 class="sec">${c==='LCM'?'Long course':'Short course'} personal bests</h2>
-  <div style="font-size:12px;color:var(--ink2);margin:-2px 4px 8px">Best time colour:<span class="qkey" style="background:var(--qnat)"></span>National${c==='LCM'?'<span class="qkey" style="background:var(--qstate)"></span>State only':''}<span class="qkey" style="background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)"></span>Not yet</div><div class="list">`;
+  <div style="font-size:12px;color:var(--ink2);margin:-2px 4px 8px">Best time colour:<span class="qkey" style="background:var(--qnat)"></span>National Time${c==='LCM'?'<span class="qkey" style="background:var(--qstate)"></span>State Time only':''}<span class="qkey" style="background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)"></span>Not yet</div><div class="list">`;
   rows.forEach(r=>{
     const [d,s]=r.key.split(' '), mt=r.pb&&meetById(r.pb.meet);
     let chips='';
     if(c==='LCM'){
-      chips+=qtChip('State',r.sq,r.wb?r.wb.time:null);
-      chips+=qtChip('Nat',r.nq,r.pb?r.pb.time:null);
+      chips+=qtChip('State Time',r.sq,r.wb?r.wb.time:null);
+      chips+=qtChip('National Time',r.nq,r.pb?r.pb.time:null);
       if(r.sq&&r.pb&&r.wb&&r.wb.id!==r.pb.id) chips+=`<span class="chip">Since ${fdate(st.from,true).replace(/ \d+$/,'')}: ${fmt(r.wb.time)}</span>`;
-      if(r.sq&&r.pb&&!r.wb) chips+=`<span class="chip near">No swim in QT window</span>`;
+      if(r.sq&&r.pb&&!r.wb) chips+=`<span class="chip near">No swim since ${fdate(st.from,true)}</span>`;
     } else {
-      chips+=qtChip('Nat SC',r.nq,r.nwb?r.nwb.time:null);
+      chips+=qtChip('National Time',r.nq,r.nwb?r.nwb.time:null);
       if(r.nq&&r.pb&&!r.nwb) chips+=`<span class="chip near">No SC swim since ${fdate(natSC().from,true)}</span>`;
     }
     h+=`<button class="item" data-ev="${r.key}"><div class="main"><div class="t1">${r.key}</div>
@@ -496,8 +496,8 @@ function renderProgress(m){
     <div class="tile"><div class="l">${gain!=null?'Faster than 12 months ago':'Swims recorded'}</div><div class="v">${gain!=null?(gain>0?'−'+(gain<60?gain.toFixed(2):fmt(gain)):'0.00'):all.length}</div><div class="l">${gain!=null?'best then '+fmt(before.time):'since '+fdate(first.date)}</div></div></div>`;
   if(sq||nq){
     h+=`<div class="note">`;
-    if(sq){ const t=wb&&wb.time; h+=`<b>State QT ${fmt(sq)}</b> — ${t==null?'no LCM swim since '+fdate(DB.standards.state.from):t<=sq?`<span class="gap-ok">qualified, ${fmtGap(t-sq)}</span> (${fmt(t)} on ${fdate(wb.date)})`:`<span class="gap-no">${fmtGap(t-sq)} to go</span> (best in window ${fmt(t)})`}<br>`; }
-    if(nq){ const t=nwb&&nwb.time; h+=`<b>National${c==='SCM'?' SC':''} ${fmt(nq)}</b> — ${t==null?(c==='SCM'?'no SC swim since '+fdate(natSC().from):'no LCM time yet'):t<=nq?`<span class="gap-ok">achieved, ${fmtGap(t-nq)}</span>`:`<span class="gap-no">${fmtGap(t-nq)} to go</span>`}`; }
+    if(sq){ const t=wb&&wb.time; h+=`<b>State Time ${fmt(sq)}</b> — ${t==null?'no LCM swim since '+fdate(DB.standards.state.from):t<=sq?`<span class="gap-ok">qualified, ${fmtGap(t-sq)}</span> (${fmt(t)} on ${fdate(wb.date)})`:`<span class="gap-no">${fmtGap(t-sq)} to go</span> (best in window ${fmt(t)})`}<br>`; }
+    if(nq){ const t=nwb&&nwb.time; h+=`<b>National Time ${fmt(nq)}</b> — ${t==null?(c==='SCM'?'no SC swim since '+fdate(natSC().from):'no LCM time yet'):t<=nq?`<span class="gap-ok">achieved, ${fmtGap(t-nq)}</span>`:`<span class="gap-no">${fmtGap(t-nq)} to go</span>`}`; }
     h+=`</div>`;
   }
   h+=`<h2 class="sec">${k} · ${cname}</h2><div class="chart-card" id="chart"><div class="tip" id="tip"></div></div>`;
@@ -515,7 +515,7 @@ function renderProgress(m){
 }
 
 function drawChart(el,swims,sq,nq,course){
-  const W=340,H=230,L=44,R=40,T=14,B=26;
+  const W=340,H=230,L=44,R=56,T=14,B=26;
   if(!swims.length){ el.insertAdjacentHTML('beforeend','<div class="empty">No times yet</div>'); return; }
   const ts=swims.map(s=>+new Date(s.date));
   let x0=Math.min(...ts), x1=Math.max(...ts); if(x1-x0<30*864e5){x0-=20*864e5;x1+=20*864e5;}
@@ -533,7 +533,7 @@ function drawChart(el,swims,sq,nq,course){
   g+=`<line x1="${L}" x2="${W-R}" y1="${H-B}" y2="${H-B}" stroke="${col('--axis')}"/>`;
   g+=`<text x="${L-6}" y="${H-B+16}" text-anchor="end" font-size="11" fill="${col('--muted')}">faster ↓</text>`;
   // QT lines
-  [[sq,'State'],[nq,'Nat']].forEach(([q,lab])=>{ if(!q) return; g+=`<line x1="${L}" x2="${W-R}" y1="${Y(q)}" y2="${Y(q)}" stroke="${col('--ink2')}" stroke-width="1.5" stroke-dasharray="5 4"/><text x="${W-R+4}" y="${Y(q)+4}" font-size="11" font-weight="600" fill="${col('--ink2')}">${lab}</text>`; });
+  [[sq,'State'],[nq,'National']].forEach(([q,lab])=>{ if(!q) return; g+=`<line x1="${L}" x2="${W-R}" y1="${Y(q)}" y2="${Y(q)}" stroke="${col('--ink2')}" stroke-width="1.5" stroke-dasharray="5 4"/><text x="${W-R+4}" y="${Y(q)+4}" font-size="11" font-weight="600" fill="${col('--ink2')}">${lab}</text>`; });
   // series
   const pts=[];
   [course].forEach(c=>{
@@ -547,7 +547,7 @@ function drawChart(el,swims,sq,nq,course){
       g+=`<circle cx="${px}" cy="${py}" r="4" fill="${color}" stroke="${col('--surface')}" stroke-width="2"/>`; });
   });
   const svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Times over time">${g}<rect id="hit" x="${L}" y="${T}" width="${W-L-R}" height="${H-T-B}" fill="transparent"/><circle id="hl" r="7" fill="none" stroke-width="2" style="display:none"/></svg>`;
-  el.insertAdjacentHTML('beforeend',svg+`<div class="legend"><span><i style="background:var(--${course.toLowerCase()})"></i>Each swim</span><span style="color:var(--muted)">Line = best so far</span>${sq||nq?'<span><i class="dash"></i>Qualifying time</span>':''}</div>`);
+  el.insertAdjacentHTML('beforeend',svg+`<div class="legend"><span><i style="background:var(--${course.toLowerCase()})"></i>Each swim</span><span style="color:var(--muted)">Line = best so far</span>${sq||nq?'<span><i class="dash"></i>State / National Time</span>':''}</div>`);
   const svgEl=el.querySelector('svg'), tip=el.querySelector('#tip'), hl=el.querySelector('#hl');
   function show(ev){
     const r=svgEl.getBoundingClientRect(), sx=(ev.clientX-r.left)*W/r.width, sy=(ev.clientY-r.top)*H/r.height;
@@ -598,12 +598,12 @@ function renderInbox(m){
   const items=INBOX.items||[];
   const stat=it=>it.status==='done'?'<span class="chip ok">✓ Done</span>':it.status==='question'?'<span class="chip near">Question</span>':'<span class="chip">Waiting for Claude</span>';
   m.innerHTML=`<h2 class="sec">Send something to Claude</h2>
-  <div class="note">Add a photo, screenshot or PDF — e.g. new qualifying times, a results sheet or a meet program — and say what it is and what to do with it. Then ask Claude in the SwimTrackin project to <b>"check the inbox"</b>.</div>
+  <div class="note">Add a photo, screenshot or PDF — e.g. new State or National Times, a results sheet or a meet program — and say what it is and what to do with it. Then ask Claude in the SwimTrackin project to <b>"check the inbox"</b>.</div>
   <div class="form" style="margin-top:10px">
     <label><span>Photo or file</span><input type="file" id="ibFile" accept="image/*,application/pdf,.pdf,.csv,.txt,.xlsx,.docx" style="text-align:left;font-size:14px"></label>
     <div style="padding:10px 14px;border-top:1px solid var(--line)">
       <div style="color:var(--ink2);margin-bottom:6px">What is it & what should Claude do?</div>
-      <textarea id="ibNote" rows="4" style="width:100%;border:0;background:var(--surface2);border-radius:8px;padding:10px;font:inherit;font-size:16px;resize:vertical" placeholder="e.g. 2027 National Age qualifying times — use the Girls 16 column and replace the current long course National times."></textarea>
+      <textarea id="ibNote" rows="4" style="width:100%;border:0;background:var(--surface2);border-radius:8px;padding:10px;font:inherit;font-size:16px;resize:vertical" placeholder="e.g. 2027 National Times — use the Girls 16 column and replace the current long course National times."></textarea>
     </div>
   </div>
   <div class="err" id="ibErr"></div>
@@ -650,17 +650,17 @@ function renderMore(m){
   if(!sw){ m.innerHTML=h; wireSync(m); return; }
   const a=ageOn(sw.dob,st.ageDate);
   if(DB.settings.course==='LCM'){
-  h+=`<h2 class="sec">Long course qualifying times</h2>
+  h+=`<h2 class="sec">Long course State & National Times</h2>
   <div class="note">State: <b>${esc(st.name)}</b>, female ${a>=18?'18 & over':a+' yrs'} (age at ${fdate(st.ageDate)}). National times are editable — tap a value to change it.</div>
-  <div class="list" style="margin-top:10px;padding:2px 6px"><table class="qt-table"><thead><tr><th>Event</th><th>State</th><th>National</th><th>LCM PB</th></tr></thead><tbody>`;
+  <div class="list" style="margin-top:10px;padding:2px 6px"><table class="qt-table"><thead><tr><th>Event</th><th>State Time</th><th>National Time</th><th>LCM PB</th></tr></thead><tbody>`;
   EVENTS.forEach(([d,s])=>{ const k=ek(d,s), sq=stateQT(k), pb=pbFor(k,'LCM');
     if(!sq && !nat.times[k] && !pb) return;
     h+=`<tr><td>${k}</td><td>${sq?fmt(sq):'—'}</td><td><input data-nat="${k}" value="${esc(nat.times[k]||'')}" placeholder="—" inputmode="decimal"></td><td>${pb?fmt(pb.time):'—'}</td></tr>`; });
   h+=`</tbody></table></div>`;
   } else {
-  h+=`<h2 class="sec">Short course qualifying times</h2>
-  <div class="note"><b>${esc(natSC().name)}</b> — National only (no State short course). Women's open times; short course swims since ${fdate(natSC().from)} count. No State short course qualifying.</div>
-  <div class="list" style="margin-top:10px;padding:2px 6px"><table class="qt-table"><thead><tr><th>Event</th><th>National SC</th><th>Best since</th><th></th></tr></thead><tbody>`;
+  h+=`<h2 class="sec">Short course National Times</h2>
+  <div class="note"><b>${esc(natSC().name)}</b> — women's open. Short course swims since ${fdate(natSC().from)} count. There is no State Time for short course.</div>
+  <div class="list" style="margin-top:10px;padding:2px 6px"><table class="qt-table"><thead><tr><th>Event</th><th>National Time</th><th>Best since</th><th></th></tr></thead><tbody>`;
   EVENTS.forEach(([d,s])=>{ const k=ek(d,s), q=natSCQT(k); if(!q) return; const b=scWindowBest(k);
     h+=`<tr><td>${k}</td><td>${fmt(q)}</td><td>${b?fmt(b.time):'—'}</td><td>${b&&b.time<=q?'<span class="gap-ok">✓</span>':b?`<span class="gap-no">${fmtGap(b.time-q)}</span>`:''}</td></tr>`; });
   h+=`</tbody></table></div>`;
@@ -752,7 +752,7 @@ function openSwim(s){
     if(t&&pb&&t<pb.time) out.push(`<span class="gap-ok">New PB by ${(pb.time-t).toFixed(2)}s 🎉</span>`);
     if(t&&!pb) out.push('First '+c+' swim of this event');
     const sq=c==='LCM'?stateQT(key):null;
-    if(t&&sq) out.push(t<=sq?`<span class="gap-ok">State QT ✓ (${fmt(sq)})</span>`:`State QT ${fmt(sq)} (${fmtGap(t-sq)})`);
+    if(t&&sq) out.push(t<=sq?`<span class="gap-ok">State Time ✓ (${fmt(sq)})</span>`:`State Time ${fmt(sq)} (${fmtGap(t-sq)})`);
     q('#fHint').innerHTML=out.join(' · ')||'Enter the time to compare with PB';
   }
   ['#fTime','#fDist','#fStroke','#fMCourse'].forEach(id=>q(id).addEventListener('input',hint)); hint();
@@ -787,7 +787,7 @@ function applyTheme(){ const t=DB.settings.theme||'auto'; if(t==='auto') documen
 
 /* ---------- Wire up ---------- */
 /* ---------- Auto-update: GitHub Pages lets phones cache the page ~10 min, so check for a newer build ---------- */
-const BUILD='2026-11-01.0836';
+const BUILD='2026-11-01.0838';
 async function checkUpdate(){
   if(location.protocol==='file:') return;
   try{
