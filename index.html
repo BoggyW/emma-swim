@@ -2,236 +2,74 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Emma Swim">
 <title>Emma Swim</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: #f4f7fb;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
-               "Segoe UI", sans-serif;
-  color: #172033;
-}
-
-.app {
-  max-width: 500px;
-  margin: auto;
-  min-height: 100vh;
-  padding-bottom: 100px;
-}
-
-.header {
-  background: linear-gradient(135deg,#087ee1,#14b9d6);
-  color: white;
-  padding: calc(22px + env(safe-area-inset-top)) 22px 26px;
-  border-radius: 0 0 30px 30px;
-}
-
-.small {
-  font-size: 14px;
-  opacity: .85;
-}
-
-h1 {
-  margin: 4px 0;
-  font-size: 32px;
-}
-
-.header p {
-  margin: 0;
-  opacity: .9;
-}
-
-.course-switch {
-  display: flex;
-  background: rgba(255,255,255,.18);
-  border-radius: 14px;
-  padding: 4px;
-  margin-top: 20px;
-}
-
-.course-switch button {
-  width: 50%;
-  border: 0;
-  background: transparent;
-  color: white;
-  padding: 11px;
-  border-radius: 11px;
-  font-weight: 700;
-  font-size: 14px;
-}
-
-.course-switch button.active {
-  background: white;
-  color: #087ee1;
-}
-
-.content {
-  padding: 20px;
-}
-
-.section-title {
-  font-size: 21px;
-  font-weight: 800;
-  margin: 8px 0 14px;
-}
-
-.summary {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 10px;
-  margin-bottom: 25px;
-}
-
-.summary-card {
-  background: white;
-  border-radius: 17px;
-  padding: 15px 8px;
-  text-align: center;
-  box-shadow: 0 4px 18px rgba(20,50,90,.06);
-}
-
-.summary-number {
-  font-size: 24px;
-  font-weight: 800;
-  color: #087ee1;
-}
-
-.summary-label {
-  font-size: 11px;
-  color: #788395;
-  margin-top: 3px;
-}
-
-.event-card {
-  background: white;
-  border-radius: 20px;
-  padding: 17px;
-  margin-bottom: 13px;
-  box-shadow: 0 4px 18px rgba(20,50,90,.06);
-}
-
-.event-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.event-name {
-  font-size: 17px;
-  font-weight: 800;
-}
-
-.stroke {
-  font-size: 12px;
-  color: #8992a3;
-  margin-top: 2px;
-}
-
-.pb-label {
-  font-size: 10px;
-  color: #8a94a5;
-  text-align: right;
-}
-
-.pb {
-  font-size: 21px;
-  font-weight: 800;
-  color: #087ee1;
-}
-
-.qualifying {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 9px;
-  margin-top: 15px;
-}
-
-.qual-box {
-  border-radius: 12px;
-  padding: 10px 11px;
-}
-
-.state {
-  background: #eef5ff;
-}
-
-.national {
-  background: #fff5e7;
-}
-
-.qual-title {
-  font-size: 10px;
-  font-weight: 700;
-  color: #6e7888;
-}
-
-.qual-time {
-  font-size: 16px;
-  font-weight: 800;
-  margin-top: 2px;
-}
-
-.state .qual-time {
-  color: #2873ce;
-}
-
-.national .qual-time {
-  color: #df8b14;
-}
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 500px;
-  width: 100%;
-  background: rgba(255,255,255,.96);
-  border-top: 1px solid #e5e9ef;
-  padding: 9px 8px calc(9px + env(safe-area-inset-bottom));
-  display: grid;
-  grid-template-columns: repeat(4,1fr);
-}
-
-.nav {
-  text-align: center;
-  font-size: 11px;
-  color: #8b94a3;
-}
-
-.nav-icon {
-  font-size: 22px;
-  display: block;
-  margin-bottom: 2px;
-}
-
-.nav.active {
-  color: #087ee1;
-  font-weight: 700;
-}
-
-.add {
-  position: fixed;
-  right: max(20px, calc((100vw - 500px)/2 + 20px));
-  bottom: 90px;
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  border: 0;
-  background: #087ee1;
-  color: white;
-  font-size: 34px;
-  box-shadow: 0 8px 25px rgba(8,126,225,.35);
-}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#172033}
+.app{max-width:520px;margin:auto;min-height:100vh;padding-bottom:105px}
+.header{background:linear-gradient(135deg,#062b59,#087ee1);color:#fff;padding:calc(20px + env(safe-area-inset-top)) 20px 22px;border-radius:0 0 28px 28px}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;opacity:.8}
+.header h1{margin:4px 0;font-size:31px}
+.header p{margin:0;opacity:.9;font-size:14px}
+.switch{display:flex;background:#ffffff2e;border-radius:13px;padding:4px;margin-top:16px}
+.switch button{flex:1;border:0;background:transparent;color:#fff;padding:11px;border-radius:10px;font-weight:800;font-size:14px}
+.switch button.active{background:#fff;color:#087ee1}
+.content{padding:18px}
+.title{font-size:21px;font-weight:850;margin:8px 0 13px}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:22px}
+.sum,.card{background:#fff;border-radius:17px;box-shadow:0 4px 18px #14325a0f}
+.sum{text-align:center;padding:14px 5px}
+.num{font-size:22px;font-weight:850;color:#087ee1}
+.lab{font-size:9px;color:#7d8798;font-weight:800;margin-top:3px}
+.card{padding:15px;margin-bottom:11px}
+.row{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.event{font-size:16px;font-weight:850}
+.muted{font-size:11px;color:#8992a3;margin-top:3px}
+.pb{text-align:right;font-size:20px;font-weight:850;color:#087ee1}
+.pb small{display:block;font-size:9px;color:#8a94a5}
+.quals{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.q{padding:9px 10px;border-radius:11px}
+.q.state{background:#eef5ff}
+.q.nat{background:#fff7df}
+.q small{display:block;font-size:9px;font-weight:800;color:#6e7888}
+.q b{font-size:15px}
+.state b{color:#2873ce}
+.nat b{color:#c89200}
+.tick{color:#159447;margin-left:4px}
+.nav{position:fixed;z-index:20;bottom:0;left:50%;transform:translateX(-50%);max-width:520px;width:100%;display:grid;grid-template-columns:repeat(4,1fr);background:#fffffff5;border-top:1px solid #e2e7ee;padding:8px 5px calc(8px + env(safe-area-inset-bottom))}
+.nav button{border:0;background:none;color:#8992a3;font-size:10px;font-weight:700;padding:4px}
+.nav button span{display:block;font-size:21px;margin-bottom:2px}
+.nav button.active{color:#087ee1}
+.fab{position:fixed;z-index:18;right:max(18px,calc((100vw - 520px)/2 + 18px));bottom:91px;width:58px;height:58px;border:0;border-radius:50%;background:#087ee1;color:#fff;font-size:34px;box-shadow:0 8px 25px #087ee159}
+.hidden{display:none!important}
+.filter{display:flex;gap:7px;overflow:auto;padding-bottom:8px}
+.filter button,.btn{border:0;border-radius:11px;padding:10px 12px;font-weight:750;background:#e9eef5;color:#566274;white-space:nowrap}
+.filter button.active,.btn.primary{background:#087ee1;color:#fff}
+.wide{width:100%;margin:7px 0 15px}
+.history{border-top:1px solid #edf0f4;margin-top:12px;padding-top:10px}
+.history-row{display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px 0;font-size:13px}
+.history-row b{color:#087ee1}
+.empty{text-align:center;color:#8992a3;padding:25px 10px}
+.modal{position:fixed;z-index:50;inset:0;background:#13213b73;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:#fff;width:min(520px,100%);border-radius:24px 24px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));max-height:90vh;overflow:auto}
+.sheet h2{margin:0 0 14px}
+.field{margin:11px 0}
+.field label{display:block;font-size:11px;font-weight:800;color:#6d7787;margin-bottom:5px}
+.field input,.field select{width:100%;font-size:16px;padding:12px;border:1px solid #dce2ea;border-radius:11px;background:#fff}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}
+.actions button{padding:12px;border:0;border-radius:12px;font-weight:800}
+.settings-card{background:#fff;border-radius:17px;padding:16px;margin-bottom:12px}
+.settings-card h3{margin:0 0 7px}
+.note{font-size:12px;line-height:1.45;color:#6e7888}
+.badge{font-size:10px;background:#eef5ff;color:#2873ce;border-radius:20px;padding:4px 7px;font-weight:800}
+.chart{background:#fff;border-radius:17px;padding:15px;margin:12px 0}
+.bar{height:10px;background:#e8edf4;border-radius:10px;overflow:hidden;margin:6px 0 12px}
+.bar div{height:100%;background:#087ee1;border-radius:10px}
 </style>
 </head>
 
@@ -239,210 +77,651 @@ h1 {
 
 <div class="app">
 
-  <div class="header">
-    <div class="small">SWIM TRACKER</div>
-    <h1>Emma</h1>
-    <p>Personal bests & qualifying times</p>
+<header class="header">
+<div class="eyebrow">EMMA SWIM</div>
+<h1>Emma</h1>
+<p>Personal bests & qualifying times</p>
 
-    <div class="course-switch">
-      <button class="active" onclick="setCourse('LC',this)">
-        Long Course
-      </button>
-      <button onclick="setCourse('SC',this)">
-        Short Course
-      </button>
-    </div>
-  </div>
+<div class="switch">
+<button id="lcBtn" class="active" onclick="setCourse('LCM')">Long Course</button>
+<button id="scBtn" onclick="setCourse('SCM')">Short Course</button>
+</div>
+</header>
 
-  <div class="content">
+<main id="main" class="content"></main>
 
-    <div class="section-title">Overview</div>
-
-    <div class="summary">
-      <div class="summary-card">
-        <div class="summary-number">12</div>
-        <div class="summary-label">PERSONAL BESTS</div>
-      </div>
-
-      <div class="summary-card">
-        <div class="summary-number">6</div>
-        <div class="summary-label">STATE TIMES</div>
-      </div>
-
-      <div class="summary-card">
-        <div class="summary-number">2</div>
-        <div class="summary-label">NATIONAL TIMES</div>
-      </div>
-    </div>
-
-    <div class="section-title">Events</div>
-
-    <div id="events"></div>
-
-  </div>
 </div>
 
-<button class="add">+</button>
+<button class="fab" onclick="openAddSwim()">+</button>
 
-<div class="bottom-nav">
-  <div class="nav active">
-    <span class="nav-icon">🏠</span>
-    Home
-  </div>
+<nav class="nav">
+<button id="n-home" class="active" onclick="go('home')"><span>⌂</span>Home</button>
+<button id="n-events" onclick="go('events')"><span>🏊</span>Events</button>
+<button id="n-progress" onclick="go('progress')"><span>↗</span>Progress</button>
+<button id="n-settings" onclick="go('settings')"><span>⚙</span>Settings</button>
+</nav>
 
-  <div class="nav">
-    <span class="nav-icon">🏊‍♀️</span>
-    Events
-  </div>
-
-  <div class="nav">
-    <span class="nav-icon">📈</span>
-    Progress
-  </div>
-
-  <div class="nav">
-    <span class="nav-icon">⚙️</span>
-    Settings
-  </div>
-</div>
+<div id="modal" class="modal hidden"></div>
 
 <script>
 
-let course = "LC";
+const standards={
+"50m Freestyle":["29.50","27.92"],
+"100m Freestyle":["1:03.00","1:00.47"],
+"200m Freestyle":["2:17.50","2:11.91"],
+"400m Freestyle":["4:48.00","4:38.10"],
+"800m Freestyle":["9:55.00","9:20.60"],
+"1500m Freestyle":["18:38.00","18:02.64"],
 
-const data = {
+"50m Backstroke":["33.80","32.25"],
+"100m Backstroke":["1:13.50","1:09.17"],
+"200m Backstroke":["2:40.00","2:29.76"],
 
-LC: [
- {
-  event:"50m Freestyle",
-  stroke:"Freestyle",
-  pb:"27.84",
-  state:"28.50",
-  national:"27.60"
- },
- {
-  event:"100m Freestyle",
-  stroke:"Freestyle",
-  pb:"1:01.42",
-  state:"1:02.50",
-  national:"59.90"
- },
- {
-  event:"50m Backstroke",
-  stroke:"Backstroke",
-  pb:"32.20",
-  state:"33.10",
-  national:"31.40"
- },
- {
-  event:"100m Backstroke",
-  stroke:"Backstroke",
-  pb:"1:09.80",
-  state:"1:11.50",
-  national:"1:07.50"
- },
- {
-  event:"50m Butterfly",
-  stroke:"Butterfly",
-  pb:"30.90",
-  state:"31.50",
-  national:"29.80"
- },
- {
-  event:"100m Butterfly",
-  stroke:"Butterfly",
-  pb:"1:09.40",
-  state:"1:11.00",
-  national:"1:06.80"
- }
-],
+"50m Breaststroke":["37.80","36.13"],
+"100m Breaststroke":["1:25.00","1:18.68"],
+"200m Breaststroke":["3:05.50","2:49.50"],
 
-SC: [
- {
-  event:"50m Freestyle",
-  stroke:"Freestyle",
-  pb:"27.20",
-  state:"27.90",
-  national:"26.90"
- },
- {
-  event:"100m Freestyle",
-  stroke:"Freestyle",
-  pb:"59.80",
-  state:"1:01.00",
-  national:"58.50"
- },
- {
-  event:"50m Backstroke",
-  stroke:"Backstroke",
-  pb:"31.40",
-  state:"32.50",
-  national:"30.70"
- }
-]
+"50m Butterfly":["31.50","29.77"],
+"100m Butterfly":["1:11.00","1:05.97"],
+"200m Butterfly":["2:43.00","2:29.15"],
 
+"200m IM":["2:38.00","2:28.40"],
+"400m IM":["5:31.00","5:15.94"]
 };
 
-function renderEvents(){
+const initialPB={
+LCM:{
+"50m Freestyle":"28.26",
+"100m Freestyle":"1:01.08",
+"200m Freestyle":"2:14.71",
+"400m Freestyle":"4:44.90",
+"800m Freestyle":"10:05.42",
+"1500m Freestyle":"—",
 
- const holder=document.getElementById("events");
- holder.innerHTML="";
+"50m Backstroke":"32.73",
+"100m Backstroke":"1:10.93",
+"200m Backstroke":"2:39.54",
 
- data[course].forEach(e=>{
+"50m Breaststroke":"35.08",
+"100m Breaststroke":"1:16.88",
+"200m Breaststroke":"2:51.87",
 
-  holder.innerHTML += `
-   <div class="event-card">
+"50m Butterfly":"31.34",
+"100m Butterfly":"1:13.44",
+"200m Butterfly":"—",
 
-    <div class="event-top">
+"200m IM":"2:31.07",
+"400m IM":"5:34.41"
+},
 
-     <div>
-      <div class="event-name">${e.event}</div>
-      <div class="stroke">${e.stroke}</div>
-     </div>
+SCM:{
+"50m Freestyle":"27.39",
+"100m Freestyle":"58.50",
+"200m Freestyle":"2:08.84",
+"400m Freestyle":"4:37.35",
+"800m Freestyle":"—",
+"1500m Freestyle":"—",
 
-     <div>
-      <div class="pb-label">PERSONAL BEST</div>
-      <div class="pb">${e.pb}</div>
-     </div>
+"50m Backstroke":"31.99",
+"100m Backstroke":"1:08.66",
+"200m Backstroke":"2:31.12",
 
-    </div>
+"50m Breaststroke":"33.99",
+"100m Breaststroke":"1:14.57",
+"200m Breaststroke":"2:43.89",
 
-    <div class="qualifying">
+"50m Butterfly":"31.84",
+"100m Butterfly":"1:11.50",
+"200m Butterfly":"—",
 
-     <div class="qual-box state">
-      <div class="qual-title">STATE</div>
-      <div class="qual-time">${e.state}</div>
-     </div>
+"100m IM":"1:06.42",
+"200m IM":"2:27.54",
+"400m IM":"5:21.13"
+}
+};
 
-     <div class="qual-box national">
-      <div class="qual-title">NATIONAL</div>
-      <div class="qual-time">${e.national}</div>
-     </div>
+const defaultEvents={
+LCM:Object.keys(initialPB.LCM),
+SCM:Object.keys(initialPB.SCM)
+};
 
-    </div>
+let course=localStorage.getItem("emmaCourse")||"LCM";
+let view="home";
+let filter="All";
 
-   </div>
-  `;
+let swims=JSON.parse(localStorage.getItem("emmaSwims")||"[]");
+let custom=JSON.parse(localStorage.getItem("emmaEvents")||'{"LCM":[],"SCM":[]}');
 
- });
+function save(){
+localStorage.setItem("emmaSwims",JSON.stringify(swims));
+localStorage.setItem("emmaEvents",JSON.stringify(custom));
+localStorage.setItem("emmaCourse",course);
+}
+
+function seconds(t){
+if(!t||t==="—")return Infinity;
+let a=t.split(":").map(Number);
+if(a.some(isNaN))return Infinity;
+return a.length===1?a[0]:a[0]*60+a[1];
+}
+
+function formatTime(s){
+if(!isFinite(s))return "—";
+if(s<60)return s.toFixed(2);
+let m=Math.floor(s/60);
+let sec=(s-m*60).toFixed(2).padStart(5,"0");
+return m+":"+sec;
+}
+
+function events(){
+return [...new Set([
+...defaultEvents[course],
+...(custom[course]||[])
+])];
+}
+
+function personalBest(ev){
+let best=seconds(initialPB[course][ev]);
+
+swims
+.filter(x=>x.course===course&&x.event===ev)
+.forEach(x=>{
+best=Math.min(best,seconds(x.time));
+});
+
+return formatTime(best);
+}
+
+function qualified(pb,target){
+return target && seconds(pb)<=seconds(target);
+}
+
+function setCourse(c){
+course=c;
+save();
+
+document.getElementById("lcBtn").classList.toggle("active",c==="LCM");
+document.getElementById("scBtn").classList.toggle("active",c==="SCM");
+
+render();
+}
+
+function go(v){
+view=v;
+
+document.querySelectorAll(".nav button")
+.forEach(b=>b.classList.remove("active"));
+
+document.getElementById("n-"+v).classList.add("active");
+
+render();
+}
+
+function qualifyingBoxes(ev,pb){
+
+if(course==="SCM"){
+return `
+<div class="quals">
+<div class="q state">
+<small>STATE</small>
+<b>—</b>
+</div>
+<div class="q nat">
+<small>NATIONAL</small>
+<b>—</b>
+</div>
+</div>`;
+}
+
+let q=standards[ev]||[];
+
+return `
+<div class="quals">
+
+<div class="q state">
+<small>STATE</small>
+<b>
+${q[0]||"—"}
+${qualified(pb,q[0])?'<span class="tick">✓</span>':""}
+</b>
+</div>
+
+<div class="q nat">
+<small>NATIONAL</small>
+<b>
+${q[1]||"—"}
+${qualified(pb,q[1])?'<span class="tick">✓</span>':""}
+</b>
+</div>
+
+</div>`;
+}
+
+function eventCard(ev){
+
+let p=personalBest(ev);
+
+let history=swims.filter(
+x=>x.course===course&&x.event===ev
+);
+
+return `
+<div class="card" onclick="showEvent('${ev}')">
+
+<div class="row">
+
+<div>
+<div class="event">${ev}</div>
+<div class="muted">
+${course} • ${history.length} recorded swim${history.length===1?"":"s"}
+</div>
+</div>
+
+<div class="pb">
+<small>PERSONAL BEST</small>
+${p}
+</div>
+
+</div>
+
+${qualifyingBoxes(ev,p)}
+
+</div>`;
+}
+
+function render(){
+
+let m=document.getElementById("main");
+
+if(view==="home"){
+
+let ev=events();
+
+let stateCount=ev.filter(e=>
+qualified(personalBest(e),(standards[e]||[])[0])
+).length;
+
+let nationalCount=ev.filter(e=>
+qualified(personalBest(e),(standards[e]||[])[1])
+).length;
+
+let latest=swims
+.filter(x=>x.course===course)
+.sort((a,b)=>b.date.localeCompare(a.date))[0];
+
+m.innerHTML=`
+
+<div class="title">Overview</div>
+
+<div class="summary">
+
+<div class="sum">
+<div class="num">${ev.filter(e=>personalBest(e)!=="—").length}</div>
+<div class="lab">PERSONAL BESTS</div>
+</div>
+
+<div class="sum">
+<div class="num">${course==="LCM"?stateCount:"—"}</div>
+<div class="lab">STATE TIMES</div>
+</div>
+
+<div class="sum">
+<div class="num">${course==="LCM"?nationalCount:"—"}</div>
+<div class="lab">NATIONAL TIMES</div>
+</div>
+
+</div>
+
+${latest?`
+<div class="title">Latest Swim</div>
+
+<div class="card">
+<div class="row">
+<div>
+<div class="event">${latest.event}</div>
+<div class="muted">${latest.date}${latest.meet?" • "+latest.meet:""}</div>
+</div>
+<div class="pb">${latest.time}</div>
+</div>
+</div>
+`:""}
+
+<div class="title">All Events</div>
+
+${ev.map(eventCard).join("")}
+
+`;
+}
+
+if(view==="events"){
+
+let groups=[
+"All",
+"Freestyle",
+"Backstroke",
+"Breaststroke",
+"Butterfly",
+"IM"
+];
+
+let list=events().filter(e=>
+filter==="All"||e.includes(filter)
+);
+
+m.innerHTML=`
+
+<div class="title">
+Events <span class="badge">${list.length}</span>
+</div>
+
+<div class="filter">
+${groups.map(g=>`
+<button
+class="${filter===g?"active":""}"
+onclick="filter='${g}';render()">
+${g}
+</button>
+`).join("")}
+</div>
+
+<button class="btn primary wide" onclick="openAddEvent()">
++ Add New Event
+</button>
+
+${list.map(eventCard).join("")}
+
+`;
+}
+
+if(view==="progress"){
+
+let list=events()
+.filter(e=>personalBest(e)!=="—");
+
+m.innerHTML=`
+
+<div class="title">Progress</div>
+
+<div class="note" style="margin-bottom:15px">
+Tap any event to view recorded swims and track Emma's progress.
+</div>
+
+${list.map(eventCard).join("")}
+
+`;
+}
+
+if(view==="settings"){
+
+m.innerHTML=`
+
+<div class="title">Settings</div>
+
+<div class="settings-card">
+<h3>Emma</h3>
+<div class="note">
+Age 16 swimmer. Long Course and Short Course personal bests are tracked separately.
+</div>
+</div>
+
+<div class="settings-card">
+<h3>Qualifying Times</h3>
+<div class="note">
+Long Course uses the 2026/27 NSW Senior State Age Female 16 qualifying times and the Girls 16 National qualifying times supplied for Emma.
+</div>
+</div>
+
+<div class="settings-card">
+<h3>Short Course</h3>
+<div class="note">
+State qualifying times are not displayed for SCM because the NSW State qualifying sheet supplied specifies Long Course times only.
+</div>
+</div>
+
+<div class="settings-card">
+<h3>Adding Results</h3>
+<div class="note">
+Use the blue + button to add a swim. Emma's PB will automatically update whenever a faster time is entered.
+</div>
+</div>
+
+`;
 
 }
 
-function setCourse(c,button){
-
- course=c;
-
- document
- .querySelectorAll(".course-switch button")
- .forEach(b=>b.classList.remove("active"));
-
- button.classList.add("active");
-
- renderEvents();
-
 }
 
-renderEvents();
+function openAddSwim(preselected=""){
+
+let options=events().map(e=>
+`<option ${e===preselected?"selected":""}>${e}</option>`
+).join("");
+
+document.getElementById("modal").innerHTML=`
+
+<div class="sheet">
+
+<h2>Add Swim</h2>
+
+<div class="field">
+<label>COURSE</label>
+<select id="aCourse" onchange="refreshEvents()">
+<option ${course==="LCM"?"selected":""}>LCM</option>
+<option ${course==="SCM"?"selected":""}>SCM</option>
+</select>
+</div>
+
+<div class="field">
+<label>EVENT</label>
+<select id="aEvent">
+${options}
+</select>
+</div>
+
+<div class="field">
+<label>TIME</label>
+<input id="aTime"
+inputmode="decimal"
+placeholder="e.g. 28.26 or 1:01.08">
+</div>
+
+<div class="field">
+<label>DATE</label>
+<input id="aDate"
+type="date"
+value="${new Date().toISOString().slice(0,10)}">
+</div>
+
+<div class="field">
+<label>MEET / LOCATION</label>
+<input id="aMeet"
+placeholder="Optional">
+</div>
+
+<div class="actions">
+<button onclick="closeModal()">Cancel</button>
+<button class="btn primary" onclick="addSwim()">Save Swim</button>
+</div>
+
+</div>`;
+
+document.getElementById("modal")
+.classList.remove("hidden");
+}
+
+function refreshEvents(){
+
+let c=document.getElementById("aCourse").value;
+
+let arr=[
+...new Set([
+...defaultEvents[c],
+...(custom[c]||[])
+])
+];
+
+document.getElementById("aEvent").innerHTML=
+arr.map(e=>`<option>${e}</option>`).join("");
+}
+
+function addSwim(){
+
+let c=document.getElementById("aCourse").value;
+let e=document.getElementById("aEvent").value;
+let t=document.getElementById("aTime").value.trim();
+let d=document.getElementById("aDate").value;
+let meet=document.getElementById("aMeet").value.trim();
+
+if(!t||!isFinite(seconds(t))){
+alert("Please enter a valid swim time.");
+return;
+}
+
+swims.push({
+course:c,
+event:e,
+time:t,
+date:d,
+meet:meet
+});
+
+course=c;
+
+save();
+closeModal();
+render();
+}
+
+function openAddEvent(){
+
+document.getElementById("modal").innerHTML=`
+
+<div class="sheet">
+
+<h2>Add New Event</h2>
+
+<div class="field">
+<label>COURSE</label>
+<select id="eCourse">
+<option ${course==="LCM"?"selected":""}>LCM</option>
+<option ${course==="SCM"?"selected":""}>SCM</option>
+</select>
+</div>
+
+<div class="field">
+<label>EVENT NAME</label>
+<input id="eName"
+placeholder="e.g. 25m Freestyle">
+</div>
+
+<div class="actions">
+<button onclick="closeModal()">Cancel</button>
+<button class="btn primary" onclick="addEvent()">Add Event</button>
+</div>
+
+</div>`;
+
+document.getElementById("modal")
+.classList.remove("hidden");
+}
+
+function addEvent(){
+
+let c=document.getElementById("eCourse").value;
+let n=document.getElementById("eName").value.trim();
+
+if(!n)return;
+
+if(!custom[c].includes(n)){
+custom[c].push(n);
+}
+
+course=c;
+
+save();
+closeModal();
+render();
+}
+
+function showEvent(ev){
+
+let history=swims
+.filter(x=>x.course===course&&x.event===ev)
+.sort((a,b)=>b.date.localeCompare(a.date));
+
+document.getElementById("modal").innerHTML=`
+
+<div class="sheet">
+
+<h2>${ev}</h2>
+
+<div class="card">
+
+<div class="row">
+
+<div>
+<div class="event">${course}</div>
+<div class="muted">Personal Best</div>
+</div>
+
+<div class="pb">${personalBest(ev)}</div>
+
+</div>
+
+${qualifyingBoxes(ev,personalBest(ev))}
+
+</div>
+
+<div class="title">Swim History</div>
+
+${history.length?
+history.map(x=>`
+
+<div class="history-row">
+<span>
+${x.date}
+${x.meet?" • "+x.meet:""}
+</span>
+<b>${x.time}</b>
+</div>
+
+`).join("")
+:
+`<div class="empty">
+No recorded swims yet.<br>
+Add Emma's next swim to start the history.
+</div>`
+}
+
+<div class="actions">
+<button onclick="closeModal()">Close</button>
+<button class="btn primary"
+onclick="closeModal();openAddSwim('${ev}')">
+Add Swim
+</button>
+</div>
+
+</div>`;
+
+document.getElementById("modal")
+.classList.remove("hidden");
+}
+
+function closeModal(){
+document.getElementById("modal")
+.classList.add("hidden");
+
+document.getElementById("modal").innerHTML="";
+}
+
+document.getElementById("modal")
+.addEventListener("click",function(e){
+if(e.target.id==="modal"){
+closeModal();
+}
+});
+
+setCourse(course);
 
 </script>
 
