@@ -7,27 +7,29 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Emma Swim">
-<meta name="theme-color" content="#0f766e">
+<meta name="theme-color" content="#002356">
 <title>Emma Swim</title>
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230f766e'/%3E%3Ccircle cx='90' cy='70' r='16' fill='white'/%3E%3Cpath d='M40 60l18 22M140 60l-18 22' stroke='white' stroke-width='12' stroke-linecap='round'/%3E%3Cpath d='M30 115q15-12 30 0t30 0 30 0 30 0' fill='none' stroke='white' stroke-width='10' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
 <style>
 :root{
   --bg:#f3f6f6; --surface:#ffffff; --surface2:#eef3f2; --ink:#14201f; --ink2:#4b5b59; --muted:#7c8a88;
-  --line:#e0e7e6; --brand:#0f766e; --brand2:#0b5c56; --brand-ink:#ffffff; --brand-soft:#e3f2f0;
+  --line:#e0e7e6; --brand:#1a4c9c; --brand2:#002356; --brand-ink:#ffffff; --brand-soft:#e6eefa; --accent:#fdd26d;
   --good:#127a3a; --good-soft:#e5f4ea; --warn:#9a5b00; --warn-soft:#fdf1dc; --bad:#b42318;
   --lcm:#2a78d6; --scm:#d9622b; --grid:#e1e0d9; --axis:#c3c2b7; --gold:#a86f00; --gold-soft:#fbf1d6;
   --shadow:0 1px 2px rgba(16,40,38,.06),0 4px 14px rgba(16,40,38,.05);
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#0e1514; --surface:#172120; --surface2:#1f2b2a; --ink:#e8efee; --ink2:#b3c1bf; --muted:#80908e;
-  --line:#2a3634; --brand:#14968b; --brand2:#0f766e; --brand-soft:#173634;
+  --line:#2a3634; --brand:#5b93ea; --brand2:#0b2a5c; --brand-soft:#16264a; --accent:#fdd26d;
   --good:#3ccf73; --good-soft:#163323; --warn:#f0a63a; --warn-soft:#3a2b12; --bad:#ff7a6e;
   --lcm:#3987e5; --scm:#d95926; --grid:#2c2c2a; --axis:#383835; --gold:#e9b949; --gold-soft:#3a3016;
   --shadow:none;
 }}
 :root[data-theme="dark"]{
   --bg:#0e1514; --surface:#172120; --surface2:#1f2b2a; --ink:#e8efee; --ink2:#b3c1bf; --muted:#80908e;
-  --line:#2a3634; --brand:#14968b; --brand2:#0f766e; --brand-soft:#173634;
+  --line:#2a3634; --brand:#5b93ea; --brand2:#0b2a5c; --brand-soft:#16264a; --accent:#fdd26d;
   --good:#3ccf73; --good-soft:#163323; --warn:#f0a63a; --warn-soft:#3a2b12; --bad:#ff7a6e;
   --lcm:#3987e5; --scm:#d95926; --grid:#2c2c2a; --axis:#383835; --gold:#e9b949; --gold-soft:#3a3016;
   --shadow:none;
@@ -37,15 +39,17 @@ html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 -apple-sy
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
 .app{max-width:560px;margin:0 auto;min-height:100vh;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
-header.top{background:var(--brand);color:var(--brand-ink);padding:calc(10px + env(safe-area-inset-top)) 16px 12px;position:sticky;top:0;z-index:10}
+header.top{background:var(--brand2);color:var(--brand-ink);padding:calc(10px + env(safe-area-inset-top)) 16px 12px;position:sticky;top:0;z-index:10}
 .top-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .who{background:none;border:0;padding:4px 0;text-align:left;color:inherit}
-.who b{display:block;font-size:20px;letter-spacing:-.01em}
+.who b{display:block;white-space:nowrap;font-size:21px;letter-spacing:-.01em}
 .who span{font-size:12px;opacity:.85}
-.seg{display:inline-flex;background:rgba(255,255,255,.18);border-radius:10px;padding:3px}
-.seg button{border:0;background:none;color:#fff;padding:6px 12px;border-radius:8px;font-weight:600;font-size:13px}
-.seg button.on{background:#fff;color:var(--brand2)}
-.add-btn{border:0;background:#fff;color:var(--brand2);width:36px;height:36px;border-radius:50%;font-size:24px;line-height:1;font-weight:500;flex:none}
+.seg{display:flex;margin-top:10px;background:rgba(255,255,255,.18);border-radius:10px;padding:3px}
+.seg button{flex:1;border:0;background:none;color:#fff;padding:6px 12px;border-radius:8px;font-weight:600;font-size:13px}
+.seg button.on{background:var(--accent);color:#002356}
+.logo{height:58px;width:auto;display:block;flex:none;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
+.brandrow{display:flex;align-items:center;gap:10px;min-width:0}
+.add-btn{width:40px!important;height:40px!important;border:0;background:var(--accent);color:#002356;width:36px;height:36px;border-radius:50%;font-size:24px;line-height:1;font-weight:500;flex:none}
 main{padding:14px 16px}
 h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:20px 4px 8px;font-weight:700}
 h2.sec:first-child{margin-top:4px}
@@ -92,7 +96,7 @@ nav.tabs button.on{color:var(--brand)}
 .tip b{font-size:14px}
 .sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;display:flex;align-items:flex-end;justify-content:center}
 .sheet{background:var(--bg);width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:0 0 calc(16px + env(safe-area-inset-bottom))}
-.sheet-head{position:sticky;top:0;background:var(--brand);color:#fff;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:18px 18px 0 0;z-index:1}
+.sheet-head{position:sticky;top:0;background:var(--brand2);color:#fff;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:18px 18px 0 0;z-index:1}
 .sheet-head b{font-size:17px}
 .sheet-head button{background:none;border:0;color:#fff;font-weight:600;font-size:16px;padding:4px}
 .sheet-body{padding:14px 16px}
@@ -123,10 +127,10 @@ nav.tabs button.on{color:var(--brand)}
 <div class="app">
   <header class="top">
     <div class="top-row">
-      <button class="who" id="who"></button>
-      <div class="seg" id="courseSeg"><button data-c="LCM">LCM</button><button data-c="SCM">SCM</button></div>
+      <div class="brandrow"><img class="logo" src="logo.png" alt="Emma Swim"><button class="who" id="who"></button></div>
       <button class="add-btn" id="addBtn" aria-label="Add swim">+</button>
     </div>
+    <div class="seg" id="courseSeg"><button data-c="LCM">Long course</button><button data-c="SCM">Short course</button></div>
   </header>
   <main id="main"></main>
 </div>
@@ -271,7 +275,7 @@ function render(){
   $('#who').innerHTML=`<b>${esc(sw.first)} ${esc(sw.last)}</b><span>Age ${ageNow}${DB.swimmers.length>1?' · switch ▾':''}</span>`;
   document.querySelectorAll('#courseSeg button').forEach(b=>b.classList.toggle('on',b.dataset.c===c));
   document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===UI.tab));
-  $('#courseSeg').style.visibility=UI.tab==='more'?'hidden':'visible';
+  $('#courseSeg').style.display=UI.tab==='more'?'none':'flex';
   const m=$('#main');
   ({bests:renderBests,swims:renderSwims,progress:renderProgress,more:renderMore})[UI.tab](m);
 }
