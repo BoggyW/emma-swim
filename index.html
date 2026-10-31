@@ -9,10 +9,10 @@
 <meta name="apple-mobile-web-app-title" content="Emma Swim">
 <meta name="theme-color" content="#002356">
 <title>Emma Swim</title>
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-10-31.2223">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-10-31.2223">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-10-31.2223">
-<link rel="manifest" href="manifest.json?v=2026-10-31.2223">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-10-31.2237">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-10-31.2237">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-10-31.2237">
+<link rel="manifest" href="manifest.json?v=2026-10-31.2237">
 <style>
 :root{
   --bg:#f3f6f6; --surface:#ffffff; --surface2:#eef3f2; --ink:#14201f; --ink2:#4b5b59; --muted:#7c8a88;
@@ -129,7 +129,7 @@ nav.tabs button.on{color:var(--brand)}
 <div class="app">
   <header class="top">
     <div class="top-row">
-      <div class="brandrow"><img class="logo" src="logo.png?v=2026-10-31.2223" alt="Emma Swim"><button class="who" id="who"></button></div>
+      <div class="brandrow"><img class="logo" src="logo.png?v=2026-10-31.2237" alt="Emma Swim"><button class="who" id="who"></button></div>
       <button class="add-btn" id="addBtn" aria-label="Add swim">+</button>
     </div>
     <div class="seg" id="courseSeg"><button data-c="LCM">Long course</button><button data-c="SCM">Short course</button></div>
@@ -450,45 +450,49 @@ function renderSwims(m){
 const ordinal=n=>n+(['th','st','nd','rd'][(n%100-20)%10]||['th','st','nd','rd'][n%100]||'th');
 
 function renderProgress(m){
-  const key=UI.progEvent, c=DB.settings.course;
-  const have=new Set(mySwims().filter(valid).map(s=>ek(s.dist,s.stroke)));
+  const c=DB.settings.course, cname=c==='LCM'?'Long course':'Short course';
+  const have=new Set(mySwims().filter(s=>valid(s)&&s.course===c).map(s=>ek(s.dist,s.stroke)));
   const opts=EVENTS.map(e=>ek(...e)).filter(k=>have.has(k));
-  if(!have.has(key)&&opts.length) UI.progEvent=opts[0];
+  if(!have.has(UI.progEvent)&&opts.length) UI.progEvent=opts[0];
   const k=UI.progEvent;
-  const all=eventSwims(k).filter(valid).sort((a,b)=>a.date.localeCompare(b.date));
-  const pbL=pbFor(k,'LCM'), pbS=pbFor(k,'SCM'), sq=stateQT(k), nq=natQT(k), wb=windowBest(k);
+  if(!opts.length){ m.innerHTML=`<div class="empty">No ${cname.toLowerCase()} swims yet.</div>`; return; }
+  const all=eventSwims(k,c).filter(valid).sort((a,b)=>a.date.localeCompare(b.date));
+  const pb=pbFor(k,c), first=all[0];
+  const sq=c==='LCM'?stateQT(k):null, nq=c==='LCM'?natQT(k):null, wb=c==='LCM'?windowBest(k):null;
+  const yr=new Date(Date.now()-365*864e5).toISOString().slice(0,10);
+  const before=bestOf(all.filter(s=>s.date<yr)), gain=before&&pb?before.time-pb.time:null;
   let h=`<div class="filters">${opts.map(o=>`<button class="${o===k?'on':''}" data-e="${o}">${o}</button>`).join('')}</div>`;
   h+=`<div class="tiles" style="grid-template-columns:1fr 1fr">
-    <div class="tile"><div class="l">LCM PB</div><div class="v" style="color:var(--ink)">${pbL?fmt(pbL.time):'—'}</div><div class="l">${pbL?fdate(pbL.date):''}</div></div>
-    <div class="tile"><div class="l">SCM PB</div><div class="v">${pbS?fmt(pbS.time):'—'}</div><div class="l">${pbS?fdate(pbS.date):''}</div></div></div>`;
+    <div class="tile"><div class="l">${c} PB</div><div class="v">${pb?fmt(pb.time):'—'}</div><div class="l">${pb?fdate(pb.date):''}</div></div>
+    <div class="tile"><div class="l">${gain!=null?'Faster than 12 months ago':'Swims recorded'}</div><div class="v">${gain!=null?(gain>0?'−'+(gain<60?gain.toFixed(2):fmt(gain)):'0.00'):all.length}</div><div class="l">${gain!=null?'best then '+fmt(before.time):'since '+fdate(first.date)}</div></div></div>`;
   if(sq||nq){
     h+=`<div class="note">`;
     if(sq){ const t=wb&&wb.time; h+=`<b>State QT ${fmt(sq)}</b> — ${t==null?'no LCM swim since '+fdate(DB.standards.state.from):t<=sq?`<span class="gap-ok">qualified, ${fmtGap(t-sq)}</span> (${fmt(t)} on ${fdate(wb.date)})`:`<span class="gap-no">${fmtGap(t-sq)} to go</span> (best in window ${fmt(t)})`}<br>`; }
-    if(nq){ const t=pbL&&pbL.time; h+=`<b>National ${fmt(nq)}</b> — ${t==null?'no LCM time yet':t<=nq?`<span class="gap-ok">achieved, ${fmtGap(t-nq)}</span>`:`<span class="gap-no">${fmtGap(t-nq)} to go</span>`}`; }
+    if(nq){ const t=pb&&pb.time; h+=`<b>National ${fmt(nq)}</b> — ${t==null?'no LCM time yet':t<=nq?`<span class="gap-ok">achieved, ${fmtGap(t-nq)}</span>`:`<span class="gap-no">${fmtGap(t-nq)} to go</span>`}`; }
     h+=`</div>`;
-  }
-  h+=`<h2 class="sec">Times over time</h2><div class="chart-card" id="chart"><div class="tip" id="tip"></div></div>`;
-  h+=`<h2 class="sec">All ${k} swims</h2><div class="list">`;
+  } else if(c==='SCM') h+=`<div class="note">Short course only. State & National qualifying is long course — switch to Long course at the top.</div>`;
+  h+=`<h2 class="sec">${k} · ${cname}</h2><div class="chart-card" id="chart"><div class="tip" id="tip"></div></div>`;
+  h+=`<h2 class="sec">All ${c} ${k} swims</h2><div class="list">`;
   const flags=pbFlags();
   [...all].reverse().forEach(s=>{ const mt=meetById(s.meet);
     h+=`<button class="item" data-id="${s.id}"><div class="main"><div class="t1" style="font-size:15px">${esc(mt?mt.name:'')}</div><div class="t2">${fdate(s.date)}${s.place?' · '+ordinal(s.place):''}</div></div>
-    <div class="right"><span class="chip c-${s.course.toLowerCase()}">${s.course}</span>${flags.has(s.id)?' <span class="chip pb">PB</span>':''}</div>
+    <div class="right">${flags.has(s.id)?'<span class="chip pb">PB</span>':''}</div>
     <div class="right"><div class="time">${fmt(s.time)}</div></div></button>`; });
   h+='</div>';
   m.innerHTML=h;
   m.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>{UI.progEvent=b.dataset.e;render();});
   m.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>openSwim(DB.swims.find(s=>s.id===b.dataset.id)));
-  drawChart($('#chart'),all,sq,nq);
+  drawChart($('#chart'),all,sq,nq,c);
 }
 
-function drawChart(el,swims,sq,nq){
+function drawChart(el,swims,sq,nq,course){
   const W=340,H=230,L=44,R=40,T=14,B=26;
   if(!swims.length){ el.insertAdjacentHTML('beforeend','<div class="empty">No times yet</div>'); return; }
   const ts=swims.map(s=>+new Date(s.date));
   let x0=Math.min(...ts), x1=Math.max(...ts); if(x1-x0<30*864e5){x0-=20*864e5;x1+=20*864e5;}
   const vals=swims.map(s=>s.time).concat([sq,nq].filter(Boolean));
   let y0=Math.min(...vals), y1=Math.max(...vals); const pad=(y1-y0)*0.08||1; y0-=pad; y1+=pad;
-  const X=t=>L+(t-x0)/(x1-x0)*(W-L-R), Y=v=>T+(v-y0)/(y1-y0)*(H-T-B); // faster (lower) at top
+  const X=t=>L+(t-x0)/(x1-x0)*(W-L-R), Y=v=>T+(y1-v)/(y1-y0)*(H-T-B); // quicker times lower on the chart
   const css=getComputedStyle(document.documentElement), col=n=>css.getPropertyValue(n).trim();
   let g='';
   // y grid
@@ -498,12 +502,12 @@ function drawChart(el,swims,sq,nq){
   const ya=new Date(x0).getFullYear(), yb=new Date(x1).getFullYear();
   for(let y=ya;y<=yb+1;y++){ const t=+new Date(y+'-01-01'); if(t<x0||t>x1) continue; g+=`<line x1="${X(t)}" x2="${X(t)}" y1="${T}" y2="${H-B}" stroke="${col('--grid')}"/><text x="${X(t)}" y="${H-B+16}" text-anchor="middle" font-size="11" fill="${col('--muted')}">${y}</text>`; }
   g+=`<line x1="${L}" x2="${W-R}" y1="${H-B}" y2="${H-B}" stroke="${col('--axis')}"/>`;
-  g+=`<text x="${L-6}" y="${T-2}" text-anchor="end" font-size="11" fill="${col('--muted')}">faster ↑</text>`;
+  g+=`<text x="${L-6}" y="${H-B+16}" text-anchor="end" font-size="11" fill="${col('--muted')}">faster ↓</text>`;
   // QT lines
   [[sq,'State'],[nq,'Nat']].forEach(([q,lab])=>{ if(!q) return; g+=`<line x1="${L}" x2="${W-R}" y1="${Y(q)}" y2="${Y(q)}" stroke="${col('--ink2')}" stroke-width="1.5" stroke-dasharray="5 4"/><text x="${W-R+4}" y="${Y(q)+4}" font-size="11" font-weight="600" fill="${col('--ink2')}">${lab}</text>`; });
   // series
   const pts=[];
-  ['LCM','SCM'].forEach(c=>{
+  [course].forEach(c=>{
     const ss=swims.filter(s=>s.course===c); if(!ss.length) return;
     const color=col(c==='LCM'?'--lcm':'--scm');
     // best-so-far step line
@@ -512,10 +516,9 @@ function drawChart(el,swims,sq,nq){
     g+=`<path d="${d}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" opacity=".9"/>`;
     ss.forEach(s=>{ const px=X(+new Date(s.date)),py=Y(s.time); pts.push({px,py,s,color});
       g+=`<circle cx="${px}" cy="${py}" r="4" fill="${color}" stroke="${col('--surface')}" stroke-width="2"/>`; });
-    const last=ss[ss.length-1];
   });
   const svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Times over time">${g}<rect id="hit" x="${L}" y="${T}" width="${W-L-R}" height="${H-T-B}" fill="transparent"/><circle id="hl" r="7" fill="none" stroke-width="2" style="display:none"/></svg>`;
-  el.insertAdjacentHTML('beforeend',svg+`<div class="legend"><span><i style="background:var(--lcm)"></i>LCM</span><span><i style="background:var(--scm)"></i>SCM</span><span style="color:var(--muted)">Dots = each swim · line = best so far</span>${sq||nq?'<span><i class="dash"></i>Qualifying time</span>':''}</div>`);
+  el.insertAdjacentHTML('beforeend',svg+`<div class="legend"><span><i style="background:var(--${course.toLowerCase()})"></i>Each swim</span><span style="color:var(--muted)">Line = best so far</span>${sq||nq?'<span><i class="dash"></i>Qualifying time</span>':''}</div>`);
   const svgEl=el.querySelector('svg'), tip=el.querySelector('#tip'), hl=el.querySelector('#hl');
   function show(ev){
     const r=svgEl.getBoundingClientRect(), sx=(ev.clientX-r.left)*W/r.width, sy=(ev.clientY-r.top)*H/r.height;
@@ -669,7 +672,7 @@ function applyTheme(){ const t=DB.settings.theme||'auto'; if(t==='auto') documen
 
 /* ---------- Wire up ---------- */
 /* ---------- Auto-update: GitHub Pages lets phones cache the page ~10 min, so check for a newer build ---------- */
-const BUILD='2026-10-31.2223';
+const BUILD='2026-10-31.2237';
 async function checkUpdate(){
   if(location.protocol==='file:') return;
   try{
