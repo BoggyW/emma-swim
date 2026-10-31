@@ -181,7 +181,10 @@ const STATE_2627_F = {
 /* ---------- Time helpers ---------- */
 function parseTime(str){
   if(str==null) return null;
-  str=String(str).trim().replace(/[^\d:.]/g,'');
+  str=String(str).trim().replace(/[,;]/g,'.').replace(/[^\d:.]/g,'');
+  // iPhone keypad has no colon: 1.19.25 -> 1:19.25, 10.05.42 -> 10:05.42 (last dot = hundredths)
+  const dots=(str.match(/\./g)||[]).length;
+  if(dots>1){ const i=str.lastIndexOf('.'); str=str.slice(0,i).replace(/\./g,':')+str.slice(i); }
   if(!str) return null;
   let p=str.split(':'), s=0;
   if(p.length>3) return null;
@@ -513,7 +516,7 @@ function openSwim(s){
     <div class="form">
       <label><span>Stroke</span><select id="fStroke">${STROKES.map(x=>`<option ${x===s.stroke?'selected':''}>${x}</option>`).join('')}</select></label>
       <label><span>Distance</span><select id="fDist">${[50,100,200,400,800,1500].map(x=>`<option ${x===s.dist?'selected':''}>${x}</option>`).join('')}</select></label>
-      <label><span>Time</span><input id="fTime" inputmode="decimal" placeholder="28.26 or 1:01.08" value="${s.time!=null?fmt(s.time):''}"></label>
+      <label><span>Time</span><input id="fTime" inputmode="decimal" placeholder="28.26 · 1.19.25 · 1:19.25" value="${s.time!=null?fmt(s.time):''}"></label>
     </div>
     <div id="fHint" class="note" style="margin:-4px 0 14px"></div>
     <div class="form">
@@ -552,7 +555,8 @@ function openSwim(s){
       meetId='m'+uid(); DB.meets.push({id:meetId,name:n,location:q('#fMLoc').value.trim(),course:q('#fMCourse').value}); }
     if(!meetId){ q('#fErr').textContent='Choose a meet (course comes from the meet)'; return; }
     const tv=q('#fTime').value.trim(), t=parseTime(tv);
-    if(tv&&!t){ q('#fErr').textContent='Time should look like 28.26 or 1:01.08'; return; }
+    if(tv&&!t){ q('#fErr').textContent='Time should look like 28.26, 1.19.25 or 1:19.25'; return; }
+    if(t&&t<15){ q('#fErr').textContent=`${tv} is too fast to be a race time. For 1 min 19.25 type 1.19.25`; return; }
     const mt=meetById(meetId);
     const rec=Object.assign(s,{date:q('#fDate').value||todayISO(),dist:+q('#fDist').value,stroke:q('#fStroke').value,time:t,meet:meetId,course:mt.course});
     ['place','event','heat','lane'].forEach(f=>{ const v=parseInt(q('#f'+f[0].toUpperCase()+f.slice(1)).value); if(v>0) rec[f]=v; else delete rec[f]; });
