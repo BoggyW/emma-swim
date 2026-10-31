@@ -4,726 +4,567 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Emma Swim">
+<meta name="theme-color" content="#0f766e">
 <title>Emma Swim</title>
-
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230f766e'/%3E%3Ccircle cx='90' cy='70' r='16' fill='white'/%3E%3Cpath d='M40 60l18 22M140 60l-18 22' stroke='white' stroke-width='12' stroke-linecap='round'/%3E%3Cpath d='M30 115q15-12 30 0t30 0 30 0 30 0' fill='none' stroke='white' stroke-width='10' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#f4f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#172033}
-.app{max-width:520px;margin:auto;min-height:100vh;padding-bottom:105px}
-.header{background:linear-gradient(135deg,#062b59,#087ee1);color:#fff;padding:calc(20px + env(safe-area-inset-top)) 20px 22px;border-radius:0 0 28px 28px}
-.eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;opacity:.8}
-.header h1{margin:4px 0;font-size:31px}
-.header p{margin:0;opacity:.9;font-size:14px}
-.switch{display:flex;background:#ffffff2e;border-radius:13px;padding:4px;margin-top:16px}
-.switch button{flex:1;border:0;background:transparent;color:#fff;padding:11px;border-radius:10px;font-weight:800;font-size:14px}
-.switch button.active{background:#fff;color:#087ee1}
-.content{padding:18px}
-.title{font-size:21px;font-weight:850;margin:8px 0 13px}
-.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:22px}
-.sum,.card{background:#fff;border-radius:17px;box-shadow:0 4px 18px #14325a0f}
-.sum{text-align:center;padding:14px 5px}
-.num{font-size:22px;font-weight:850;color:#087ee1}
-.lab{font-size:9px;color:#7d8798;font-weight:800;margin-top:3px}
-.card{padding:15px;margin-bottom:11px}
-.row{display:flex;justify-content:space-between;gap:12px;align-items:center}
-.event{font-size:16px;font-weight:850}
-.muted{font-size:11px;color:#8992a3;margin-top:3px}
-.pb{text-align:right;font-size:20px;font-weight:850;color:#087ee1}
-.pb small{display:block;font-size:9px;color:#8a94a5}
-.quals{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
-.q{padding:9px 10px;border-radius:11px}
-.q.state{background:#eef5ff}
-.q.nat{background:#fff7df}
-.q small{display:block;font-size:9px;font-weight:800;color:#6e7888}
-.q b{font-size:15px}
-.state b{color:#2873ce}
-.nat b{color:#c89200}
-.tick{color:#159447;margin-left:4px}
-.nav{position:fixed;z-index:20;bottom:0;left:50%;transform:translateX(-50%);max-width:520px;width:100%;display:grid;grid-template-columns:repeat(4,1fr);background:#fffffff5;border-top:1px solid #e2e7ee;padding:8px 5px calc(8px + env(safe-area-inset-bottom))}
-.nav button{border:0;background:none;color:#8992a3;font-size:10px;font-weight:700;padding:4px}
-.nav button span{display:block;font-size:21px;margin-bottom:2px}
-.nav button.active{color:#087ee1}
-.fab{position:fixed;z-index:18;right:max(18px,calc((100vw - 520px)/2 + 18px));bottom:91px;width:58px;height:58px;border:0;border-radius:50%;background:#087ee1;color:#fff;font-size:34px;box-shadow:0 8px 25px #087ee159}
-.hidden{display:none!important}
-.filter{display:flex;gap:7px;overflow:auto;padding-bottom:8px}
-.filter button,.btn{border:0;border-radius:11px;padding:10px 12px;font-weight:750;background:#e9eef5;color:#566274;white-space:nowrap}
-.filter button.active,.btn.primary{background:#087ee1;color:#fff}
-.wide{width:100%;margin:7px 0 15px}
-.history{border-top:1px solid #edf0f4;margin-top:12px;padding-top:10px}
-.history-row{display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px 0;font-size:13px}
-.history-row b{color:#087ee1}
-.empty{text-align:center;color:#8992a3;padding:25px 10px}
-.modal{position:fixed;z-index:50;inset:0;background:#13213b73;display:flex;align-items:flex-end;justify-content:center}
-.sheet{background:#fff;width:min(520px,100%);border-radius:24px 24px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));max-height:90vh;overflow:auto}
-.sheet h2{margin:0 0 14px}
-.field{margin:11px 0}
-.field label{display:block;font-size:11px;font-weight:800;color:#6d7787;margin-bottom:5px}
-.field input,.field select{width:100%;font-size:16px;padding:12px;border:1px solid #dce2ea;border-radius:11px;background:#fff}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}
-.actions button{padding:12px;border:0;border-radius:12px;font-weight:800}
-.settings-card{background:#fff;border-radius:17px;padding:16px;margin-bottom:12px}
-.settings-card h3{margin:0 0 7px}
-.note{font-size:12px;line-height:1.45;color:#6e7888}
-.badge{font-size:10px;background:#eef5ff;color:#2873ce;border-radius:20px;padding:4px 7px;font-weight:800}
-.chart{background:#fff;border-radius:17px;padding:15px;margin:12px 0}
-.bar{height:10px;background:#e8edf4;border-radius:10px;overflow:hidden;margin:6px 0 12px}
-.bar div{height:100%;background:#087ee1;border-radius:10px}
+:root{
+  --bg:#f3f6f6; --surface:#ffffff; --surface2:#eef3f2; --ink:#14201f; --ink2:#4b5b59; --muted:#7c8a88;
+  --line:#e0e7e6; --brand:#0f766e; --brand2:#0b5c56; --brand-ink:#ffffff; --brand-soft:#e3f2f0;
+  --good:#127a3a; --good-soft:#e5f4ea; --warn:#9a5b00; --warn-soft:#fdf1dc; --bad:#b42318;
+  --lcm:#2a78d6; --scm:#d9622b; --grid:#e1e0d9; --axis:#c3c2b7; --gold:#a86f00; --gold-soft:#fbf1d6;
+  --shadow:0 1px 2px rgba(16,40,38,.06),0 4px 14px rgba(16,40,38,.05);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1514; --surface:#172120; --surface2:#1f2b2a; --ink:#e8efee; --ink2:#b3c1bf; --muted:#80908e;
+  --line:#2a3634; --brand:#14968b; --brand2:#0f766e; --brand-soft:#173634;
+  --good:#3ccf73; --good-soft:#163323; --warn:#f0a63a; --warn-soft:#3a2b12; --bad:#ff7a6e;
+  --lcm:#3987e5; --scm:#d95926; --grid:#2c2c2a; --axis:#383835; --gold:#e9b949; --gold-soft:#3a3016;
+  --shadow:none;
+}}
+:root[data-theme="dark"]{
+  --bg:#0e1514; --surface:#172120; --surface2:#1f2b2a; --ink:#e8efee; --ink2:#b3c1bf; --muted:#80908e;
+  --line:#2a3634; --brand:#14968b; --brand2:#0f766e; --brand-soft:#173634;
+  --good:#3ccf73; --good-soft:#163323; --warn:#f0a63a; --warn-soft:#3a2b12; --bad:#ff7a6e;
+  --lcm:#3987e5; --scm:#d95926; --grid:#2c2c2a; --axis:#383835; --gold:#e9b949; --gold-soft:#3a3016;
+  --shadow:none;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+.app{max-width:560px;margin:0 auto;min-height:100vh;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+header.top{background:var(--brand);color:var(--brand-ink);padding:calc(10px + env(safe-area-inset-top)) 16px 12px;position:sticky;top:0;z-index:10}
+.top-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.who{background:none;border:0;padding:4px 0;text-align:left;color:inherit}
+.who b{display:block;font-size:20px;letter-spacing:-.01em}
+.who span{font-size:12px;opacity:.85}
+.seg{display:inline-flex;background:rgba(255,255,255,.18);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;color:#fff;padding:6px 12px;border-radius:8px;font-weight:600;font-size:13px}
+.seg button.on{background:#fff;color:var(--brand2)}
+.add-btn{border:0;background:#fff;color:var(--brand2);width:36px;height:36px;border-radius:50%;font-size:24px;line-height:1;font-weight:500;flex:none}
+main{padding:14px 16px}
+h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:20px 4px 8px;font-weight:700}
+h2.sec:first-child{margin-top:4px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tile{background:var(--surface);border-radius:14px;padding:12px;box-shadow:var(--shadow)}
+.tile .v{font-size:24px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.tile .l{font-size:11px;color:var(--muted);font-weight:600;line-height:1.25;margin-top:2px}
+.note{background:var(--surface);border-radius:14px;padding:12px 14px;font-size:13px;color:var(--ink2);box-shadow:var(--shadow);margin-top:10px}
+.note b{color:var(--ink)}
+.list{background:var(--surface);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid var(--line);background:none;border-left:0;border-right:0;border-bottom:0;width:100%;text-align:left}
+.item:first-child{border-top:0}
+.item .main{flex:1;min-width:0}
+.item .t1{font-weight:600;font-size:16px}
+.item .t2{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .right{text-align:right;flex:none}
+.time{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.time.dim{color:var(--muted);font-weight:500;font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 7px;border-radius:999px;background:var(--surface2);color:var(--ink2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.chip.ok{background:var(--good-soft);color:var(--good)}
+.chip.near{background:var(--warn-soft);color:var(--warn)}
+.chip.pb{background:var(--gold-soft);color:var(--gold)}
+.chip.c-lcm::before,.chip.c-scm::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--lcm)}
+.chip.c-scm::before{background:var(--scm)}
+.filters{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;margin:0 -16px;padding-left:16px;padding-right:16px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filters button{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--ink2)}
+.filters button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.meet-h{display:flex;justify-content:space-between;align-items:baseline;margin:18px 4px 6px;gap:8px}
+.meet-h b{font-size:15px}
+.meet-h span{font-size:12px;color:var(--muted);white-space:nowrap}
+nav.tabs{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);z-index:20}
+nav.tabs .in{display:grid;grid-template-columns:repeat(4,1fr);width:100%;max-width:560px}
+nav.tabs button{border:0;background:none;padding:8px 0 10px;font-size:11px;font-weight:600;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px}
+nav.tabs button svg{width:24px;height:24px}
+nav.tabs button.on{color:var(--brand)}
+.chart-card{background:var(--surface);border-radius:14px;box-shadow:var(--shadow);padding:12px 8px 8px;position:relative}
+.chart-card svg{display:block;width:100%;height:auto;overflow:visible}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink2);padding:2px 8px 8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.legend i.dash{width:16px;height:0;border-radius:0;border-top:2px dashed var(--ink2);vertical-align:3px}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12px;padding:6px 8px;border-radius:8px;white-space:nowrap;transform:translate(-50%,-110%);display:none;z-index:2}
+.tip b{font-size:14px}
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg);width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:0 0 calc(16px + env(safe-area-inset-bottom))}
+.sheet-head{position:sticky;top:0;background:var(--brand);color:#fff;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:18px 18px 0 0;z-index:1}
+.sheet-head b{font-size:17px}
+.sheet-head button{background:none;border:0;color:#fff;font-weight:600;font-size:16px;padding:4px}
+.sheet-body{padding:14px 16px}
+.form{background:var(--surface);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:14px}
+.form label{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;border-top:1px solid var(--line);min-height:48px}
+.form label:first-child{border-top:0}
+.form label>span{color:var(--ink2);flex:none}
+.form input,.form select{border:0;background:var(--surface2);border-radius:8px;padding:8px 10px;text-align:right;min-width:0;flex:1;max-width:62%;font-size:16px}
+.form input[type=checkbox]{flex:none;width:22px;height:22px;accent-color:var(--brand)}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:13px;font-weight:700;font-size:16px;background:var(--brand);color:#fff;margin-top:8px}
+.btn.ghost{background:var(--surface);color:var(--brand);box-shadow:var(--shadow)}
+.btn.danger{background:var(--surface);color:var(--bad);box-shadow:var(--shadow)}
+.err{color:var(--bad);font-size:13px;margin:6px 4px}
+.qt-table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.qt-table th,.qt-table td{padding:9px 8px;border-top:1px solid var(--line);text-align:right}
+.qt-table th:first-child,.qt-table td:first-child{text-align:left}
+.qt-table thead th{border-top:0;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.qt-table input{width:72px;border:0;background:var(--surface2);border-radius:6px;padding:5px 6px;text-align:right;font-size:14px}
+.empty{text-align:center;color:var(--muted);padding:30px 10px}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;z-index:60}
+.gap-ok{color:var(--good);font-weight:600}
+.gap-no{color:var(--ink2)}
+.bigpb{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.bigpb .time{font-size:34px}
 </style>
 </head>
-
 <body>
-
 <div class="app">
-
-<header class="header">
-<div class="eyebrow">EMMA SWIM</div>
-<h1>Emma</h1>
-<p>Personal bests & qualifying times</p>
-
-<div class="switch">
-<button id="lcBtn" class="active" onclick="setCourse('LCM')">Long Course</button>
-<button id="scBtn" onclick="setCourse('SCM')">Short Course</button>
+  <header class="top">
+    <div class="top-row">
+      <button class="who" id="who"></button>
+      <div class="seg" id="courseSeg"><button data-c="LCM">LCM</button><button data-c="SCM">SCM</button></div>
+      <button class="add-btn" id="addBtn" aria-label="Add swim">+</button>
+    </div>
+  </header>
+  <main id="main"></main>
 </div>
-</header>
-
-<main id="main" class="content"></main>
-
-</div>
-
-<button class="fab" onclick="openAddSwim()">+</button>
-
-<nav class="nav">
-<button id="n-home" class="active" onclick="go('home')"><span>⌂</span>Home</button>
-<button id="n-events" onclick="go('events')"><span>🏊</span>Events</button>
-<button id="n-progress" onclick="go('progress')"><span>↗</span>Progress</button>
-<button id="n-settings" onclick="go('settings')"><span>⚙</span>Settings</button>
-</nav>
-
-<div id="modal" class="modal hidden"></div>
+<nav class="tabs"><div class="in">
+  <button data-tab="bests"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/></svg>Bests</button>
+  <button data-tab="swims"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 17c2 0 2-1.5 4.5-1.5S10 17 12 17s2.5-1.5 4.5-1.5S19 17 21 17M3 21c2 0 2-1.5 4.5-1.5S10 21 12 21s2.5-1.5 4.5-1.5S19 21 21 21"/><circle cx="15.5" cy="6" r="2"/><path d="M5 13l5-4 3 3 4-1"/></svg>Swims</button>
+  <button data-tab="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Progress</button>
+  <button data-tab="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>More</button>
+</div></nav>
 
 <script>
+/* ---------- Seed data (imported from Swim Track backup, 31 Oct 2026) ---------- */
+const SEED = {"swimmers":[{"id":"emma","first":"Emma","last":"Ward","dob":"2010-10-09"},{"id":"jessie","first":"Jessie","last":"Ward","dob":"2012-10-13"}],"meets":[{"id":"m1","name":"*Zone Catholics Schools","location":"Homebush","course":"LCM"},{"id":"m2","name":"Metro","location":"Homebush","course":"LCM"},{"id":"m3","name":"Speedo Sprint","location":"Homebush","course":"LCM"},{"id":"m4","name":"Norwest","location":"Norwest","course":"LCM"},{"id":"m5","name":"NSW StateAge","location":"Homebush","course":"LCM"},{"id":"m6","name":"SummerChamps","location":"Homebush","course":"LCM"},{"id":"m7","name":"SummerLC","location":"Homebush","course":"LCM"},{"id":"m8","name":"*School Carnival","location":"Homebush","course":"LCM"},{"id":"m9","name":"Speedo Sprint","location":"Homebush","course":"LCM"},{"id":"m10","name":"Junior Metro","location":"Homebush","course":"LCM"},{"id":"m11","name":"SMNE","location":"Homebush","course":"LCM"},{"id":"m12","name":"NSWAge Jnr","location":"Homebush","course":"LCM"},{"id":"m13","name":"LaneCove ClubChamps","location":"Lane Cove","course":"LCM"},{"id":"m14","name":"Ripples St Marys","location":"Homebush","course":"LCM"},{"id":"m15","name":"Lane Cove Club Champs","location":"Lane Cove","course":"LCM"},{"id":"m16","name":"LCWPS Carnival","location":"Lane Cove","course":"LCM"},{"id":"m17","name":"NSA State Open","location":"Homebush","course":"LCM"},{"id":"m18","name":"Lane Cove Swim Club","location":"Lane Cove","course":"LCM"},{"id":"m19","name":"Sydney Catholic Schools","location":"Homebush","course":"LCM"},{"id":"m20","name":"NSW CatholicSchools","location":"Himebush","course":"LCM"},{"id":"m21","name":"National Age","location":"Brisban Acquatic Centre","course":"LCM"},{"id":"m22","name":"KnoxPymble SC","location":"KnoxPymble","course":"SCM"},{"id":"m23","name":"NSW SC Qualifying","location":"SOPAC","course":"SCM"},{"id":"m24","name":"NSW All Schools","location":"Sydney Olymoic park","course":"LCM"},{"id":"m25","name":"Sydney Metro","location":"Sydney Olympic Park","course":"SCM"},{"id":"m26","name":"PLC","location":"PLC","course":"SCM"},{"id":"m27","name":"Warringah Short Course","location":"Warringah","course":"SCM"},{"id":"m28","name":"Sydney Metro","location":"Homebush","course":"SCM"},{"id":"m29","name":"AquaBlitz","location":"Homebush","course":"SCM"},{"id":"m30","name":"NSW Shortcourse","location":"Homebush","course":"SCM"},{"id":"m31","name":"Lane Cove Spring","location":"Lane Cove","course":"LCM"},{"id":"m32","name":"PLC Long Course","location":"PLC","course":"LCM"},{"id":"m33","name":"SMNE","location":"SOPAC","course":"LCM"},{"id":"m34","name":"Manly","location":"Manly","course":"LCM"},{"id":"m35","name":"NSW State Age","location":"Homebush","course":"LCM"},{"id":"m36","name":"Norwest","location":"SOPAC","course":"LCM"},{"id":"m37","name":"MSCW School","location":"Homebush","course":"LCM"},{"id":"m38","name":"Sydney Metro","location":"Homebush","course":"LCM"},{"id":"m39","name":"Sydney Catholic Schools","location":"Homebush","course":"LCM"},{"id":"m40","name":"SydMetro ShortCourse","location":"SOPAC","course":"SCM"},{"id":"m41","name":"SydMetro Winter","location":"SOPAC","course":"LCM"},{"id":"m42","name":"Wenona","location":"Wenona","course":"SCM"},{"id":"m43","name":"NSW Short Course","location":"Homebushe","course":"SCM"},{"id":"m44","name":"Australian Short Course","location":"Melbourne","course":"SCM"},{"id":"m45","name":"Pymble Long Course","location":"Pymble","course":"LCM"},{"id":"m46","name":"SOPAC Qualifying","location":"Homebush","course":"LCM"},{"id":"m47","name":"NSW Open","location":"SOPAC","course":"LCM"},{"id":"m48","name":"National Age 2026","location":"Gold Coast","course":"LCM"},{"id":"m49","name":"NSW All Schools","location":"SOPAC","course":"LCM"},{"id":"m50","name":"Commonweath Trial","location":"SOPAC","course":"LCM"},{"id":"m51","name":"ACT Winter","location":"AIS Acquatic Centre","course":"SCM"},{"id":"m52","name":"NSW Short Course","location":"Homebush","course":"SCM"},{"id":"m53","name":"Sydney Metro Summer","location":"Homebush","course":"LCM"}],"swims":[{"id":"s46","swimmer":"emma","date":"2022-11-12","dist":100,"stroke":"Breast","time":97.54,"meet":"m11","course":"LCM"},{"id":"s49","swimmer":"emma","date":"2022-11-12","dist":200,"stroke":"IM","time":195.35,"meet":"m11","course":"LCM"},{"id":"s43","swimmer":"emma","date":"2023-02-04","dist":50,"stroke":"Back","time":37.97,"meet":"m9","course":"LCM"},{"id":"s44","swimmer":"emma","date":"2023-02-04","dist":100,"stroke":"Breast","time":95.82,"meet":"m9","course":"LCM"},{"id":"s50","swimmer":"emma","date":"2023-03-26","dist":50,"stroke":"Breast","time":39.16,"meet":"m12","course":"LCM"},{"id":"s51","swimmer":"emma","date":"2023-03-26","dist":100,"stroke":"Breast","time":89.77,"meet":"m12","course":"LCM"},{"id":"s26","swimmer":"emma","date":"2023-10-14","dist":50,"stroke":"Free","time":30.29,"meet":"m7","course":"LCM"},{"id":"s27","swimmer":"emma","date":"2023-10-14","dist":200,"stroke":"Breast","time":185.07,"meet":"m7","course":"LCM"},{"id":"s40","swimmer":"emma","date":"2023-10-14","dist":200,"stroke":"IM","time":168.21,"meet":"m7","course":"LCM"},{"id":"s41","swimmer":"emma","date":"2023-10-14","dist":50,"stroke":"Breast","time":38.37,"meet":"m7","course":"LCM"},{"id":"s42","swimmer":"emma","date":"2023-10-14","dist":100,"stroke":"Breast","time":86.97,"meet":"m7","course":"LCM"},{"id":"s19","swimmer":"emma","date":"2023-11-04","dist":100,"stroke":"Breast","time":83.62,"meet":"m6","course":"LCM"},{"id":"s20","swimmer":"emma","date":"2023-11-04","dist":50,"stroke":"Free","time":30.71,"meet":"m6","course":"LCM"},{"id":"s21","swimmer":"emma","date":"2023-11-04","dist":200,"stroke":"Breast","time":189.75,"meet":"m6","course":"LCM"},{"id":"s22","swimmer":"emma","date":"2023-11-04","dist":50,"stroke":"Breast","time":38.81,"meet":"m6","course":"LCM"},{"id":"s23","swimmer":"emma","date":"2023-11-04","dist":100,"stroke":"Back","time":78.02,"meet":"m6","course":"LCM"},{"id":"s24","swimmer":"emma","date":"2023-11-04","dist":50,"stroke":"Back","time":35.08,"meet":"m6","course":"LCM"},{"id":"s25","swimmer":"emma","date":"2023-11-04","dist":200,"stroke":"IM","time":167.74,"meet":"m6","course":"LCM"},{"id":"s13","swimmer":"emma","date":"2023-12-10","dist":100,"stroke":"Breast","time":83.37,"meet":"m5","course":"LCM"},{"id":"s14","swimmer":"emma","date":"2023-12-10","dist":50,"stroke":"Breast","time":37.88,"meet":"m5","course":"LCM"},{"id":"s15","swimmer":"emma","date":"2023-12-10","dist":50,"stroke":"Free","time":30.08,"meet":"m5","course":"LCM"},{"id":"s16","swimmer":"emma","date":"2023-12-10","dist":200,"stroke":"Breast","time":185.44,"meet":"m5","course":"LCM"},{"id":"s17","swimmer":"emma","date":"2023-12-10","dist":50,"stroke":"Back","time":34.58,"meet":"m5","course":"LCM"},{"id":"s18","swimmer":"emma","date":"2023-12-10","dist":50,"stroke":"Breast","time":37.88,"meet":"m5","course":"LCM","prelim":true},{"id":"s10","swimmer":"emma","date":"2023-12-13","dist":200,"stroke":"Breast","time":186.78,"meet":"m4","course":"LCM"},{"id":"s12","swimmer":"emma","date":"2023-12-13","dist":50,"stroke":"Breast","time":38.98,"meet":"m4","course":"LCM"},{"id":"s59","swimmer":"emma","date":"2024-01-13","dist":100,"stroke":"Free","time":66.03,"meet":"m4","course":"LCM"},{"id":"s71","swimmer":"jessie","date":"2024-01-27","dist":50,"stroke":"Free","time":48.76,"meet":"m15","course":"LCM"},{"id":"s75","swimmer":"jessie","date":"2024-01-27","dist":50,"stroke":"Back","time":66.71,"meet":"m15","course":"LCM"},{"id":"s85","swimmer":"jessie","date":"2024-01-27","dist":50,"stroke":"Fly","time":69.88,"meet":"m15","course":"LCM"},{"id":"s68","swimmer":"jessie","date":"2024-02-03","dist":50,"stroke":"Free","time":46.42,"meet":"m15","course":"LCM"},{"id":"s79","swimmer":"jessie","date":"2024-02-03","dist":50,"stroke":"Breast","time":62.38,"meet":"m15","course":"LCM"},{"id":"s82","swimmer":"jessie","date":"2024-02-03","dist":50,"stroke":"Fly","time":64.28,"meet":"m15","course":"LCM"},{"id":"s52","swimmer":"emma","date":"2024-02-10","dist":50,"stroke":"Back","time":34.43,"meet":"m13","course":"LCM"},{"id":"s55","swimmer":"emma","date":"2024-02-10","dist":50,"stroke":"Breast","time":37.99,"meet":"m13","course":"LCM"},{"id":"s56","swimmer":"emma","date":"2024-02-10","dist":50,"stroke":"Fly","time":33.2,"meet":"m13","course":"LCM"},{"id":"s57","swimmer":"emma","date":"2024-02-10","dist":100,"stroke":"Breast","time":93.9,"meet":"m13","course":"LCM"},{"id":"s58","swimmer":"emma","date":"2024-02-10","dist":100,"stroke":"Fly","time":91.24,"meet":"m13","course":"LCM"},{"id":"s61","swimmer":"emma","date":"2024-02-10","dist":200,"stroke":"Breast","time":180.49,"meet":"m13","course":"LCM"},{"id":"s70","swimmer":"jessie","date":"2024-02-10","dist":50,"stroke":"Free","time":47.87,"meet":"m15","course":"LCM"},{"id":"s74","swimmer":"jessie","date":"2024-02-10","dist":50,"stroke":"Back","time":65.49,"meet":"m15","course":"LCM"},{"id":"s81","swimmer":"jessie","date":"2024-02-10","dist":50,"stroke":"Breast","time":64.69,"meet":"m15","course":"LCM"},{"id":"s5","swimmer":"emma","date":"2024-02-11","dist":100,"stroke":"Breast","time":83.13,"meet":"m3","course":"LCM"},{"id":"s53","swimmer":"emma","date":"2024-02-11","dist":50,"stroke":"Free","time":30.51,"meet":"m3","course":"LCM"},{"id":"s6","swimmer":"emma","date":"2024-02-11","dist":50,"stroke":"Breast","time":39.09,"meet":"m3","course":"LCM"},{"id":"s7","swimmer":"emma","date":"2024-02-11","dist":100,"stroke":"Back","time":76.34,"meet":"m3","course":"LCM"},{"id":"s77","swimmer":"jessie","date":"2024-02-11","dist":50,"stroke":"Breast","time":60.24,"meet":"m3","course":"LCM"},{"id":"s8","swimmer":"emma","date":"2024-02-11","dist":100,"stroke":"Free","time":66.83,"meet":"m3","course":"LCM"},{"id":"s69","swimmer":"jessie","date":"2024-02-17","dist":50,"stroke":"Free","time":46.91,"meet":"m15","course":"LCM"},{"id":"s73","swimmer":"jessie","date":"2024-02-17","dist":50,"stroke":"Back","time":60.22,"meet":"m15","course":"LCM"},{"id":"s84","swimmer":"jessie","date":"2024-02-17","dist":50,"stroke":"Fly","time":66.25,"meet":"m15","course":"LCM"},{"id":"s66","swimmer":"jessie","date":"2024-02-18","dist":50,"stroke":"Free","time":43.43,"meet":"m15","course":"LCM"},{"id":"s76","swimmer":"jessie","date":"2024-02-18","dist":50,"stroke":"Breast","time":57.79,"meet":"m15","course":"LCM"},{"id":"s33","swimmer":"emma","date":"2024-02-19","dist":200,"stroke":"IM","time":160.79,"meet":"m8","course":"LCM"},{"id":"s34","swimmer":"emma","date":"2024-02-19","dist":50,"stroke":"Free","time":29.91,"meet":"m8","course":"LCM"},{"id":"s35","swimmer":"emma","date":"2024-02-19","dist":50,"stroke":"Breast","time":38.33,"meet":"m8","course":"LCM"},{"id":"s37","swimmer":"emma","date":"2024-02-19","dist":50,"stroke":"Back","time":37.07,"meet":"m8","course":"LCM"},{"id":"s38","swimmer":"emma","date":"2024-02-19","dist":100,"stroke":"Free","time":65.78,"meet":"m8","course":"LCM","prelim":true},{"id":"s39","swimmer":"emma","date":"2024-02-19","dist":50,"stroke":"Fly","time":33.05,"meet":"m8","course":"LCM"},{"id":"s3","swimmer":"emma","date":"2024-02-24","dist":50,"stroke":"Breast","time":37.55,"meet":"m2","course":"LCM"},{"id":"s4","swimmer":"emma","date":"2024-02-24","dist":50,"stroke":"Back","time":34.11,"meet":"m2","course":"LCM"},{"id":"s67","swimmer":"jessie","date":"2024-02-24","dist":50,"stroke":"Free","time":45.77,"meet":"m15","course":"LCM"},{"id":"s80","swimmer":"jessie","date":"2024-02-24","dist":50,"stroke":"Breast","time":62.49,"meet":"m15","course":"LCM"},{"id":"s83","swimmer":"jessie","date":"2024-02-24","dist":50,"stroke":"Fly","time":65.85,"meet":"m15","course":"LCM"},{"id":"s9","swimmer":"emma","date":"2024-02-24","dist":200,"stroke":"Breast","time":185.92,"meet":"m2","course":"LCM"},{"id":"s1","swimmer":"emma","date":"2024-02-28","dist":50,"stroke":"Free","time":29.65,"meet":"m1","course":"LCM"},{"id":"s2","swimmer":"emma","date":"2024-02-28","dist":100,"stroke":"Free","time":65.43,"meet":"m1","course":"LCM"},{"id":"s30","swimmer":"emma","date":"2024-02-28","dist":50,"stroke":"Fly","time":32.91,"meet":"m1","course":"LCM"},{"id":"s31","swimmer":"emma","date":"2024-02-28","dist":50,"stroke":"Back","time":38.3,"meet":"m8","course":"LCM"},{"id":"s32","swimmer":"emma","date":"2024-02-28","dist":100,"stroke":"Breast","time":85.25,"meet":"m1","course":"LCM"},{"id":"s36","swimmer":"emma","date":"2024-02-28","dist":50,"stroke":"Breast","time":37.34,"meet":"m1","course":"LCM"},{"id":"s214","swimmer":"emma","date":"2024-03-02","dist":200,"stroke":"Free","time":140.89,"meet":"m18","course":"LCM"},{"id":"s65","swimmer":"jessie","date":"2024-03-02","dist":100,"stroke":"Free","time":112.97,"meet":"m15","course":"LCM"},{"id":"s72","swimmer":"jessie","date":"2024-03-02","dist":50,"stroke":"Back","time":58.69,"meet":"m15","course":"LCM"},{"id":"s78","swimmer":"jessie","date":"2024-03-02","dist":50,"stroke":"Breast","time":62.1,"meet":"m15","course":"LCM"},{"id":"s63","swimmer":"emma","date":"2024-03-03","dist":200,"stroke":"Breast","time":183.5,"meet":"m14","course":"LCM"},{"id":"s86","swimmer":"jessie","date":"2024-03-03","dist":100,"stroke":"Breast","time":129.17,"meet":"m15","course":"LCM"},{"id":"s87","swimmer":"emma","date":"2024-03-03","dist":50,"stroke":"Back","time":34.13,"meet":"m15","course":"LCM"},{"id":"s88","swimmer":"emma","date":"2024-03-03","dist":200,"stroke":"Free","time":147.0,"meet":"m15","course":"LCM"},{"id":"s89","swimmer":"emma","date":"2024-03-03","dist":100,"stroke":"Breast","time":84.63,"meet":"m15","course":"LCM"},{"id":"s90","swimmer":"jessie","date":"2024-03-04","dist":100,"stroke":"Free","time":106.5,"meet":"m16","course":"LCM"},{"id":"s91","swimmer":"jessie","date":"2024-03-04","dist":50,"stroke":"Free","time":43.1,"meet":"m16","course":"LCM"},{"id":"s92","swimmer":"jessie","date":"2024-03-04","dist":50,"stroke":"Back","time":54.5,"meet":"m16","course":"LCM"},{"id":"s93","swimmer":"jessie","date":"2024-03-04","dist":50,"stroke":"Fly","time":50.0,"meet":"m16","course":"LCM"},{"id":"s94","swimmer":"jessie","date":"2024-03-04","dist":50,"stroke":"Free","time":41.5,"meet":"m16","course":"LCM"},{"id":"s95","swimmer":"jessie","date":"2024-03-04","dist":50,"stroke":"Breast","time":60.6,"meet":"m16","course":"LCM"},{"id":"s96","swimmer":"jessie","date":"2024-03-09","dist":50,"stroke":"Fly","time":null,"meet":"m15","course":"LCM"},{"id":"s97","swimmer":"jessie","date":"2024-03-09","dist":50,"stroke":"Free","time":45.6,"meet":"m15","course":"LCM"},{"id":"s98","swimmer":"jessie","date":"2024-03-09","dist":50,"stroke":"Back","time":58.0,"meet":"m15","course":"LCM"},{"id":"s99","swimmer":"emma","date":"2024-03-15","dist":100,"stroke":"Breast","time":82.94,"meet":"m17","course":"LCM"},{"id":"s100","swimmer":"emma","date":"2024-03-16","dist":400,"stroke":"Free","time":323.3,"meet":"m18","course":"LCM"},{"id":"s101","swimmer":"jessie","date":"2024-03-16","dist":50,"stroke":"Free","time":45.7,"meet":"m18","course":"LCM"},{"id":"s102","swimmer":"jessie","date":"2024-03-16","dist":50,"stroke":"Fly","time":66.3,"meet":"m18","course":"LCM"},{"id":"s103","swimmer":"emma","date":"2024-03-17","dist":50,"stroke":"Breast","time":37.51,"meet":"m17","course":"LCM"},{"id":"s104","swimmer":"emma","date":"2024-03-23","dist":200,"stroke":"IM","time":173.82,"meet":"m18","course":"LCM"},{"id":"s105","swimmer":"jessie","date":"2024-03-23","dist":100,"stroke":"Free","time":111.3,"meet":"m18","course":"LCM"},{"id":"s106","swimmer":"jessie","date":"2024-03-23","dist":50,"stroke":"Back","time":62.85,"meet":"m18","course":"LCM"},{"id":"s107","swimmer":"emma","date":"2024-03-25","dist":50,"stroke":"Free","time":29.59,"meet":"m19","course":"LCM"},{"id":"s108","swimmer":"emma","date":"2024-03-25","dist":50,"stroke":"Breast","time":37.47,"meet":"m19","course":"LCM"},{"id":"s109","swimmer":"emma","date":"2024-03-25","dist":100,"stroke":"Free","time":66.06,"meet":"m19","course":"LCM"},{"id":"s110","swimmer":"emma","date":"2024-03-25","dist":100,"stroke":"Breast","time":84.23,"meet":"m19","course":"LCM"},{"id":"s111","swimmer":"emma","date":"2024-04-04","dist":50,"stroke":"Free","time":29.67,"meet":"m20","course":"LCM"},{"id":"s112","swimmer":"emma","date":"2024-04-04","dist":50,"stroke":"Breast","time":36.94,"meet":"m20","course":"LCM","place":1,"relay":true},{"id":"s113","swimmer":"emma","date":"2024-04-04","dist":50,"stroke":"Breast","time":37.12,"meet":"m20","course":"LCM"},{"id":"s114","swimmer":"emma","date":"2024-04-04","dist":100,"stroke":"Breast","time":82.96,"meet":"m20","course":"LCM"},{"id":"s115","swimmer":"emma","date":"2024-04-10","dist":50,"stroke":"Breast","time":36.2,"meet":"m21","course":"LCM"},{"id":"s118","swimmer":"emma","date":"2024-04-10","dist":200,"stroke":"Breast","time":180.3,"meet":"m21","course":"LCM"},{"id":"s116","swimmer":"emma","date":"2024-04-11","dist":100,"stroke":"Breast","time":79.48,"meet":"m21","course":"LCM"},{"id":"s232","swimmer":"emma","date":"2024-04-12","dist":50,"stroke":"Free","time":null,"meet":"m21","course":"LCM"},{"id":"s119","swimmer":"emma","date":"2024-04-28","dist":100,"stroke":"Breast","time":78.92,"meet":"m22","course":"SCM"},{"id":"s120","swimmer":"emma","date":"2024-04-28","dist":100,"stroke":"Free","time":64.32,"meet":"m22","course":"SCM"},{"id":"s121","swimmer":"emma","date":"2024-04-28","dist":200,"stroke":"IM","time":156.23,"meet":"m22","course":"SCM"},{"id":"s122","swimmer":"emma","date":"2024-05-19","dist":100,"stroke":"Free","time":63.49,"meet":"m23","course":"SCM"},{"id":"s123","swimmer":"emma","date":"2024-05-19","dist":50,"stroke":"Breast","time":35.5,"meet":"m23","course":"SCM"},{"id":"s124","swimmer":"emma","date":"2024-05-19","dist":50,"stroke":"Back","time":32.48,"meet":"m23","course":"SCM"},{"id":"s126","swimmer":"emma","date":"2024-05-30","dist":50,"stroke":"Free","time":29.47,"meet":"m24","course":"LCM","place":6,"relay":true},{"id":"s127","swimmer":"emma","date":"2024-05-30","dist":50,"stroke":"Breast","time":35.8,"meet":"m24","course":"LCM","place":4,"relay":true},{"id":"s128","swimmer":"emma","date":"2024-05-31","dist":50,"stroke":"Breast","time":36.51,"meet":"m24","course":"LCM"},{"id":"s129","swimmer":"emma","date":"2024-05-31","dist":100,"stroke":"Breast","time":80.48,"meet":"m24","course":"LCM"},{"id":"s131","swimmer":"emma","date":"2024-06-01","dist":100,"stroke":"Breast","time":76.68,"meet":"m25","course":"SCM"},{"id":"s134","swimmer":"emma","date":"2024-06-01","dist":50,"stroke":"Breast","time":36.2,"meet":"m25","course":"SCM","relay":true},{"id":"s132","swimmer":"emma","date":"2024-06-02","dist":50,"stroke":"Breast","time":36.09,"meet":"m25","course":"SCM"},{"id":"s133","swimmer":"emma","date":"2024-06-02","dist":50,"stroke":"Fly","time":31.84,"meet":"m25","course":"SCM"},{"id":"s135","swimmer":"emma","date":"2024-06-02","dist":200,"stroke":"Breast","time":173.02,"meet":"m25","course":"SCM"},{"id":"s136","swimmer":"emma","date":"2024-06-02","dist":50,"stroke":"Free","time":29.76,"meet":"m25","course":"SCM","relay":true},{"id":"s137","swimmer":"emma","date":"2024-06-02","dist":200,"stroke":"IM","time":153.79,"meet":"m25","course":"SCM"},{"id":"s138","swimmer":"emma","date":"2024-06-23","dist":400,"stroke":"IM","time":335.6,"meet":"m26","course":"SCM","event":3,"heat":2,"lane":5,"place":3},{"id":"s139","swimmer":"emma","date":"2024-06-30","dist":100,"stroke":"IM","time":71.84,"meet":"m27","course":"SCM"},{"id":"s140","swimmer":"emma","date":"2024-06-30","dist":50,"stroke":"Fly","time":32.67,"meet":"m27","course":"SCM"},{"id":"s141","swimmer":"emma","date":"2024-06-30","dist":50,"stroke":"Free","time":29.03,"meet":"m27","course":"SCM"},{"id":"s142","swimmer":"emma","date":"2024-07-19","dist":200,"stroke":"IM","time":152.61,"meet":"m28","course":"SCM"},{"id":"s143","swimmer":"emma","date":"2024-07-20","dist":100,"stroke":"Breast","time":76.92,"meet":"m28","course":"SCM"},{"id":"s144","swimmer":"emma","date":"2024-07-20","dist":50,"stroke":"Breast","time":35.28,"meet":"m28","course":"SCM"},{"id":"s145","swimmer":"emma","date":"2024-07-20","dist":100,"stroke":"IM","time":70.08,"meet":"m28","course":"SCM"},{"id":"s146","swimmer":"emma","date":"2024-07-21","dist":200,"stroke":"Breast","time":170.21,"meet":"m28","course":"SCM"},{"id":"s147","swimmer":"emma","date":"2024-07-21","dist":50,"stroke":"Back","time":32.4,"meet":"m28","course":"SCM"},{"id":"s148","swimmer":"emma","date":"2024-07-28","dist":50,"stroke":"Breast","time":35.77,"meet":"m29","course":"SCM"},{"id":"s149","swimmer":"emma","date":"2024-07-28","dist":100,"stroke":"Back","time":71.91,"meet":"m29","course":"SCM"},{"id":"s150","swimmer":"emma","date":"2024-08-24","dist":50,"stroke":"Breast","time":34.88,"meet":"m30","course":"SCM"},{"id":"s151","swimmer":"emma","date":"2024-08-24","dist":200,"stroke":"Breast","time":167.19,"meet":"m30","course":"SCM"},{"id":"s152","swimmer":"emma","date":"2024-08-24","dist":100,"stroke":"Back","time":68.88,"meet":"m30","course":"SCM"},{"id":"s153","swimmer":"emma","date":"2024-08-24","dist":100,"stroke":"Breast","time":75.42,"meet":"m30","course":"SCM"},{"id":"s154","swimmer":"emma","date":"2024-08-24","dist":200,"stroke":"IM","time":149.65,"meet":"m30","course":"SCM"},{"id":"s155","swimmer":"emma","date":"2024-08-24","dist":400,"stroke":"IM","time":323.73,"meet":"m30","course":"SCM"},{"id":"s157","swimmer":"emma","date":"2024-08-25","dist":50,"stroke":"Back","time":31.99,"meet":"m30","course":"SCM"},{"id":"s158","swimmer":"emma","date":"2024-08-25","dist":100,"stroke":"IM","time":68.75,"meet":"m30","course":"SCM"},{"id":"s159","swimmer":"emma","date":"2024-08-25","dist":50,"stroke":"Free","time":28.97,"meet":"m30","course":"SCM"},{"id":"s161","swimmer":"emma","date":"2024-10-12","dist":200,"stroke":"IM","time":157.49,"meet":"m31","course":"LCM"},{"id":"s162","swimmer":"emma","date":"2024-10-12","dist":200,"stroke":"Free","time":143.46,"meet":"m31","course":"LCM"},{"id":"s163","swimmer":"emma","date":"2024-10-12","dist":100,"stroke":"Back","time":75.81,"meet":"m31","course":"LCM"},{"id":"s164","swimmer":"emma","date":"2024-10-21","dist":400,"stroke":"IM","time":343.01,"meet":"m32","course":"LCM"},{"id":"s165","swimmer":"emma","date":"2024-10-26","dist":800,"stroke":"Free","time":633.0,"meet":"m31","course":"LCM"},{"id":"s166","swimmer":"emma","date":"2024-11-09","dist":100,"stroke":"Breast","time":80.33,"meet":"m33","course":"LCM","place":3},{"id":"s167","swimmer":"emma","date":"2024-11-09","dist":200,"stroke":"Breast","time":184.47,"meet":"m33","course":"LCM","place":6},{"id":"s168","swimmer":"emma","date":"2024-11-09","dist":50,"stroke":"Fly","time":33.98,"meet":"m33","course":"LCM"},{"id":"s169","swimmer":"emma","date":"2024-11-09","dist":50,"stroke":"Breast","time":36.46,"meet":"m33","course":"LCM","place":1},{"id":"s170","swimmer":"emma","date":"2024-11-09","dist":100,"stroke":"Back","time":74.93,"meet":"m33","course":"LCM"},{"id":"s171","swimmer":"emma","date":"2024-11-09","dist":50,"stroke":"Back","time":33.11,"meet":"m33","course":"LCM","place":1},{"id":"s172","swimmer":"emma","date":"2024-11-09","dist":200,"stroke":"IM","time":161.92,"meet":"m33","course":"LCM"},{"id":"s173","swimmer":"emma","date":"2024-11-17","dist":200,"stroke":"Back","time":161.49,"meet":"m34","course":"LCM","place":2},{"id":"s174","swimmer":"emma","date":"2024-11-17","dist":100,"stroke":"Free","time":64.9,"meet":"m34","course":"LCM"},{"id":"s175","swimmer":"emma","date":"2024-12-06","dist":100,"stroke":"Breast","time":78.63,"meet":"m35","course":"LCM"},{"id":"s176","swimmer":"emma","date":"2024-12-06","dist":100,"stroke":"Breast","time":79.26,"meet":"m35","course":"LCM","event":1,"place":10},{"id":"s177","swimmer":"emma","date":"2024-12-07","dist":50,"stroke":"Free","time":28.82,"meet":"m35","course":"LCM"},{"id":"s178","swimmer":"emma","date":"2024-12-07","dist":200,"stroke":"Back","time":159.54,"meet":"m35","course":"LCM"},{"id":"s179","swimmer":"emma","date":"2024-12-08","dist":200,"stroke":"Breast","time":177.66,"meet":"m35","course":"LCM"},{"id":"s180","swimmer":"emma","date":"2024-12-09","dist":200,"stroke":"IM","time":156.6,"meet":"m35","course":"LCM"},{"id":"s182","swimmer":"emma","date":"2024-12-09","dist":50,"stroke":"Back","time":33.12,"meet":"m35","course":"LCM"},{"id":"s181","swimmer":"emma","date":"2024-12-11","dist":50,"stroke":"Breast","time":36.35,"meet":"m35","course":"LCM"},{"id":"s183","swimmer":"emma","date":"2024-12-11","dist":100,"stroke":"Back","time":72.99,"meet":"m35","course":"LCM"},{"id":"s184","swimmer":"emma","date":"2024-12-12","dist":50,"stroke":"Back","time":33.65,"meet":"m35","course":"LCM"},{"id":"s185","swimmer":"jessie","date":"2024-12-14","dist":50,"stroke":"Free","time":46.11,"meet":"m18","course":"LCM"},{"id":"s186","swimmer":"jessie","date":"2024-12-14","dist":50,"stroke":"Back","time":58.59,"meet":"m18","course":"LCM"},{"id":"s188","swimmer":"emma","date":"2025-01-11","dist":100,"stroke":"Back","time":74.07,"meet":"m36","course":"LCM"},{"id":"s189","swimmer":"emma","date":"2025-01-11","dist":50,"stroke":"Free","time":30.1,"meet":"m36","course":"LCM"},{"id":"s190","swimmer":"emma","date":"2025-02-08","dist":200,"stroke":"IM","time":175.78,"meet":"m18","course":"LCM"},{"id":"s191","swimmer":"emma","date":"2025-02-15","dist":800,"stroke":"Free","time":621.43,"meet":"m15","course":"LCM"},{"id":"s193","swimmer":"emma","date":"2025-02-16","dist":50,"stroke":"Free","time":29.04,"meet":"m15","course":"LCM"},{"id":"s194","swimmer":"emma","date":"2025-02-17","dist":200,"stroke":"IM","time":160.71,"meet":"m37","course":"LCM"},{"id":"s195","swimmer":"jessie","date":"2025-02-17","dist":50,"stroke":"Free","time":45.94,"meet":"m37","course":"LCM"},{"id":"s197","swimmer":"emma","date":"2025-02-17","dist":50,"stroke":"Free","time":29.57,"meet":"m37","course":"LCM"},{"id":"s198","swimmer":"jessie","date":"2025-02-17","dist":50,"stroke":"Back","time":55.3,"meet":"m37","course":"LCM"},{"id":"s199","swimmer":"jessie","date":"2025-02-17","dist":50,"stroke":"Breast","time":60.5,"meet":"m37","course":"LCM"},{"id":"s200","swimmer":"emma","date":"2025-02-17","dist":100,"stroke":"Free","time":67.5,"meet":"m37","course":"LCM"},{"id":"s201","swimmer":"emma","date":"2025-02-21","dist":200,"stroke":"IM","time":155.19,"meet":"m38","course":"LCM"},{"id":"s202","swimmer":"emma","date":"2025-02-21","dist":50,"stroke":"Back","time":33.47,"meet":"m38","course":"LCM"},{"id":"s203","swimmer":"emma","date":"2025-02-22","dist":400,"stroke":"IM","time":340.65,"meet":"m38","course":"LCM"},{"id":"s204","swimmer":"emma","date":"2025-02-22","dist":100,"stroke":"Back","time":71.88,"meet":"m38","course":"LCM"},{"id":"s205","swimmer":"emma","date":"2025-02-23","dist":50,"stroke":"Free","time":29.04,"meet":"m38","course":"LCM"},{"id":"s206","swimmer":"emma","date":"2025-02-23","dist":200,"stroke":"Breast","time":177.56,"meet":"m38","course":"LCM"},{"id":"s207","swimmer":"emma","date":"2025-02-26","dist":50,"stroke":"Free","time":28.99,"meet":"m39","course":"LCM"},{"id":"s208","swimmer":"emma","date":"2025-02-26","dist":100,"stroke":"Back","time":72.99,"meet":"m39","course":"LCM"},{"id":"s209","swimmer":"emma","date":"2025-02-26","dist":50,"stroke":"Breast","time":36.79,"meet":"m39","course":"LCM"},{"id":"s210","swimmer":"emma","date":"2025-02-26","dist":100,"stroke":"Free","time":66.35,"meet":"m39","course":"LCM"},{"id":"s211","swimmer":"emma","date":"2025-02-26","dist":50,"stroke":"Back","time":34.7,"meet":"m39","course":"LCM"},{"id":"s212","swimmer":"emma","date":"2025-02-26","dist":100,"stroke":"Breast","time":84.94,"meet":"m39","course":"LCM"},{"id":"s213","swimmer":"emma","date":"2025-03-01","dist":200,"stroke":"Breast","time":182.01,"meet":"m15","course":"LCM"},{"id":"s215","swimmer":"emma","date":"2025-03-09","dist":200,"stroke":"IM","time":158.0,"meet":"m14","course":"LCM"},{"id":"s216","swimmer":"emma","date":"2025-03-09","dist":200,"stroke":"Breast","time":178.65,"meet":"m14","course":"LCM"},{"id":"s218","swimmer":"emma","date":"2025-03-15","dist":50,"stroke":"Back","time":32.73,"meet":"m31","course":"LCM"},{"id":"s219","swimmer":"emma","date":"2025-03-21","dist":100,"stroke":"Breast","time":80.05,"meet":"m17","course":"LCM"},{"id":"s220","swimmer":"emma","date":"2025-03-24","dist":50,"stroke":"Free","time":28.88,"meet":"m39","course":"LCM"},{"id":"s221","swimmer":"emma","date":"2025-03-24","dist":100,"stroke":"Back","time":74.88,"meet":"m39","course":"LCM"},{"id":"s223","swimmer":"emma","date":"2025-03-24","dist":100,"stroke":"Free","time":66.06,"meet":"m39","course":"LCM"},{"id":"s224","swimmer":"emma","date":"2025-03-24","dist":50,"stroke":"Back","time":34.96,"meet":"m39","course":"LCM"},{"id":"s225","swimmer":"emma","date":"2025-03-24","dist":50,"stroke":"Breast","time":37.09,"meet":"m39","course":"LCM"},{"id":"s226","swimmer":"emma","date":"2025-03-24","dist":100,"stroke":"Breast","time":82.02,"meet":"m39","course":"LCM"},{"id":"s227","swimmer":"emma","date":"2025-04-02","dist":100,"stroke":"Breast","time":81.21,"meet":"m20","course":"LCM"},{"id":"s228","swimmer":"emma","date":"2025-04-03","dist":50,"stroke":"Free","time":29.05,"meet":"m20","course":"LCM"},{"id":"s229","swimmer":"emma","date":"2025-04-03","dist":50,"stroke":"Free","time":29.12,"meet":"m20","course":"LCM"},{"id":"s230","swimmer":"emma","date":"2025-04-03","dist":50,"stroke":"Breast","time":36.83,"meet":"m20","course":"LCM"},{"id":"s233","swimmer":"emma","date":"2025-04-12","dist":100,"stroke":"Breast","time":80.39,"meet":"m21","course":"LCM"},{"id":"s234","swimmer":"emma","date":"2025-04-14","dist":50,"stroke":"Breast","time":36.92,"meet":"m21","course":"LCM"},{"id":"s238","swimmer":"emma","date":"2025-06-08","dist":100,"stroke":"Breast","time":78.17,"meet":"m41","course":"LCM"},{"id":"s241","swimmer":"emma","date":"2025-06-08","dist":100,"stroke":"IM","time":70.99,"meet":"m41","course":"LCM"},{"id":"s242","swimmer":"emma","date":"2025-06-08","dist":50,"stroke":"Breast","time":36.07,"meet":"m41","course":"LCM"},{"id":"s243","swimmer":"emma","date":"2025-06-08","dist":100,"stroke":"Fly","time":73.44,"meet":"m41","course":"LCM"},{"id":"s237","swimmer":"emma","date":"2025-06-22","dist":400,"stroke":"IM","time":325.01,"meet":"m40","course":"SCM"},{"id":"s236","swimmer":"emma","date":"2025-07-18","dist":200,"stroke":"IM","time":150.28,"meet":"m40","course":"SCM"},{"id":"s244","swimmer":"emma","date":"2025-07-18","dist":100,"stroke":"Fly","time":71.5,"meet":"m40","course":"SCM"},{"id":"s319","swimmer":"emma","date":"2025-07-18","dist":100,"stroke":"IM","time":67.95,"meet":"m40","course":"SCM"},{"id":"s245","swimmer":"emma","date":"2025-07-19","dist":50,"stroke":"Breast","time":34.98,"meet":"m40","course":"SCM"},{"id":"s246","swimmer":"emma","date":"2025-07-19","dist":100,"stroke":"IM","time":68.41,"meet":"m40","course":"SCM"},{"id":"s247","swimmer":"emma","date":"2025-07-19","dist":100,"stroke":"Breast","time":75.78,"meet":"m40","course":"SCM"},{"id":"s248","swimmer":"emma","date":"2025-07-20","dist":400,"stroke":"IM","time":323.43,"meet":"m40","course":"SCM"},{"id":"s249","swimmer":"emma","date":"2025-07-20","dist":200,"stroke":"Breast","time":169.2,"meet":"m40","course":"SCM"},{"id":"s250","swimmer":"emma","date":"2025-08-10","dist":50,"stroke":"Free","time":28.0,"meet":"m42","course":"SCM"},{"id":"s251","swimmer":"emma","date":"2025-08-10","dist":200,"stroke":"Free","time":135.68,"meet":"m42","course":"SCM"},{"id":"s252","swimmer":"emma","date":"2025-08-10","dist":100,"stroke":"IM","time":68.47,"meet":"m42","course":"SCM"},{"id":"s254","swimmer":"emma","date":"2025-08-22","dist":200,"stroke":"IM","time":149.41,"meet":"m43","course":"SCM"},{"id":"s253","swimmer":"emma","date":"2025-08-23","dist":100,"stroke":"Breast","time":74.57,"meet":"m43","course":"SCM"},{"id":"s255","swimmer":"emma","date":"2025-08-23","dist":200,"stroke":"Breast","time":166.36,"meet":"m43","course":"SCM"},{"id":"s256","swimmer":"emma","date":"2025-08-23","dist":100,"stroke":"Back","time":68.66,"meet":"m43","course":"SCM"},{"id":"s257","swimmer":"emma","date":"2025-08-24","dist":100,"stroke":"IM","time":67.37,"meet":"m43","course":"SCM","place":2},{"id":"s258","swimmer":"emma","date":"2025-08-24","dist":50,"stroke":"Free","time":27.87,"meet":"m43","course":"SCM"},{"id":"s259","swimmer":"emma","date":"2025-08-24","dist":50,"stroke":"Free","time":27.98,"meet":"m43","course":"SCM"},{"id":"s260","swimmer":"emma","date":"2025-08-24","dist":400,"stroke":"IM","time":321.13,"meet":"m43","course":"SCM"},{"id":"s261","swimmer":"emma","date":"2025-10-01","dist":100,"stroke":"IM","time":67.43,"meet":"m44","course":"SCM","place":42},{"id":"s262","swimmer":"emma","date":"2025-11-02","dist":400,"stroke":"IM","time":334.41,"meet":"m45","course":"LCM"},{"id":"s263","swimmer":"emma","date":"2025-11-08","dist":50,"stroke":"Free","time":28.49,"meet":"m33","course":"LCM"},{"id":"s264","swimmer":"emma","date":"2025-11-09","dist":200,"stroke":"Free","time":134.71,"meet":"m33","course":"LCM"},{"id":"s265","swimmer":"emma","date":"2025-11-09","dist":100,"stroke":"Back","time":72.0,"meet":"m33","course":"LCM"},{"id":"s266","swimmer":"emma","date":"2025-11-09","dist":50,"stroke":"Back","time":33.3,"meet":"m33","course":"LCM"},{"id":"s267","swimmer":"emma","date":"2025-11-09","dist":100,"stroke":"Free","time":62.61,"meet":"m33","course":"LCM"},{"id":"s268","swimmer":"emma","date":"2025-11-22","dist":400,"stroke":"Free","time":289.57,"meet":"m46","course":"LCM"},{"id":"s269","swimmer":"emma","date":"2025-11-22","dist":50,"stroke":"Breast","time":35.73,"meet":"m46","course":"LCM"},{"id":"s271","swimmer":"emma","date":"2025-12-12","dist":400,"stroke":"Free","time":284.9,"meet":"m35","course":"LCM"},{"id":"s270","swimmer":"emma","date":"2025-12-13","dist":50,"stroke":"Free","time":28.49,"meet":"m35","course":"LCM"},{"id":"s273","swimmer":"emma","date":"2025-12-13","dist":200,"stroke":"Free","time":135.24,"meet":"m35","course":"LCM"},{"id":"s274","swimmer":"emma","date":"2025-12-13","dist":100,"stroke":"Breast","time":76.88,"meet":"m35","course":"LCM","place":2},{"id":"s272","swimmer":"emma","date":"2025-12-14","dist":100,"stroke":"Breast","time":77.14,"meet":"m35","course":"LCM"},{"id":"s275","swimmer":"emma","date":"2025-12-15","dist":200,"stroke":"IM","time":152.14,"meet":"m35","course":"LCM"},{"id":"s276","swimmer":"emma","date":"2025-12-15","dist":200,"stroke":"IM","time":151.07,"meet":"m35","course":"LCM","place":7},{"id":"s277","swimmer":"emma","date":"2025-12-16","dist":200,"stroke":"Breast","time":173.29,"meet":"m35","course":"LCM"},{"id":"s278","swimmer":"emma","date":"2025-12-16","dist":200,"stroke":"Breast","time":171.87,"meet":"m35","course":"LCM","place":6},{"id":"s279","swimmer":"emma","date":"2025-12-17","dist":50,"stroke":"Breast","time":35.54,"meet":"m35","course":"LCM","heat":5,"lane":2,"place":2},{"id":"s280","swimmer":"emma","date":"2025-12-18","dist":100,"stroke":"Free","time":61.08,"meet":"m35","course":"LCM"},{"id":"s281","swimmer":"emma","date":"2025-12-18","dist":100,"stroke":"Back","time":71.88,"meet":"m35","course":"LCM"},{"id":"s296","swimmer":"emma","date":"2025-12-18","dist":100,"stroke":"Back","time":70.93,"meet":"m35","course":"LCM"},{"id":"s282","swimmer":"emma","date":"2025-12-19","dist":50,"stroke":"Back","time":32.98,"meet":"m35","course":"LCM"},{"id":"s283","swimmer":"emma","date":"2026-02-13","dist":50,"stroke":"Fly","time":31.78,"meet":"m38","course":"LCM"},{"id":"s284","swimmer":"emma","date":"2026-02-13","dist":200,"stroke":"IM","time":154.08,"meet":"m38","course":"LCM"},{"id":"s286","swimmer":"emma","date":"2026-02-14","dist":100,"stroke":"Free","time":62.21,"meet":"m38","course":"LCM"},{"id":"s287","swimmer":"emma","date":"2026-02-14","dist":50,"stroke":"Breast","time":35.33,"meet":"m38","course":"LCM"},{"id":"s285","swimmer":"emma","date":"2026-02-15","dist":50,"stroke":"Free","time":28.56,"meet":"m38","course":"LCM"},{"id":"s288","swimmer":"emma","date":"2026-02-15","dist":400,"stroke":"Free","time":287.88,"meet":"m38","course":"LCM"},{"id":"s289","swimmer":"emma","date":"2026-02-21","dist":800,"stroke":"Free","time":605.42,"meet":"m15","course":"LCM"},{"id":"s290","swimmer":"emma","date":"2026-02-22","dist":100,"stroke":"Free","time":62.32,"meet":"m15","course":"LCM"},{"id":"s291","swimmer":"emma","date":"2026-02-22","dist":200,"stroke":"IM","time":154.93,"meet":"m18","course":"LCM"},{"id":"s292","swimmer":"emma","date":"2026-02-22","dist":50,"stroke":"Free","time":28.71,"meet":"m18","course":"LCM"},{"id":"s294","swimmer":"emma","date":"2026-03-06","dist":100,"stroke":"Breast","time":78.72,"meet":"m47","course":"LCM"},{"id":"s295","swimmer":"emma","date":"2026-03-06","dist":100,"stroke":"Free","time":62.55,"meet":"m47","course":"LCM"},{"id":"s293","swimmer":"emma","date":"2026-03-07","dist":100,"stroke":"Back","time":72.45,"meet":"m47","course":"LCM"},{"id":"s297","swimmer":"emma","date":"2026-03-07","dist":200,"stroke":"Breast","time":178.72,"meet":"m47","course":"LCM"},{"id":"s298","swimmer":"emma","date":"2026-03-08","dist":200,"stroke":"IM","time":154.8,"meet":"m47","course":"LCM"},{"id":"s299","swimmer":"emma","date":"2026-03-08","dist":50,"stroke":"Breast","time":35.6,"meet":"m47","course":"LCM"},{"id":"s300","swimmer":"emma","date":"2026-03-23","dist":50,"stroke":"Free","time":28.69,"meet":"m39","course":"LCM","place":2},{"id":"s301","swimmer":"emma","date":"2026-03-25","dist":50,"stroke":"Fly","time":31.34,"meet":"m39","course":"LCM","place":2},{"id":"s302","swimmer":"emma","date":"2026-03-25","dist":100,"stroke":"Back","time":75.22,"meet":"m39","course":"LCM","place":2},{"id":"s303","swimmer":"emma","date":"2026-03-25","dist":50,"stroke":"Breast","time":36.46,"meet":"m39","course":"LCM","place":1},{"id":"s304","swimmer":"emma","date":"2026-03-25","dist":100,"stroke":"Free","time":62.9,"meet":"m39","course":"LCM"},{"id":"s305","swimmer":"emma","date":"2026-03-25","dist":50,"stroke":"Back","time":34.92,"meet":"m39","course":"LCM","place":2},{"id":"s306","swimmer":"emma","date":"2026-03-25","dist":100,"stroke":"Breast","time":82.03,"meet":"m39","course":"LCM"},{"id":"s307","swimmer":"emma","date":"2026-04-01","dist":100,"stroke":"Breast","time":78.84,"meet":"m39","course":"LCM","place":3},{"id":"s308","swimmer":"emma","date":"2026-04-02","dist":50,"stroke":"Free","time":28.48,"meet":"m39","course":"LCM"},{"id":"s309","swimmer":"emma","date":"2026-04-02","dist":50,"stroke":"Breast","time":35.34,"meet":"m39","course":"LCM"},{"id":"s310","swimmer":"emma","date":"2026-04-02","dist":100,"stroke":"Free","time":62.51,"meet":"m39","course":"LCM"},{"id":"s312","swimmer":"emma","date":"2026-04-11","dist":200,"stroke":"Breast","time":173.02,"meet":"m48","course":"LCM"},{"id":"s313","swimmer":"emma","date":"2026-04-14","dist":50,"stroke":"Breast","time":35.08,"meet":"m48","course":"LCM"},{"id":"s314","swimmer":"emma","date":"2026-04-17","dist":100,"stroke":"Breast","time":78.71,"meet":"m48","course":"LCM"},{"id":"s315","swimmer":"emma","date":"2026-05-21","dist":200,"stroke":"Breast","time":177.06,"meet":"m49","course":"LCM"},{"id":"s316","swimmer":"emma","date":"2026-05-22","dist":50,"stroke":"Breast","time":35.72,"meet":"m49","course":"LCM"},{"id":"s317","swimmer":"emma","date":"2026-05-22","dist":100,"stroke":"Breast","time":79.63,"meet":"m49","course":"LCM"},{"id":"s318","swimmer":"emma","date":"2026-06-10","dist":50,"stroke":"Breast","time":35.29,"meet":"m50","course":"LCM","event":26,"heat":10},{"id":"s320","swimmer":"emma","date":"2026-06-28","dist":200,"stroke":"Free","time":131.17,"meet":"m40","course":"SCM"},{"id":"s321","swimmer":"emma","date":"2026-06-28","dist":50,"stroke":"Back","time":32.1,"meet":"m40","course":"SCM"},{"id":"s322","swimmer":"emma","date":"2026-06-28","dist":200,"stroke":"Breast","time":165.7,"meet":"m40","course":"SCM"},{"id":"s323","swimmer":"emma","date":"2026-06-28","dist":200,"stroke":"IM","time":150.81,"meet":"m40","course":"SCM"},{"id":"s324","swimmer":"emma","date":"2026-08-02","dist":50,"stroke":"Breast","time":33.99,"meet":"m40","course":"SCM"},{"id":"s326","swimmer":"emma","date":"2026-08-08","dist":400,"stroke":"Free","time":277.35,"meet":"m51","course":"SCM"},{"id":"s327","swimmer":"emma","date":"2026-08-08","dist":200,"stroke":"Back","time":151.12,"meet":"m51","course":"SCM"},{"id":"s328","swimmer":"emma","date":"2026-08-08","dist":100,"stroke":"Breast","time":75.55,"meet":"m51","course":"SCM"},{"id":"s329","swimmer":"emma","date":"2026-08-08","dist":100,"stroke":"IM","time":68.04,"meet":"m51","course":"SCM"},{"id":"s330","swimmer":"emma","date":"2026-08-09","dist":400,"stroke":"IM","time":324.88,"meet":"m51","course":"SCM"},{"id":"s331","swimmer":"emma","date":"2026-08-09","dist":200,"stroke":"IM","time":149.99,"meet":"m51","course":"SCM"},{"id":"s332","swimmer":"emma","date":"2026-08-09","dist":200,"stroke":"Breast","time":166.72,"meet":"m51","course":"SCM"},{"id":"s333","swimmer":"emma","date":"2026-08-21","dist":100,"stroke":"Breast","time":75.06,"meet":"m52","course":"SCM"},{"id":"s334","swimmer":"emma","date":"2026-08-21","dist":200,"stroke":"IM","time":147.54,"meet":"m52","course":"SCM","place":10},{"id":"s335","swimmer":"emma","date":"2026-08-22","dist":200,"stroke":"Breast","time":163.89,"meet":"m52","course":"SCM"},{"id":"s336","swimmer":"emma","date":"2026-08-22","dist":100,"stroke":"Free","time":59.48,"meet":"m52","course":"SCM"},{"id":"s337","swimmer":"emma","date":"2026-08-22","dist":50,"stroke":"Breast","time":34.27,"meet":"m52","course":"SCM"},{"id":"s338","swimmer":"emma","date":"2026-08-23","dist":50,"stroke":"Free","time":27.39,"meet":"m52","course":"SCM"},{"id":"s339","swimmer":"emma","date":"2026-08-23","dist":100,"stroke":"IM","time":66.42,"meet":"m52","course":"SCM"},{"id":"s340","swimmer":"emma","date":"2026-08-23","dist":200,"stroke":"Free","time":128.84,"meet":"m52","course":"SCM"},{"id":"s341","swimmer":"emma","date":"2026-09-30","dist":50,"stroke":"Breast","time":34.04,"meet":"m44","course":"SCM"},{"id":"s342","swimmer":"emma","date":"2026-10-02","dist":100,"stroke":"IM","time":66.86,"meet":"m44","course":"SCM"},{"id":"s343","swimmer":"emma","date":"2026-10-02","dist":100,"stroke":"Free","time":58.5,"meet":"m44","course":"SCM"},{"id":"s344","swimmer":"emma","date":"2026-10-31","dist":100,"stroke":"Breast","time":null,"meet":"m53","course":"LCM","event":12},{"id":"s345","swimmer":"emma","date":"2026-10-31","dist":200,"stroke":"Breast","time":null,"meet":"m53","course":"LCM","event":28},{"id":"s346","swimmer":"emma","date":"2026-10-31","dist":50,"stroke":"Free","time":28.26,"meet":"m53","course":"LCM","event":4}],"nationalStdSwimTrack":[{"dist":50,"stroke":"Free","time":27.92,"age":16,"season":"2027"},{"dist":50,"stroke":"Back","time":32.31,"age":15,"season":"2026"},{"dist":100,"stroke":"Back","time":69.77,"age":15,"season":"2026"},{"dist":50,"stroke":"Breast","time":36.26,"age":15,"season":"2026"},{"dist":50,"stroke":"Fly","time":30.17,"age":15,"season":"2026"},{"dist":400,"stroke":"IM","time":320.84,"age":15,"season":"2026"},{"dist":200,"stroke":"Breast","time":172.41,"age":15,"season":"2026"},{"dist":100,"stroke":"Breast","time":79.35,"age":15,"season":"2026"},{"dist":200,"stroke":"IM","time":150.65,"age":15,"season":"2026"},{"dist":200,"stroke":"Back","time":150.65,"age":15,"season":"2026"},{"dist":100,"stroke":"Fly","time":67.29,"age":15,"season":"2026"},{"dist":100,"stroke":"Free","time":60.47,"age":16,"season":"2027"},{"dist":200,"stroke":"Free","time":131.19,"age":16,"season":"2027"},{"dist":400,"stroke":"Free","time":279.73,"age":15,"season":"2026"}]};
 
-const standards={
-"50m Freestyle":["29.50","27.92"],
-"100m Freestyle":["1:03.00","1:00.47"],
-"200m Freestyle":["2:17.50","2:11.91"],
-"400m Freestyle":["4:48.00","4:38.10"],
-"800m Freestyle":["9:55.00","9:20.60"],
-"1500m Freestyle":["18:38.00","18:02.64"],
+const EVENTS = [
+  [50,'Free'],[100,'Free'],[200,'Free'],[400,'Free'],[800,'Free'],[1500,'Free'],
+  [50,'Back'],[100,'Back'],[200,'Back'],
+  [50,'Breast'],[100,'Breast'],[200,'Breast'],
+  [50,'Fly'],[100,'Fly'],[200,'Fly'],
+  [100,'IM'],[200,'IM'],[400,'IM']
+];
+const STROKES = ['Free','Back','Breast','Fly','IM'];
+const ek = (d,s) => d+' '+s;
 
-"50m Backstroke":["33.80","32.25"],
-"100m Backstroke":["1:13.50","1:09.17"],
-"200m Backstroke":["2:40.00","2:29.76"],
-
-"50m Breaststroke":["37.80","36.13"],
-"100m Breaststroke":["1:25.00","1:18.68"],
-"200m Breaststroke":["3:05.50","2:49.50"],
-
-"50m Butterfly":["31.50","29.77"],
-"100m Butterfly":["1:11.00","1:05.97"],
-"200m Butterfly":["2:43.00","2:29.15"],
-
-"200m IM":["2:38.00","2:28.40"],
-"400m IM":["5:31.00","5:15.94"]
+/* NSW Speedo Senior State Age Championships 2026/27 — Female QTs (LCM).
+   Columns: 18&O, 17, 16, 15, 14, 13, 12 */
+const STATE_2627_F = {
+  '50 Free':['29.00','29.20','29.50','29.60','29.80','30.00','31.00'],
+  '100 Free':['1:02.50','1:02.80','1:03.00','1:03.50','1:04.00','1:06.00','1:07.00'],
+  '200 Free':['2:16.00','2:17.00','2:17.50','2:18.00','2:19.00','2:22.00','2:25.00'],
+  '400 Free':['4:47.50','4:47.50','4:48.00','4:50.00','4:55.00','5:04.00','5:10.00'],
+  '800 Free':['9:45.00','9:50.00','9:55.00','9:55.00','10:10.00','10:25.00','10:35.00'],
+  '1500 Free':['18:25.00','18:30.00','18:38.00','18:50.00','19:15.00','19:45.00','19:50.00'],
+  '50 Back':['33.20','33.50','33.80','34.00','34.50','35.50','36.00'],
+  '100 Back':['1:12.00','1:13.00','1:13.50','1:14.00','1:14.50','1:16.50','1:18.50'],
+  '200 Back':['2:37.00','2:38.50','2:40.00','2:41.00','2:42.00','2:44.00','2:48.00'],
+  '50 Breast':['37.50','37.50','37.80','38.00','39.00','39.50','41.50'],
+  '100 Breast':['1:22.50','1:24.50','1:25.00','1:25.50','1:26.00','1:28.00','1:31.00'],
+  '200 Breast':['2:59.50','3:02.00','3:05.50','3:08.00','3:09.00','3:10.00','3:10.50'],
+  '50 Fly':['31.00','31.00','31.50','31.50','32.00','32.50','34.00'],
+  '100 Fly':['1:09.00','1:10.00','1:11.00','1:11.50','1:13.50','1:15.50','1:18.00'],
+  '200 Fly':['2:38.00','2:41.00','2:43.00','2:45.00','2:48.50','2:52.00','2:56.00'],
+  '200 IM':['2:36.00','2:37.00','2:38.00','2:39.00','2:40.00','2:43.00','2:47.50'],
+  '400 IM':['5:30.00','5:30.00','5:31.00','5:33.00','5:38.00','5:42.00','5:48.00']
 };
 
-const initialPB={
-LCM:{
-"50m Freestyle":"28.26",
-"100m Freestyle":"1:01.08",
-"200m Freestyle":"2:14.71",
-"400m Freestyle":"4:44.90",
-"800m Freestyle":"10:05.42",
-"1500m Freestyle":"—",
-
-"50m Backstroke":"32.73",
-"100m Backstroke":"1:10.93",
-"200m Backstroke":"2:39.54",
-
-"50m Breaststroke":"35.08",
-"100m Breaststroke":"1:16.88",
-"200m Breaststroke":"2:51.87",
-
-"50m Butterfly":"31.34",
-"100m Butterfly":"1:13.44",
-"200m Butterfly":"—",
-
-"200m IM":"2:31.07",
-"400m IM":"5:34.41"
-},
-
-SCM:{
-"50m Freestyle":"27.39",
-"100m Freestyle":"58.50",
-"200m Freestyle":"2:08.84",
-"400m Freestyle":"4:37.35",
-"800m Freestyle":"—",
-"1500m Freestyle":"—",
-
-"50m Backstroke":"31.99",
-"100m Backstroke":"1:08.66",
-"200m Backstroke":"2:31.12",
-
-"50m Breaststroke":"33.99",
-"100m Breaststroke":"1:14.57",
-"200m Breaststroke":"2:43.89",
-
-"50m Butterfly":"31.84",
-"100m Butterfly":"1:11.50",
-"200m Butterfly":"—",
-
-"100m IM":"1:06.42",
-"200m IM":"2:27.54",
-"400m IM":"5:21.13"
+/* ---------- Time helpers ---------- */
+function parseTime(str){
+  if(str==null) return null;
+  str=String(str).trim().replace(/[^\d:.]/g,'');
+  if(!str) return null;
+  let p=str.split(':'), s=0;
+  if(p.length>3) return null;
+  for(const x of p){ if(x==='' || isNaN(+x)) return null; s=s*60+(+x); }
+  return s>0 ? Math.round(s*100)/100 : null;
 }
-};
-
-const defaultEvents={
-LCM:Object.keys(initialPB.LCM),
-SCM:Object.keys(initialPB.SCM)
-};
-
-let course=localStorage.getItem("emmaCourse")||"LCM";
-let view="home";
-let filter="All";
-
-let swims=JSON.parse(localStorage.getItem("emmaSwims")||"[]");
-let custom=JSON.parse(localStorage.getItem("emmaEvents")||'{"LCM":[],"SCM":[]}');
-
-function save(){
-localStorage.setItem("emmaSwims",JSON.stringify(swims));
-localStorage.setItem("emmaEvents",JSON.stringify(custom));
-localStorage.setItem("emmaCourse",course);
+function fmt(t){
+  if(t==null||!isFinite(t)) return '—';
+  t=Math.round(t*100)/100;
+  if(t<60) return t.toFixed(2);
+  const m=Math.floor(t/60), s=t-m*60;
+  return m+':'+s.toFixed(2).padStart(5,'0');
 }
+function fmtGap(g){ const a=Math.abs(g); return (g<0?'−':'+')+(a<60?a.toFixed(2):fmt(a)); }
+const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fdate(iso,short){ if(!iso) return ''; const [y,m,d]=iso.split('-').map(Number); return d+' '+MONTHS[m-1]+(short?'':' '+y); }
+function todayISO(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function ageOn(dob,iso){ const [y1,m1,d1]=dob.split('-').map(Number),[y2,m2,d2]=iso.split('-').map(Number); let a=y2-y1; if(m2<m1||(m2===m1&&d2<d1)) a--; return a; }
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Math.random().toString(36).slice(2,10);
 
-function seconds(t){
-if(!t||t==="—")return Infinity;
-let a=t.split(":").map(Number);
-if(a.some(isNaN))return Infinity;
-return a.length===1?a[0]:a[0]*60+a[1];
+/* ---------- SCM -> LCM estimate (approx., per 50m; matches Swim Track's display for Free/IM/Breast) ---------- */
+const CONV={Free:0.8,IM:0.8,Breast:1.0,Back:0.7,Fly:0.7};
+const toLCM=(t,d,s)=>t+CONV[s]*(d/50);
+
+/* ---------- State ---------- */
+const KEY='emmaSwim.v2';
+let DB, UI={tab:'bests',filter:'All',progEvent:'50 Free'};
+function defaultStandards(){
+  const nat={};
+  (SEED.nationalStdSwimTrack||[]).forEach(s=>{ nat[ek(s.dist,s.stroke)]=fmt(s.time); });
+  return {
+    state:{name:'NSW State Age 2026/27',ageDate:'2026-12-15',from:'2025-10-01',course:'LCM',closes:'2026-12-01',table:STATE_2627_F},
+    national:{name:'National',course:'LCM',from:'',times:nat}
+  };
 }
+function load(){
+  try{ const raw=localStorage.getItem(KEY); if(raw){ DB=JSON.parse(raw); } }catch(e){}
+  if(!DB||!DB.swims){
+    DB={swimmers:SEED.swimmers,meets:SEED.meets,swims:SEED.swims,standards:defaultStandards(),settings:{swimmer:'emma',course:'LCM'},importedFrom:'Swim Track backup 31 Oct 2026'};
+    save(true);
+  }
+}
+function save(quiet){ try{ localStorage.setItem(KEY,JSON.stringify(DB)); }catch(e){ if(!quiet) toast('Could not save on this device'); } }
 
-function formatTime(s){
-if(!isFinite(s))return "—";
-if(s<60)return s.toFixed(2);
-let m=Math.floor(s/60);
-let sec=(s-m*60).toFixed(2).padStart(5,"0");
-return m+":"+sec;
+const swimmer=()=>DB.swimmers.find(s=>s.id===DB.settings.swimmer)||DB.swimmers[0];
+const meetById=id=>DB.meets.find(m=>m.id===id);
+const mySwims=()=>DB.swims.filter(s=>s.swimmer===DB.settings.swimmer);
+const valid=s=>s.time!=null && !s.relay && !s.dq;
+
+function stateQT(key){
+  const st=DB.standards.state, sw=swimmer();
+  const row=st.table[key]; if(!row) return null;
+  const a=ageOn(sw.dob,st.ageDate);
+  if(a<12) return null;
+  const idx=a>=18?0:18-a;  // 17->1 ... 12->6
+  return parseTime(row[idx]);
+}
+function natQT(key){ const t=DB.standards.national.times[key]; return t?parseTime(t):null; }
+
+function bestOf(list){ let b=null; for(const s of list) if(valid(s)&&(!b||s.time<b.time)) b=s; return b; }
+function eventSwims(key,course){ return mySwims().filter(s=>ek(s.dist,s.stroke)===key&&(!course||s.course===course)); }
+function pbFor(key,course){ return bestOf(eventSwims(key,course)); }
+function windowBest(key){ const st=DB.standards.state; return bestOf(eventSwims(key,st.course).filter(s=>s.date>=st.from)); }
+
+/* PB flags: was this swim a PB (in its course) at the time it was swum */
+function pbFlags(){
+  const flags=new Set(), best={};
+  [...mySwims()].filter(valid).sort((a,b)=>a.date.localeCompare(b.date)||a.id.localeCompare(b.id)).forEach(s=>{
+    const k=s.course+ek(s.dist,s.stroke);
+    if(best[k]==null||s.time<best[k]){ if(best[k]!=null) flags.add(s.id); best[k]=s.time; }
+  });
+  // first ever swim of an event is not a "PB" badge; current PBs always flagged
+  EVENTS.forEach(([d,st])=>['LCM','SCM'].forEach(c=>{ const p=pbFor(ek(d,st),c); if(p) flags.add(p.id); }));
+  return flags;
 }
 
-function events(){
-return [...new Set([
-...defaultEvents[course],
-...(custom[course]||[])
-])];
-}
-
-function personalBest(ev){
-let best=seconds(initialPB[course][ev]);
-
-swims
-.filter(x=>x.course===course&&x.event===ev)
-.forEach(x=>{
-best=Math.min(best,seconds(x.time));
-});
-
-return formatTime(best);
-}
-
-function qualified(pb,target){
-return target && seconds(pb)<=seconds(target);
-}
-
-function setCourse(c){
-course=c;
-save();
-
-document.getElementById("lcBtn").classList.toggle("active",c==="LCM");
-document.getElementById("scBtn").classList.toggle("active",c==="SCM");
-
-render();
-}
-
-function go(v){
-view=v;
-
-document.querySelectorAll(".nav button")
-.forEach(b=>b.classList.remove("active"));
-
-document.getElementById("n-"+v).classList.add("active");
-
-render();
-}
-
-function qualifyingBoxes(ev,pb){
-
-if(course==="SCM"){
-return `
-<div class="quals">
-<div class="q state">
-<small>STATE</small>
-<b>—</b>
-</div>
-<div class="q nat">
-<small>NATIONAL</small>
-<b>—</b>
-</div>
-</div>`;
-}
-
-let q=standards[ev]||[];
-
-return `
-<div class="quals">
-
-<div class="q state">
-<small>STATE</small>
-<b>
-${q[0]||"—"}
-${qualified(pb,q[0])?'<span class="tick">✓</span>':""}
-</b>
-</div>
-
-<div class="q nat">
-<small>NATIONAL</small>
-<b>
-${q[1]||"—"}
-${qualified(pb,q[1])?'<span class="tick">✓</span>':""}
-</b>
-</div>
-
-</div>`;
-}
-
-function eventCard(ev){
-
-let p=personalBest(ev);
-
-let history=swims.filter(
-x=>x.course===course&&x.event===ev
-);
-
-return `
-<div class="card" onclick="showEvent('${ev}')">
-
-<div class="row">
-
-<div>
-<div class="event">${ev}</div>
-<div class="muted">
-${course} • ${history.length} recorded swim${history.length===1?"":"s"}
-</div>
-</div>
-
-<div class="pb">
-<small>PERSONAL BEST</small>
-${p}
-</div>
-
-</div>
-
-${qualifyingBoxes(ev,p)}
-
-</div>`;
-}
-
+/* ---------- Render ---------- */
+const $=s=>document.querySelector(s);
 function render(){
-
-let m=document.getElementById("main");
-
-if(view==="home"){
-
-let ev=events();
-
-let stateCount=ev.filter(e=>
-qualified(personalBest(e),(standards[e]||[])[0])
-).length;
-
-let nationalCount=ev.filter(e=>
-qualified(personalBest(e),(standards[e]||[])[1])
-).length;
-
-let latest=swims
-.filter(x=>x.course===course)
-.sort((a,b)=>b.date.localeCompare(a.date))[0];
-
-m.innerHTML=`
-
-<div class="title">Overview</div>
-
-<div class="summary">
-
-<div class="sum">
-<div class="num">${ev.filter(e=>personalBest(e)!=="—").length}</div>
-<div class="lab">PERSONAL BESTS</div>
-</div>
-
-<div class="sum">
-<div class="num">${course==="LCM"?stateCount:"—"}</div>
-<div class="lab">STATE TIMES</div>
-</div>
-
-<div class="sum">
-<div class="num">${course==="LCM"?nationalCount:"—"}</div>
-<div class="lab">NATIONAL TIMES</div>
-</div>
-
-</div>
-
-${latest?`
-<div class="title">Latest Swim</div>
-
-<div class="card">
-<div class="row">
-<div>
-<div class="event">${latest.event}</div>
-<div class="muted">${latest.date}${latest.meet?" • "+latest.meet:""}</div>
-</div>
-<div class="pb">${latest.time}</div>
-</div>
-</div>
-`:""}
-
-<div class="title">All Events</div>
-
-${ev.map(eventCard).join("")}
-
-`;
+  const sw=swimmer(), c=DB.settings.course;
+  const ageNow=ageOn(sw.dob,todayISO());
+  $('#who').innerHTML=`<b>${esc(sw.first)} ${esc(sw.last)}</b><span>Age ${ageNow}${DB.swimmers.length>1?' · switch ▾':''}</span>`;
+  document.querySelectorAll('#courseSeg button').forEach(b=>b.classList.toggle('on',b.dataset.c===c));
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===UI.tab));
+  $('#courseSeg').style.visibility=UI.tab==='more'?'hidden':'visible';
+  const m=$('#main');
+  ({bests:renderBests,swims:renderSwims,progress:renderProgress,more:renderMore})[UI.tab](m);
 }
 
-if(view==="events"){
-
-let groups=[
-"All",
-"Freestyle",
-"Backstroke",
-"Breaststroke",
-"Butterfly",
-"IM"
-];
-
-let list=events().filter(e=>
-filter==="All"||e.includes(filter)
-);
-
-m.innerHTML=`
-
-<div class="title">
-Events <span class="badge">${list.length}</span>
-</div>
-
-<div class="filter">
-${groups.map(g=>`
-<button
-class="${filter===g?"active":""}"
-onclick="filter='${g}';render()">
-${g}
-</button>
-`).join("")}
-</div>
-
-<button class="btn primary wide" onclick="openAddEvent()">
-+ Add New Event
-</button>
-
-${list.map(eventCard).join("")}
-
-`;
+function qtChip(label,qt,t){
+  if(!qt) return '';
+  if(t==null) return `<span class="chip">${label} ${fmt(qt)}</span>`;
+  const g=t-qt;
+  if(g<=0) return `<span class="chip ok">✓ ${label} ${fmtGap(g)}</span>`;
+  const near=g<=qt*0.02;
+  return `<span class="chip ${near?'near':''}">${label} ${fmt(qt)} · ${fmtGap(g)}</span>`;
 }
 
-if(view==="progress"){
-
-let list=events()
-.filter(e=>personalBest(e)!=="—");
-
-m.innerHTML=`
-
-<div class="title">Progress</div>
-
-<div class="note" style="margin-bottom:15px">
-Tap any event to view recorded swims and track Emma's progress.
-</div>
-
-${list.map(eventCard).join("")}
-
-`;
+function renderBests(m){
+  const c=DB.settings.course, st=DB.standards.state, sw=swimmer();
+  const stAge=ageOn(sw.dob,st.ageDate);
+  const rows=[]; let nState=0,nNat=0,nStateEv=0,nNatEv=0,recent=0;
+  const cutoff=new Date(Date.now()-365*864e5).toISOString().slice(0,10);
+  EVENTS.forEach(([d,s])=>{
+    const key=ek(d,s); const pb=pbFor(key,c);
+    const sq=c===st.course?stateQT(key):null, nq=c==='LCM'?natQT(key):null;
+    const wb=c===st.course?windowBest(key):null;
+    if(sq){ nStateEv++; if(wb&&wb.time<=sq) nState++; }
+    if(nq){ nNatEv++; if(pb&&pb.time<=nq) nNat++; }
+    if(pb&&pb.date>=cutoff) recent++;
+    if(!pb && !sq) return;
+    rows.push({key,pb,sq,nq,wb});
+  });
+  let h=`<div class="tiles">
+    <div class="tile"><div class="v">${c==='LCM'?nState+'<span style="font-size:15px;color:var(--muted)">/'+nStateEv+'</span>':'—'}</div><div class="l">State QTs<br>${c==='LCM'?'('+stAge+'yrs)':'LCM only'}</div></div>
+    <div class="tile"><div class="v">${c==='LCM'?nNat+'<span style="font-size:15px;color:var(--muted)">/'+nNatEv+'</span>':'—'}</div><div class="l">National<br>times</div></div>
+    <div class="tile"><div class="v">${recent}</div><div class="l">PBs set in<br>last 12 months</div></div>
+  </div>`;
+  if(c==='LCM'){
+    const days=Math.ceil((new Date(st.closes)-new Date(todayISO()))/864e5);
+    h+=`<div class="note"><b>${esc(st.name)}</b> · age ${stAge} as at ${fdate(st.ageDate)}. Only LCM swims since ${fdate(st.from)} count.${days>0?` Entries close ${fdate(st.closes)} (<b>${days} days</b>).`:''}</div>`;
+  } else {
+    h+=`<div class="note">Short course PBs. State & National qualifying is long course only — grey figures show an <b>estimated LCM equivalent</b>.</div>`;
+  }
+  h+=`<h2 class="sec">${c==='LCM'?'Long course':'Short course'} personal bests</h2><div class="list">`;
+  rows.forEach(r=>{
+    const [d,s]=r.key.split(' '), mt=r.pb&&meetById(r.pb.meet);
+    let chips='';
+    if(c==='LCM'){
+      chips+=qtChip('State',r.sq,r.wb?r.wb.time:null);
+      chips+=qtChip('Nat',r.nq,r.pb?r.pb.time:null);
+      if(r.sq&&r.pb&&r.wb&&r.wb.id!==r.pb.id) chips+=`<span class="chip">Since ${fdate(st.from,true).replace(/ \d+$/,'')}: ${fmt(r.wb.time)}</span>`;
+      if(r.sq&&r.pb&&!r.wb) chips+=`<span class="chip near">No swim in QT window</span>`;
+    }
+    h+=`<button class="item" data-ev="${r.key}"><div class="main"><div class="t1">${r.key}</div>
+      <div class="t2">${r.pb?fdate(r.pb.date)+(mt?' · '+esc(mt.name):''):'Not swum yet'}</div>
+      ${chips?`<div class="chips">${chips}</div>`:''}</div>
+      <div class="right">${r.pb?`<div class="time">${fmt(r.pb.time)}</div>`:'<div class="time dim">—</div>'}
+      ${c==='SCM'&&r.pb?`<div class="time dim">≈ ${fmt(toLCM(r.pb.time,+d,s))}</div>`:''}</div></button>`;
+  });
+  h+='</div>';
+  m.innerHTML=h;
+  m.querySelectorAll('[data-ev]').forEach(b=>b.onclick=()=>{UI.progEvent=b.dataset.ev;UI.tab='progress';render();scrollTo(0,0);});
 }
 
-if(view==="settings"){
+function renderSwims(m){
+  const c=DB.settings.course, flags=pbFlags();
+  const evs=[...new Set(mySwims().filter(s=>s.course===c).map(s=>ek(s.dist,s.stroke)))];
+  const ordered=EVENTS.map(e=>ek(...e)).filter(k=>evs.includes(k));
+  let list=mySwims().filter(s=>s.course===c&&(UI.filter==='All'||ek(s.dist,s.stroke)===UI.filter));
+  list.sort((a,b)=>b.date.localeCompare(a.date)||(a.event||0)-(b.event||0));
+  let h=`<div class="filters">${['All',...ordered].map(k=>`<button class="${UI.filter===k?'on':''}" data-f="${k}">${k}</button>`).join('')}</div>`;
+  if(!list.length) h+=`<div class="empty">No ${c} swims yet.</div>`;
+  let lastMeet=null, open=false;
+  list.forEach(s=>{
+    const mt=meetById(s.meet), mk=s.meet+'|'+(UI.filter==='All'?'':s.date);
+    if(mk!==lastMeet){
+      if(open) h+='</div>';
+      const ds=list.filter(x=>x.meet===s.meet).map(x=>x.date).sort();
+      h+=`<div class="meet-h"><b>${esc(mt?mt.name:'No meet')}</b><span>${UI.filter==='All'?(ds[0]===ds[ds.length-1]?fdate(ds[0]):fdate(ds[0],true)+' – '+fdate(ds[ds.length-1])):fdate(s.date)}${mt&&mt.location?' · '+esc(mt.location):''}</span></div><div class="list">`;
+      lastMeet=mk; open=true;
+    }
+    const extras=[s.place?ordinal(s.place):'',s.event?'Ev '+s.event:'',s.relay?'Relay':'',s.dq?'DQ':''].filter(Boolean).join(' · ');
+    h+=`<button class="item" data-id="${s.id}"><div class="main"><div class="t1">${ek(s.dist,s.stroke)}</div><div class="t2">${fdate(s.date)}${extras?' · '+extras:''}</div></div>
+      <div class="right">${flags.has(s.id)?'<span class="chip pb">PB</span> ':''}</div>
+      <div class="right">${s.time!=null?`<div class="time">${fmt(s.time)}</div>`:'<div class="time dim">add time</div>'}</div></button>`;
+  });
+  if(open) h+='</div>';
+  m.innerHTML=h;
+  m.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{UI.filter=b.dataset.f;render();});
+  m.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>openSwim(DB.swims.find(s=>s.id===b.dataset.id)));
+}
+const ordinal=n=>n+(['th','st','nd','rd'][(n%100-20)%10]||['th','st','nd','rd'][n%100]||'th');
 
-m.innerHTML=`
-
-<div class="title">Settings</div>
-
-<div class="settings-card">
-<h3>Emma</h3>
-<div class="note">
-Age 16 swimmer. Long Course and Short Course personal bests are tracked separately.
-</div>
-</div>
-
-<div class="settings-card">
-<h3>Qualifying Times</h3>
-<div class="note">
-Long Course uses the 2026/27 NSW Senior State Age Female 16 qualifying times and the Girls 16 National qualifying times supplied for Emma.
-</div>
-</div>
-
-<div class="settings-card">
-<h3>Short Course</h3>
-<div class="note">
-State qualifying times are not displayed for SCM because the NSW State qualifying sheet supplied specifies Long Course times only.
-</div>
-</div>
-
-<div class="settings-card">
-<h3>Adding Results</h3>
-<div class="note">
-Use the blue + button to add a swim. Emma's PB will automatically update whenever a faster time is entered.
-</div>
-</div>
-
-`;
-
+function renderProgress(m){
+  const key=UI.progEvent, c=DB.settings.course;
+  const have=new Set(mySwims().filter(valid).map(s=>ek(s.dist,s.stroke)));
+  const opts=EVENTS.map(e=>ek(...e)).filter(k=>have.has(k));
+  if(!have.has(key)&&opts.length) UI.progEvent=opts[0];
+  const k=UI.progEvent;
+  const all=eventSwims(k).filter(valid).sort((a,b)=>a.date.localeCompare(b.date));
+  const pbL=pbFor(k,'LCM'), pbS=pbFor(k,'SCM'), sq=stateQT(k), nq=natQT(k), wb=windowBest(k);
+  let h=`<div class="filters">${opts.map(o=>`<button class="${o===k?'on':''}" data-e="${o}">${o}</button>`).join('')}</div>`;
+  h+=`<div class="tiles" style="grid-template-columns:1fr 1fr">
+    <div class="tile"><div class="l">LCM PB</div><div class="v" style="color:var(--ink)">${pbL?fmt(pbL.time):'—'}</div><div class="l">${pbL?fdate(pbL.date):''}</div></div>
+    <div class="tile"><div class="l">SCM PB</div><div class="v">${pbS?fmt(pbS.time):'—'}</div><div class="l">${pbS?fdate(pbS.date):''}</div></div></div>`;
+  if(sq||nq){
+    h+=`<div class="note">`;
+    if(sq){ const t=wb&&wb.time; h+=`<b>State QT ${fmt(sq)}</b> — ${t==null?'no LCM swim since '+fdate(DB.standards.state.from):t<=sq?`<span class="gap-ok">qualified, ${fmtGap(t-sq)}</span> (${fmt(t)} on ${fdate(wb.date)})`:`<span class="gap-no">${fmtGap(t-sq)} to go</span> (best in window ${fmt(t)})`}<br>`; }
+    if(nq){ const t=pbL&&pbL.time; h+=`<b>National ${fmt(nq)}</b> — ${t==null?'no LCM time yet':t<=nq?`<span class="gap-ok">achieved, ${fmtGap(t-nq)}</span>`:`<span class="gap-no">${fmtGap(t-nq)} to go</span>`}`; }
+    h+=`</div>`;
+  }
+  h+=`<h2 class="sec">Times over time</h2><div class="chart-card" id="chart"><div class="tip" id="tip"></div></div>`;
+  h+=`<h2 class="sec">All ${k} swims</h2><div class="list">`;
+  const flags=pbFlags();
+  [...all].reverse().forEach(s=>{ const mt=meetById(s.meet);
+    h+=`<button class="item" data-id="${s.id}"><div class="main"><div class="t1" style="font-size:15px">${esc(mt?mt.name:'')}</div><div class="t2">${fdate(s.date)}${s.place?' · '+ordinal(s.place):''}</div></div>
+    <div class="right"><span class="chip c-${s.course.toLowerCase()}">${s.course}</span>${flags.has(s.id)?' <span class="chip pb">PB</span>':''}</div>
+    <div class="right"><div class="time">${fmt(s.time)}</div></div></button>`; });
+  h+='</div>';
+  m.innerHTML=h;
+  m.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>{UI.progEvent=b.dataset.e;render();});
+  m.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>openSwim(DB.swims.find(s=>s.id===b.dataset.id)));
+  drawChart($('#chart'),all,sq,nq);
 }
 
+function drawChart(el,swims,sq,nq){
+  const W=340,H=230,L=44,R=40,T=14,B=26;
+  if(!swims.length){ el.insertAdjacentHTML('beforeend','<div class="empty">No times yet</div>'); return; }
+  const ts=swims.map(s=>+new Date(s.date));
+  let x0=Math.min(...ts), x1=Math.max(...ts); if(x1-x0<30*864e5){x0-=20*864e5;x1+=20*864e5;}
+  const vals=swims.map(s=>s.time).concat([sq,nq].filter(Boolean));
+  let y0=Math.min(...vals), y1=Math.max(...vals); const pad=(y1-y0)*0.08||1; y0-=pad; y1+=pad;
+  const X=t=>L+(t-x0)/(x1-x0)*(W-L-R), Y=v=>T+(v-y0)/(y1-y0)*(H-T-B); // faster (lower) at top
+  const css=getComputedStyle(document.documentElement), col=n=>css.getPropertyValue(n).trim();
+  let g='';
+  // y grid
+  const step=niceStep((y1-y0)/4);
+  for(let v=Math.ceil(y0/step)*step; v<=y1; v+=step){ g+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="${col('--grid')}" stroke-width="1"/><text x="${L-6}" y="${Y(v)+4}" text-anchor="end" font-size="11" fill="${col('--muted')}">${fmt(v)}</text>`; }
+  // x ticks: years
+  const ya=new Date(x0).getFullYear(), yb=new Date(x1).getFullYear();
+  for(let y=ya;y<=yb+1;y++){ const t=+new Date(y+'-01-01'); if(t<x0||t>x1) continue; g+=`<line x1="${X(t)}" x2="${X(t)}" y1="${T}" y2="${H-B}" stroke="${col('--grid')}"/><text x="${X(t)}" y="${H-B+16}" text-anchor="middle" font-size="11" fill="${col('--muted')}">${y}</text>`; }
+  g+=`<line x1="${L}" x2="${W-R}" y1="${H-B}" y2="${H-B}" stroke="${col('--axis')}"/>`;
+  g+=`<text x="${L-6}" y="${T-2}" text-anchor="end" font-size="11" fill="${col('--muted')}">faster ↑</text>`;
+  // QT lines
+  [[sq,'State'],[nq,'Nat']].forEach(([q,lab])=>{ if(!q) return; g+=`<line x1="${L}" x2="${W-R}" y1="${Y(q)}" y2="${Y(q)}" stroke="${col('--ink2')}" stroke-width="1.5" stroke-dasharray="5 4"/><text x="${W-R+4}" y="${Y(q)+4}" font-size="11" font-weight="600" fill="${col('--ink2')}">${lab}</text>`; });
+  // series
+  const pts=[];
+  ['LCM','SCM'].forEach(c=>{
+    const ss=swims.filter(s=>s.course===c); if(!ss.length) return;
+    const color=col(c==='LCM'?'--lcm':'--scm');
+    // best-so-far step line
+    let best=Infinity, d='';
+    ss.forEach((s,i)=>{ best=Math.min(best,s.time); d+=(i?'L':'M')+X(+new Date(s.date))+','+Y(best)+' '; });
+    g+=`<path d="${d}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" opacity=".9"/>`;
+    ss.forEach(s=>{ const px=X(+new Date(s.date)),py=Y(s.time); pts.push({px,py,s,color});
+      g+=`<circle cx="${px}" cy="${py}" r="4" fill="${color}" stroke="${col('--surface')}" stroke-width="2"/>`; });
+    const last=ss[ss.length-1];
+  });
+  const svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Times over time">${g}<rect id="hit" x="${L}" y="${T}" width="${W-L-R}" height="${H-T-B}" fill="transparent"/><circle id="hl" r="7" fill="none" stroke-width="2" style="display:none"/></svg>`;
+  el.insertAdjacentHTML('beforeend',svg+`<div class="legend"><span><i style="background:var(--lcm)"></i>LCM</span><span><i style="background:var(--scm)"></i>SCM</span><span style="color:var(--muted)">Dots = each swim · line = best so far</span>${sq||nq?'<span><i class="dash"></i>Qualifying time</span>':''}</div>`);
+  const svgEl=el.querySelector('svg'), tip=el.querySelector('#tip'), hl=el.querySelector('#hl');
+  function show(ev){
+    const r=svgEl.getBoundingClientRect(), sx=(ev.clientX-r.left)*W/r.width, sy=(ev.clientY-r.top)*H/r.height;
+    let best=null,bd=1e9; pts.forEach(p=>{ const d=Math.hypot(p.px-sx,(p.py-sy)*0.6); if(d<bd){bd=d;best=p;} });
+    if(!best||bd>60){hide();return;}
+    const mt=meetById(best.s.meet);
+    hl.setAttribute('cx',best.px);hl.setAttribute('cy',best.py);hl.setAttribute('stroke',best.color);hl.style.display='';
+    tip.innerHTML=`<b>${fmt(best.s.time)}</b> ${best.s.course}<br>${fdate(best.s.date)}${mt?' · '+esc(mt.name):''}`;
+    tip.style.display='block'; tip.style.left=(best.px*r.width/W+8)+'px'; tip.style.top=(best.py*r.height/H+12)+'px';
+    const tw=tip.offsetWidth, cw=el.clientWidth, cx=best.px*r.width/W+8;
+    tip.style.left=Math.min(Math.max(cx,tw/2+4),cw-tw/2-4)+'px';
+  }
+  function hide(){tip.style.display='none';hl.style.display='none';}
+  svgEl.addEventListener('pointermove',show); svgEl.addEventListener('pointerdown',show); svgEl.addEventListener('pointerleave',hide);
+}
+function niceStep(x){ const p=Math.pow(10,Math.floor(Math.log10(x))), f=x/p; return (f<1.5?1:f<3?2:f<7?5:10)*p; }
+
+function renderMore(m){
+  const st=DB.standards.state, nat=DB.standards.national, sw=swimmer();
+  const a=ageOn(sw.dob,st.ageDate);
+  let h=`<h2 class="sec">Qualifying times · ${esc(sw.first)}</h2>
+  <div class="note">State: <b>${esc(st.name)}</b>, female ${a>=18?'18 & over':a+' yrs'} (age at ${fdate(st.ageDate)}). National times are editable — tap a value to change it.</div>
+  <div class="list" style="margin-top:10px;padding:2px 6px"><table class="qt-table"><thead><tr><th>Event</th><th>State</th><th>National</th><th>LCM PB</th></tr></thead><tbody>`;
+  EVENTS.forEach(([d,s])=>{ const k=ek(d,s), sq=stateQT(k), pb=pbFor(k,'LCM');
+    if(!sq && !nat.times[k] && !pb) return;
+    h+=`<tr><td>${k}</td><td>${sq?fmt(sq):'—'}</td><td><input data-nat="${k}" value="${esc(nat.times[k]||'')}" placeholder="—" inputmode="decimal"></td><td>${pb?fmt(pb.time):'—'}</td></tr>`; });
+  h+=`</tbody></table></div>
+  <h2 class="sec">Backup</h2>
+  <div class="note">Swims are saved on <b>this device's browser</b>. Export a backup after each meet and keep it in iCloud/Files — you can restore it here or on another phone.</div>
+  <button class="btn" id="exp">Export backup file</button>
+  <button class="btn ghost" id="imp">Restore from backup file</button>
+  <input type="file" id="impFile" accept=".json,application/json" hidden>
+  <h2 class="sec">Swimmers</h2><div class="list">${DB.swimmers.map(s=>`<button class="item" data-sw="${s.id}"><div class="main"><div class="t1">${esc(s.first)} ${esc(s.last)}</div><div class="t2">Born ${fdate(s.dob)} · ${DB.swims.filter(x=>x.swimmer===s.id).length} swims</div></div><div class="right">${s.id===DB.settings.swimmer?'<span class="chip ok">Selected</span>':''}</div></button>`).join('')}</div>
+  <h2 class="sec">Appearance</h2><div class="list">${['auto','light','dark'].map(t=>`<button class="item" data-theme="${t}"><div class="main"><div class="t1">${t==='auto'?'Match phone':t[0].toUpperCase()+t.slice(1)}</div></div><div class="right">${(DB.settings.theme||'auto')===t?'✓':''}</div></button>`).join('')}</div>
+  <h2 class="sec">Data</h2>
+  <div class="note">${DB.swims.length} swims across ${DB.meets.length} meets. ${esc(DB.importedFrom||'')}</div>
+  <button class="btn danger" id="reset">Reset to original Swim Track data</button>`;
+  m.innerHTML=h;
+  m.querySelectorAll('[data-nat]').forEach(inp=>inp.onchange=()=>{ const v=inp.value.trim(); if(v&&!parseTime(v)){toast('Not a valid time');return;} if(v) DB.standards.national.times[inp.dataset.nat]=fmt(parseTime(v)); else delete DB.standards.national.times[inp.dataset.nat]; save(); toast('National time saved'); });
+  m.querySelectorAll('[data-sw]').forEach(b=>b.onclick=()=>{DB.settings.swimmer=b.dataset.sw;save();render();});
+  m.querySelectorAll('[data-theme]').forEach(b=>b.onclick=()=>{DB.settings.theme=b.dataset.theme;save();applyTheme();render();});
+  $('#exp').onclick=exportBackup;
+  $('#imp').onclick=()=>$('#impFile').click();
+  $('#impFile').onchange=e=>importBackup(e.target.files[0]);
+  $('#reset').onclick=()=>{ if(confirm('Replace everything on this device with the original Swim Track data? Swims added since will be lost unless exported.')){ localStorage.removeItem(KEY); DB=null; load(); render(); toast('Reset done'); } };
 }
 
-function openAddSwim(preselected=""){
-
-let options=events().map(e=>
-`<option ${e===preselected?"selected":""}>${e}</option>`
-).join("");
-
-document.getElementById("modal").innerHTML=`
-
-<div class="sheet">
-
-<h2>Add Swim</h2>
-
-<div class="field">
-<label>COURSE</label>
-<select id="aCourse" onchange="refreshEvents()">
-<option ${course==="LCM"?"selected":""}>LCM</option>
-<option ${course==="SCM"?"selected":""}>SCM</option>
-</select>
-</div>
-
-<div class="field">
-<label>EVENT</label>
-<select id="aEvent">
-${options}
-</select>
-</div>
-
-<div class="field">
-<label>TIME</label>
-<input id="aTime"
-inputmode="decimal"
-placeholder="e.g. 28.26 or 1:01.08">
-</div>
-
-<div class="field">
-<label>DATE</label>
-<input id="aDate"
-type="date"
-value="${new Date().toISOString().slice(0,10)}">
-</div>
-
-<div class="field">
-<label>MEET / LOCATION</label>
-<input id="aMeet"
-placeholder="Optional">
-</div>
-
-<div class="actions">
-<button onclick="closeModal()">Cancel</button>
-<button class="btn primary" onclick="addSwim()">Save Swim</button>
-</div>
-
-</div>`;
-
-document.getElementById("modal")
-.classList.remove("hidden");
+function exportBackup(){
+  const blob=new Blob([JSON.stringify({app:'emma-swim',version:2,exported:new Date().toISOString(),data:DB},null,1)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='emma-swim-backup-'+todayISO()+'.json'; document.body.appendChild(a); a.click(); a.remove();
+  DB.settings.lastBackup=todayISO(); save();
+}
+function importBackup(file){
+  if(!file) return; const r=new FileReader();
+  r.onload=()=>{ try{ const j=JSON.parse(r.result); const d=j.data||j; if(!d.swims||!d.meets) throw 0;
+      if(!confirm(`Restore ${d.swims.length} swims from this backup? This replaces the data on this device.`)) return;
+      DB=d; save(); render(); toast('Backup restored'); }catch(e){ toast('That file is not an Emma Swim backup'); } };
+  r.readAsText(file);
 }
 
-function refreshEvents(){
-
-let c=document.getElementById("aCourse").value;
-
-let arr=[
-...new Set([
-...defaultEvents[c],
-...(custom[c]||[])
-])
-];
-
-document.getElementById("aEvent").innerHTML=
-arr.map(e=>`<option>${e}</option>`).join("");
+/* ---------- Add / edit swim ---------- */
+function openSwim(s){
+  const isNew=!s;
+  const recentMeets=[...DB.meets].map(mt=>({mt,last:DB.swims.filter(x=>x.meet===mt.id).map(x=>x.date).sort().pop()||''})).sort((a,b)=>b.last.localeCompare(a.last));
+  const lastSwim=[...mySwims()].sort((a,b)=>b.date.localeCompare(a.date))[0];
+  s=s||{id:'n'+uid(),swimmer:DB.settings.swimmer,date:todayISO(),dist:50,stroke:'Free',time:null,meet:lastSwim&&lastSwim.date>=new Date(Date.now()-4*864e5).toISOString().slice(0,10)?lastSwim.meet:'',course:DB.settings.course};
+  const bg=document.createElement('div'); bg.className='sheet-bg';
+  bg.innerHTML=`<div class="sheet"><div class="sheet-head"><button data-x>Cancel</button><b>${isNew?'Add swim':'Edit swim'}</b><button data-save>Save</button></div><div class="sheet-body">
+    <div class="form">
+      <label><span>Meet</span><select id="fMeet"><option value="">— choose —</option><option value="__new">+ New meet…</option>${recentMeets.map(({mt})=>`<option value="${mt.id}" ${mt.id===s.meet?'selected':''}>${esc(mt.name)} (${mt.course})</option>`).join('')}</select></label>
+      <div id="newMeet" hidden>
+        <label><span>Meet name</span><input id="fMName" placeholder="e.g. Sydney Metro Summer"></label>
+        <label><span>Location</span><input id="fMLoc" placeholder="e.g. SOPAC"></label>
+        <label><span>Course</span><select id="fMCourse"><option>LCM</option><option>SCM</option></select></label>
+      </div>
+      <label><span>Date</span><input type="date" id="fDate" value="${s.date}"></label>
+    </div>
+    <div class="form">
+      <label><span>Stroke</span><select id="fStroke">${STROKES.map(x=>`<option ${x===s.stroke?'selected':''}>${x}</option>`).join('')}</select></label>
+      <label><span>Distance</span><select id="fDist">${[50,100,200,400,800,1500].map(x=>`<option ${x===s.dist?'selected':''}>${x}</option>`).join('')}</select></label>
+      <label><span>Time</span><input id="fTime" inputmode="decimal" placeholder="28.26 or 1:01.08" value="${s.time!=null?fmt(s.time):''}"></label>
+    </div>
+    <div id="fHint" class="note" style="margin:-4px 0 14px"></div>
+    <div class="form">
+      <label><span>Place</span><input id="fPlace" inputmode="numeric" value="${s.place||''}"></label>
+      <label><span>Event #</span><input id="fEvent" inputmode="numeric" value="${s.event||''}"></label>
+      <label><span>Heat</span><input id="fHeat" inputmode="numeric" value="${s.heat||''}"></label>
+      <label><span>Lane</span><input id="fLane" inputmode="numeric" value="${s.lane||''}"></label>
+      <label><span>Relay lead-off</span><input type="checkbox" id="fRelay" ${s.relay?'checked':''}></label>
+      <label><span>Disqualified</span><input type="checkbox" id="fDq" ${s.dq?'checked':''}></label>
+    </div>
+    <div class="err" id="fErr"></div>
+    ${isNew?'':'<button class="btn danger" data-del>Delete swim</button>'}
+  </div></div>`;
+  document.body.appendChild(bg);
+  const q=id=>bg.querySelector(id);
+  const close=()=>bg.remove();
+  bg.onclick=e=>{ if(e.target===bg) close(); };
+  q('[data-x]').onclick=close;
+  q('#fMeet').onchange=()=>{ q('#newMeet').hidden=q('#fMeet').value!=='__new'; hint(); };
+  function curCourse(){ const v=q('#fMeet').value; if(v==='__new') return q('#fMCourse').value; const mt=meetById(v); return mt?mt.course:DB.settings.course; }
+  function hint(){
+    const t=parseTime(q('#fTime').value), key=ek(+q('#fDist').value,q('#fStroke').value), c=curCourse();
+    const pb=bestOf(eventSwims(key,c).filter(x=>x.id!==s.id)); let out=[];
+    if(pb) out.push(`${c} PB ${fmt(pb.time)}`);
+    if(t&&pb&&t<pb.time) out.push(`<span class="gap-ok">New PB by ${(pb.time-t).toFixed(2)}s 🎉</span>`);
+    if(t&&!pb) out.push('First '+c+' swim of this event');
+    const sq=c==='LCM'?stateQT(key):null;
+    if(t&&sq) out.push(t<=sq?`<span class="gap-ok">State QT ✓ (${fmt(sq)})</span>`:`State QT ${fmt(sq)} (${fmtGap(t-sq)})`);
+    q('#fHint').innerHTML=out.join(' · ')||'Enter the time to compare with PB';
+  }
+  ['#fTime','#fDist','#fStroke','#fMCourse'].forEach(id=>q(id).addEventListener('input',hint)); hint();
+  if(!isNew) q('[data-del]').onclick=()=>{ if(confirm('Delete this swim?')){ DB.swims=DB.swims.filter(x=>x.id!==s.id); save(); close(); render(); toast('Swim deleted'); } };
+  q('[data-save]').onclick=()=>{
+    let meetId=q('#fMeet').value;
+    if(meetId==='__new'){ const n=q('#fMName').value.trim(); if(!n){q('#fErr').textContent='Give the new meet a name';return;}
+      meetId='m'+uid(); DB.meets.push({id:meetId,name:n,location:q('#fMLoc').value.trim(),course:q('#fMCourse').value}); }
+    if(!meetId){ q('#fErr').textContent='Choose a meet (course comes from the meet)'; return; }
+    const tv=q('#fTime').value.trim(), t=parseTime(tv);
+    if(tv&&!t){ q('#fErr').textContent='Time should look like 28.26 or 1:01.08'; return; }
+    const mt=meetById(meetId);
+    const rec=Object.assign(s,{date:q('#fDate').value||todayISO(),dist:+q('#fDist').value,stroke:q('#fStroke').value,time:t,meet:meetId,course:mt.course});
+    ['place','event','heat','lane'].forEach(f=>{ const v=parseInt(q('#f'+f[0].toUpperCase()+f.slice(1)).value); if(v>0) rec[f]=v; else delete rec[f]; });
+    if(q('#fRelay').checked) rec.relay=true; else delete rec.relay;
+    if(q('#fDq').checked) rec.dq=true; else delete rec.dq;
+    if(isNew) DB.swims.push(rec);
+    if(DB.settings.course!==rec.course) DB.settings.course=rec.course;
+    save(); close(); render(); toast(isNew?'Swim added':'Swim updated');
+  };
 }
 
-function addSwim(){
-
-let c=document.getElementById("aCourse").value;
-let e=document.getElementById("aEvent").value;
-let t=document.getElementById("aTime").value.trim();
-let d=document.getElementById("aDate").value;
-let meet=document.getElementById("aMeet").value.trim();
-
-if(!t||!isFinite(seconds(t))){
-alert("Please enter a valid swim time.");
-return;
+function openSwimmerPicker(){
+  if(DB.swimmers.length<2) return;
+  const i=DB.swimmers.findIndex(s=>s.id===DB.settings.swimmer);
+  DB.settings.swimmer=DB.swimmers[(i+1)%DB.swimmers.length].id; save(); render();
 }
+function toast(msg){ const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2000); }
+function applyTheme(){ const t=DB.settings.theme||'auto'; if(t==='auto') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme',t); }
 
-swims.push({
-course:c,
-event:e,
-time:t,
-date:d,
-meet:meet
-});
-
-course=c;
-
-save();
-closeModal();
+/* ---------- Wire up ---------- */
+load(); applyTheme();
+document.querySelectorAll('#courseSeg button').forEach(b=>b.onclick=()=>{DB.settings.course=b.dataset.c;UI.filter='All';save();render();});
+document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{UI.tab=b.dataset.tab;render();scrollTo(0,0);});
+$('#addBtn').onclick=()=>openSwim(null);
+$('#who').onclick=openSwimmerPicker;
 render();
-}
-
-function openAddEvent(){
-
-document.getElementById("modal").innerHTML=`
-
-<div class="sheet">
-
-<h2>Add New Event</h2>
-
-<div class="field">
-<label>COURSE</label>
-<select id="eCourse">
-<option ${course==="LCM"?"selected":""}>LCM</option>
-<option ${course==="SCM"?"selected":""}>SCM</option>
-</select>
-</div>
-
-<div class="field">
-<label>EVENT NAME</label>
-<input id="eName"
-placeholder="e.g. 25m Freestyle">
-</div>
-
-<div class="actions">
-<button onclick="closeModal()">Cancel</button>
-<button class="btn primary" onclick="addEvent()">Add Event</button>
-</div>
-
-</div>`;
-
-document.getElementById("modal")
-.classList.remove("hidden");
-}
-
-function addEvent(){
-
-let c=document.getElementById("eCourse").value;
-let n=document.getElementById("eName").value.trim();
-
-if(!n)return;
-
-if(!custom[c].includes(n)){
-custom[c].push(n);
-}
-
-course=c;
-
-save();
-closeModal();
-render();
-}
-
-function showEvent(ev){
-
-let history=swims
-.filter(x=>x.course===course&&x.event===ev)
-.sort((a,b)=>b.date.localeCompare(a.date));
-
-document.getElementById("modal").innerHTML=`
-
-<div class="sheet">
-
-<h2>${ev}</h2>
-
-<div class="card">
-
-<div class="row">
-
-<div>
-<div class="event">${course}</div>
-<div class="muted">Personal Best</div>
-</div>
-
-<div class="pb">${personalBest(ev)}</div>
-
-</div>
-
-${qualifyingBoxes(ev,personalBest(ev))}
-
-</div>
-
-<div class="title">Swim History</div>
-
-${history.length?
-history.map(x=>`
-
-<div class="history-row">
-<span>
-${x.date}
-${x.meet?" • "+x.meet:""}
-</span>
-<b>${x.time}</b>
-</div>
-
-`).join("")
-:
-`<div class="empty">
-No recorded swims yet.<br>
-Add Emma's next swim to start the history.
-</div>`
-}
-
-<div class="actions">
-<button onclick="closeModal()">Close</button>
-<button class="btn primary"
-onclick="closeModal();openAddSwim('${ev}')">
-Add Swim
-</button>
-</div>
-
-</div>`;
-
-document.getElementById("modal")
-.classList.remove("hidden");
-}
-
-function closeModal(){
-document.getElementById("modal")
-.classList.add("hidden");
-
-document.getElementById("modal").innerHTML="";
-}
-
-document.getElementById("modal")
-.addEventListener("click",function(e){
-if(e.target.id==="modal"){
-closeModal();
-}
-});
-
-setCourse(course);
-
 </script>
-
 </body>
 </html>
