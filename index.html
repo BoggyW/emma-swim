@@ -9,10 +9,10 @@
 <meta name="apple-mobile-web-app-title" content="Emma Swim">
 <meta name="theme-color" content="#002356">
 <title>Emma Swim</title>
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-11-01.0902">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-11-01.0902">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-11-01.0902">
-<link rel="manifest" href="manifest.json?v=2026-11-01.0902">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-11-01.0908">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-11-01.0908">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-11-01.0908">
+<link rel="manifest" href="manifest.json?v=2026-11-01.0908">
 <style>
 :root{
   --bg:#f3f6f6; --surface:#ffffff; --surface2:#eef3f2; --ink:#14201f; --ink2:#4b5b59; --muted:#7c8a88;
@@ -149,7 +149,7 @@ nav.tabs button.on{color:var(--brand)}
 <div class="app">
   <header class="top">
     <div class="top-row">
-      <div class="brandrow"><img class="logo" src="logo.png?v=2026-11-01.0902" alt="Emma Swim"><button class="who" id="who"></button></div>
+      <div class="brandrow"><img class="logo" src="logo.png?v=2026-11-01.0908" alt="Emma Swim"><button class="who" id="who"></button></div>
       <button class="add-btn" id="addBtn" aria-label="Add swim">+</button>
     </div>
     <div class="seg" id="courseSeg"><button data-c="LCM">Long course</button><button data-c="SCM">Short course</button></div>
@@ -360,6 +360,15 @@ const NAT_SC={name:'Australian Short Course 2026',from:'2025-01-01',times:{
   '50 Fly':'28.53','100 Fly':'1:03.22','200 Fly':'2:22.81','100 IM':'1:07.56','200 IM':'2:23.11','400 IM':'5:03.53'}};
 const natSC=()=>(DB.standards.nationalSC&&DB.standards.nationalSC.times)?DB.standards.nationalSC:NAT_SC;
 function natSCQT(key){ const t=natSC().times[key]; return t?parseTime(t):null; }
+/* NSW Speedo Senior State Age SC 2026 — Girls 16 years. A long course swim also counts, except 100 IM (short course only). */
+const STATE_SC={name:'NSW State Age SC 2026',from:'2025-01-01',times:{
+  '50 Free':'28.00','100 Free':'1:02.00','200 Free':'2:16.00','400 Free':'4:43.00','800 Free':'9:40.00','1500 Free':'18:10.00',
+  '50 Back':'31.50','100 Back':'1:11.50','200 Back':'2:33.00','50 Breast':'35.50','100 Breast':'1:22.50','200 Breast':'2:55.00',
+  '50 Fly':'30.50','100 Fly':'1:11.00','200 Fly':'2:35.50','100 IM':'1:11.00','200 IM':'2:31.00','400 IM':'5:20.00'}};
+const stateSC=()=>(DB.standards.stateSC&&DB.standards.stateSC.times)?DB.standards.stateSC:STATE_SC;
+function stateSCQT(key){ const t=stateSC().times[key]; return t?parseTime(t):null; }
+function stateSCBest(key){ const f=stateSC().from; return bestOf(mySwims().filter(x=>ek(x.dist,x.stroke)===key&&x.date>=f&&(x.course==='SCM'||key!=='100 IM'))); }
+function stateFor(key,c){ return c==='LCM'?{sq:stateQT(key),wb:windowBest(key)}:{sq:stateSCQT(key),wb:stateSCBest(key)}; }
 function scWindowBest(key){ return bestOf(eventSwims(key,'SCM').filter(s=>s.date>=natSC().from)); }
 
 function bestOf(list){ let b=null; for(const s of list) if(valid(s)&&(!b||s.time<b.time)) b=s; return b; }
@@ -420,16 +429,16 @@ function renderBests(m){
   const cutoff=new Date(Date.now()-365*864e5).toISOString().slice(0,10);
   EVENTS.forEach(([d,s])=>{
     const key=ek(d,s); const pb=pbFor(key,c);
-    const sq=c===st.course?stateQT(key):null, nq=c==='LCM'?natQT(key):natSCQT(key);
-    const wb=c===st.course?windowBest(key):null, nwb=c==='SCM'?scWindowBest(key):pb;
+    const {sq,wb}=stateFor(key,c), nq=c==='LCM'?natQT(key):natSCQT(key);
+    const nwb=c==='SCM'?scWindowBest(key):pb;
     if(sq){ nStateEv++; if(wb&&wb.time<=sq) nState++; }
     if(nq){ nNatEv++; if(nwb&&nwb.time<=nq) nNat++; }
     if(pb&&pb.date>=cutoff) recent++;
     if(!pb && !sq && !(c==='SCM'&&nq&&pb)) return;
     rows.push({key,pb,sq,nq,wb,nwb});
   });
-  let h=`<div class="tiles"${c==='SCM'?' style="grid-template-columns:1fr 1fr"':''}>
-    ${c==='LCM'?`<div class="tile top qstate"><div class="v">${nState}<span class="of">/${nStateEv}</span></div><div class="l">State Times<br>(${stAge}yrs)</div></div>`:''}
+  let h=`<div class="tiles">
+    <div class="tile top qstate"><div class="v">${nState}<span class="of">/${nStateEv}</span></div><div class="l">State Times<br>(${c==='LCM'?stAge:16}yrs)</div></div>
     <div class="tile top qnat"><div class="v">${nNat}<span class="of">/${nNatEv}</span></div><div class="l">National<br>Times</div></div>
     <div class="tile top"><div class="v">${recent}</div><div class="l">PBs set in<br>last 12 months</div></div>
   </div>`;
@@ -437,19 +446,18 @@ function renderBests(m){
     const days=Math.ceil((new Date(st.closes)-new Date(todayISO()))/864e5);
     h+=`<div class="note"><b>${esc(st.name)}</b> · age ${stAge} as at ${fdate(st.ageDate)}. Only LCM swims since ${fdate(st.from)} count.${days>0?` Entries close ${fdate(st.closes)} (<b>${days} days</b>).`:''}</div>`;
   } else {
-    h+=`<div class="note"><b>${esc(natSC().name)}</b> National Times (women, open). Only short course swims since ${fdate(natSC().from)} count. There is no State Time for short course. Grey figures are an <b>estimated LCM equivalent</b>.</div>`;
+    h+=`<div class="note"><b>${esc(stateSC().name)}</b> (girls 16): short or long course swims since ${fdate(stateSC().from)} count; 100 IM must be short course. <b>${esc(natSC().name)}</b> National Times: short course swims since ${fdate(natSC().from)}.</div>`;
   }
   h+=`<h2 class="sec">${c==='LCM'?'Long course':'Short course'} personal bests</h2><div class="list">`;
   const gapTxt=(t,q)=>{ const g=t-q; return `<span class="${g<=0?'gap-ok':'gap-no'}">(${fmtGap(g)})</span>`; };
-  const sinceLbl=fdate(st.from,true);
+  const sinceLbl=c==='LCM'?fdate(st.from,true):fdate(stateSC().from,true);
   rows.forEach(r=>{
     const [d,s]=r.key.split(' '), mt=r.pb&&meetById(r.pb.meet);
     const lines=[];
     if(r.nq){ const t=c==='LCM'?(r.pb&&r.pb.time):(r.nwb&&r.nwb.time);
       lines.push(`<b>National Time ${fmt(r.nq)}</b> `+(t!=null?gapTxt(t,r.nq):r.pb&&c==='SCM'?`<span class="gap-no">(none since ${fdate(natSC().from,true)})</span>`:'')); }
-    if(c==='LCM'&&r.sq){ const t=r.wb&&r.wb.time;
-      lines.push(`<b>State Time ${fmt(r.sq)}</b> `+(t!=null?gapTxt(t,r.sq)+(r.pb&&r.wb.id!==r.pb.id?` <span class="muted-s">· ${fmt(t)} since ${sinceLbl}</span>`:''):r.pb?`<span class="gap-no">(none since ${sinceLbl})</span>`:'')); }
-    if(c==='SCM'&&r.pb) lines.push(`<span class="muted-s">≈ ${fmt(toLCM(r.pb.time,+d,s))} long course</span>`);
+    if(r.sq){ const t=r.wb&&r.wb.time;
+      lines.push(`<b>State Time ${fmt(r.sq)}</b> `+(t!=null?gapTxt(t,r.sq)+(c==='SCM'&&r.wb.course==='LCM'?` <span class="muted-s">· long course ${fmt(t)}</span>`:r.pb&&r.wb.id!==r.pb.id?` <span class="muted-s">· ${fmt(t)} since ${sinceLbl}</span>`:''):r.pb?`<span class="gap-no">(none since ${sinceLbl})</span>`:'')); }
     const dd=r.pb?r.pb.date.split('-'):null;
     h+=`<button class="item pbrow ${r.pb?qClass(r.nq,r.nwb,r.sq,r.wb):''}" data-ev="${r.key}">
       <div class="main"><div class="ev">${r.key}</div>${lines.map(x=>`<div class="ql">${x}</div>`).join('')}</div>
@@ -498,7 +506,7 @@ function renderProgress(m){
   if(!opts.length){ m.innerHTML=`<div class="empty">No ${cname.toLowerCase()} swims yet.</div>`; return; }
   const all=eventSwims(k,c).filter(valid).sort((a,b)=>a.date.localeCompare(b.date));
   const pb=pbFor(k,c), first=all[0];
-  const sq=c==='LCM'?stateQT(k):null, nq=c==='LCM'?natQT(k):natSCQT(k), wb=c==='LCM'?windowBest(k):null, nwb=c==='LCM'?pb:scWindowBest(k);
+  const {sq,wb}=stateFor(k,c), nq=c==='LCM'?natQT(k):natSCQT(k), nwb=c==='LCM'?pb:scWindowBest(k);
   const yr=new Date(Date.now()-365*864e5).toISOString().slice(0,10);
   const before=bestOf(all.filter(s=>s.date<yr)), gain=before&&pb?before.time-pb.time:null;
   let h=`<div class="filters">${opts.map(o=>`<button class="${o===k?'on':''}" data-e="${o}">${o}</button>`).join('')}</div>`;
@@ -507,7 +515,7 @@ function renderProgress(m){
     <div class="tile"><div class="l">${gain!=null?'Faster than 12 months ago':'Swims recorded'}</div><div class="v">${gain!=null?(gain>0?'−'+(gain<60?gain.toFixed(2):fmt(gain)):'0.00'):all.length}</div><div class="l">${gain!=null?'best then '+fmt(before.time):'since '+fdate(first.date)}</div></div></div>`;
   if(sq||nq){
     h+=`<div class="note">`;
-    if(sq){ const t=wb&&wb.time; h+=`<b>State Time ${fmt(sq)}</b> — ${t==null?'no LCM swim since '+fdate(DB.standards.state.from):t<=sq?`<span class="gap-ok">qualified, ${fmtGap(t-sq)}</span> (${fmt(t)} on ${fdate(wb.date)})`:`<span class="gap-no">${fmtGap(t-sq)} to go</span> (best in window ${fmt(t)})`}<br>`; }
+    if(sq){ const t=wb&&wb.time; h+=`<b>State Time ${fmt(sq)}</b> — ${t==null?'no swim since '+fdate(c==='LCM'?DB.standards.state.from:stateSC().from):t<=sq?`<span class="gap-ok">qualified, ${fmtGap(t-sq)}</span> (${fmt(t)} on ${fdate(wb.date)})`:`<span class="gap-no">${fmtGap(t-sq)} to go</span> (best in window ${fmt(t)})`}<br>`; }
     if(nq){ const t=nwb&&nwb.time; h+=`<b>National Time ${fmt(nq)}</b> — ${t==null?(c==='SCM'?'no SC swim since '+fdate(natSC().from):'no LCM time yet'):t<=nq?`<span class="gap-ok">achieved, ${fmtGap(t-nq)}</span>`:`<span class="gap-no">${fmtGap(t-nq)} to go</span>`}`; }
     h+=`</div>`;
   }
@@ -669,11 +677,11 @@ function renderMore(m){
     h+=`<tr><td>${k}</td><td>${sq?fmt(sq):'—'}</td><td><input data-nat="${k}" value="${esc(nat.times[k]||'')}" placeholder="—" inputmode="decimal"></td><td>${pb?fmt(pb.time):'—'}</td></tr>`; });
   h+=`</tbody></table></div>`;
   } else {
-  h+=`<h2 class="sec">Short course National Times</h2>
-  <div class="note"><b>${esc(natSC().name)}</b> — women's open. Short course swims since ${fdate(natSC().from)} count. There is no State Time for short course.</div>
-  <div class="list" style="margin-top:10px;padding:2px 6px"><table class="qt-table"><thead><tr><th>Event</th><th>National Time</th><th>Best since</th><th></th></tr></thead><tbody>`;
-  EVENTS.forEach(([d,s])=>{ const k=ek(d,s), q=natSCQT(k); if(!q) return; const b=scWindowBest(k);
-    h+=`<tr><td>${k}</td><td>${fmt(q)}</td><td>${b?fmt(b.time):'—'}</td><td>${b&&b.time<=q?'<span class="gap-ok">✓</span>':b?`<span class="gap-no">${fmtGap(b.time-q)}</span>`:''}</td></tr>`; });
+  h+=`<h2 class="sec">Short course State & National Times</h2>
+  <div class="note"><b>State:</b> ${esc(stateSC().name)}, girls 16 — short or long course swims since ${fdate(stateSC().from)} (100 IM short course only). <b>National:</b> ${esc(natSC().name)}, women's open — short course swims since ${fdate(natSC().from)}.</div>
+  <div class="list" style="margin-top:10px;padding:2px 6px"><table class="qt-table"><thead><tr><th>Event</th><th>State Time</th><th>National Time</th><th>SCM PB</th></tr></thead><tbody>`;
+  EVENTS.forEach(([d,s])=>{ const k=ek(d,s), sq=stateSCQT(k), q=natSCQT(k), pb=pbFor(k,'SCM'); if(!sq&&!q) return;
+    h+=`<tr><td>${k}</td><td>${sq?fmt(sq):'—'}</td><td>${q?fmt(q):'—'}</td><td>${pb?fmt(pb.time):'—'}</td></tr>`; });
   h+=`</tbody></table></div>`;
   }
   h+=`<h2 class="sec">Backup</h2>
@@ -762,7 +770,7 @@ function openSwim(s){
     if(pb) out.push(`${c} PB ${fmt(pb.time)}`);
     if(t&&pb&&t<pb.time) out.push(`<span class="gap-ok">New PB by ${(pb.time-t).toFixed(2)}s 🎉</span>`);
     if(t&&!pb) out.push('First '+c+' swim of this event');
-    const sq=c==='LCM'?stateQT(key):null;
+    const sq=c==='LCM'?stateQT(key):stateSCQT(key);
     if(t&&sq) out.push(t<=sq?`<span class="gap-ok">State Time ✓ (${fmt(sq)})</span>`:`State Time ${fmt(sq)} (${fmtGap(t-sq)})`);
     q('#fHint').innerHTML=out.join(' · ')||'Enter the time to compare with PB';
   }
@@ -798,7 +806,7 @@ function applyTheme(){ const t=DB.settings.theme||'auto'; if(t==='auto') documen
 
 /* ---------- Wire up ---------- */
 /* ---------- Auto-update: GitHub Pages lets phones cache the page ~10 min, so check for a newer build ---------- */
-const BUILD='2026-11-01.0902';
+const BUILD='2026-11-01.0908';
 async function checkUpdate(){
   if(location.protocol==='file:') return;
   try{
