@@ -9,10 +9,10 @@
 <meta name="apple-mobile-web-app-title" content="Emma Swim">
 <meta name="theme-color" content="#002356">
 <title>Emma Swim</title>
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-11-01.0856">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-11-01.0856">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-11-01.0856">
-<link rel="manifest" href="manifest.json?v=2026-11-01.0856">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-11-01.0902">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-11-01.0902">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-11-01.0902">
+<link rel="manifest" href="manifest.json?v=2026-11-01.0902">
 <style>
 :root{
   --bg:#f3f6f6; --surface:#ffffff; --surface2:#eef3f2; --ink:#14201f; --ink2:#4b5b59; --muted:#7c8a88;
@@ -139,6 +139,8 @@ nav.tabs button.on{color:var(--brand)}
 .tile.qnat{background:var(--qnat);color:var(--qnat-ink)}.tile.qnat .l{color:var(--qnat-ink);opacity:.8}
 .tile.qstate{background:var(--qstate);color:var(--qstate-ink)}.tile.qstate .l{color:var(--qstate-ink);opacity:.8}
 .qkey{display:inline-block;width:12px;height:12px;border-radius:4px;vertical-align:-1px;margin:0 4px 0 10px}
+.tile.top{text-align:center}
+.tile.top .of{font-size:15px;opacity:.65}
 .bigpb{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
 .bigpb .time{font-size:34px}
 </style>
@@ -147,7 +149,7 @@ nav.tabs button.on{color:var(--brand)}
 <div class="app">
   <header class="top">
     <div class="top-row">
-      <div class="brandrow"><img class="logo" src="logo.png?v=2026-11-01.0856" alt="Emma Swim"><button class="who" id="who"></button></div>
+      <div class="brandrow"><img class="logo" src="logo.png?v=2026-11-01.0902" alt="Emma Swim"><button class="who" id="who"></button></div>
       <button class="add-btn" id="addBtn" aria-label="Add swim">+</button>
     </div>
     <div class="seg" id="courseSeg"><button data-c="LCM">Long course</button><button data-c="SCM">Short course</button></div>
@@ -427,9 +429,9 @@ function renderBests(m){
     rows.push({key,pb,sq,nq,wb,nwb});
   });
   let h=`<div class="tiles"${c==='SCM'?' style="grid-template-columns:1fr 1fr"':''}>
-    ${c==='LCM'?`<div class="tile"><div class="v">${nState}<span style="font-size:15px;color:var(--muted)">/${nStateEv}</span></div><div class="l">State Times<br>(${stAge}yrs)</div></div>`:''}
-    <div class="tile"><div class="v">${nNat}<span style="font-size:15px;color:var(--muted)">/${nNatEv}</span></div><div class="l">National<br>Times</div></div>
-    <div class="tile"><div class="v">${recent}</div><div class="l">PBs set in<br>last 12 months</div></div>
+    ${c==='LCM'?`<div class="tile top qstate"><div class="v">${nState}<span class="of">/${nStateEv}</span></div><div class="l">State Times<br>(${stAge}yrs)</div></div>`:''}
+    <div class="tile top qnat"><div class="v">${nNat}<span class="of">/${nNatEv}</span></div><div class="l">National<br>Times</div></div>
+    <div class="tile top"><div class="v">${recent}</div><div class="l">PBs set in<br>last 12 months</div></div>
   </div>`;
   if(c==='LCM'){
     const days=Math.ceil((new Date(st.closes)-new Date(todayISO()))/864e5);
@@ -796,7 +798,7 @@ function applyTheme(){ const t=DB.settings.theme||'auto'; if(t==='auto') documen
 
 /* ---------- Wire up ---------- */
 /* ---------- Auto-update: GitHub Pages lets phones cache the page ~10 min, so check for a newer build ---------- */
-const BUILD='2026-11-01.0856';
+const BUILD='2026-11-01.0902';
 async function checkUpdate(){
   if(location.protocol==='file:') return;
   try{
