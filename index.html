@@ -9,10 +9,10 @@
 <meta name="apple-mobile-web-app-title" content="Emma Swim">
 <meta name="theme-color" content="#002356">
 <title>Emma Swim</title>
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2">
-<link rel="manifest" href="manifest.json?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=3">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=3">
+<link rel="manifest" href="manifest.json?v=3">
 <style>
 :root{
   --bg:#f3f6f6; --surface:#ffffff; --surface2:#eef3f2; --ink:#14201f; --ink2:#4b5b59; --muted:#7c8a88;
@@ -48,7 +48,7 @@ header.top{background:var(--brand2);color:var(--brand-ink);padding:calc(10px + e
 .seg{display:flex;margin-top:10px;background:rgba(255,255,255,.18);border-radius:10px;padding:3px}
 .seg button{flex:1;border:0;background:none;color:#fff;padding:6px 12px;border-radius:8px;font-weight:600;font-size:13px}
 .seg button.on{background:var(--accent);color:#002356}
-.logo{height:58px;width:auto;display:block;flex:none;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
+.logo{height:72px;width:72px;display:block;flex:none;border-radius:15px;box-shadow:0 0 0 2px rgba(255,255,255,.25)}
 .brandrow{display:flex;align-items:center;gap:10px;min-width:0}
 .add-btn{width:40px!important;height:40px!important;border:0;background:var(--accent);color:#002356;width:36px;height:36px;border-radius:50%;font-size:24px;line-height:1;font-weight:500;flex:none}
 main{padding:14px 16px}
@@ -128,7 +128,7 @@ nav.tabs button.on{color:var(--brand)}
 <div class="app">
   <header class="top">
     <div class="top-row">
-      <div class="brandrow"><img class="logo" src="logo.png" alt="Emma Swim"><button class="who" id="who"></button></div>
+      <div class="brandrow"><img class="logo" src="logo.png?v=3" alt="Emma Swim"><button class="who" id="who"></button></div>
       <button class="add-btn" id="addBtn" aria-label="Add swim">+</button>
     </div>
     <div class="seg" id="courseSeg"><button data-c="LCM">Long course</button><button data-c="SCM">Short course</button></div>
