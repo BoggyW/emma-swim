@@ -9,10 +9,10 @@
 <meta name="apple-mobile-web-app-title" content="Emma Swim">
 <meta name="theme-color" content="#002356">
 <title>Emma Swim</title>
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-11-01.0854">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-11-01.0854">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-11-01.0854">
-<link rel="manifest" href="manifest.json?v=2026-11-01.0854">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-11-01.0856">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-11-01.0856">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-11-01.0856">
+<link rel="manifest" href="manifest.json?v=2026-11-01.0856">
 <style>
 :root{
   --bg:#f3f6f6; --surface:#ffffff; --surface2:#eef3f2; --ink:#14201f; --ink2:#4b5b59; --muted:#7c8a88;
@@ -124,7 +124,7 @@ nav.tabs button.on{color:var(--brand)}
 .pbrow{align-items:center;padding:12px 14px}
 .pbrow.qnat{background:var(--qnat);color:var(--qnat-ink)}
 .pbrow.qstate{background:var(--qstate);color:var(--qstate-ink)}
-.pbrow .ev{font-size:18px;font-weight:700;margin-bottom:3px}
+.pbrow .ev{font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-bottom:4px}
 .pbrow .ql{font-size:13px;line-height:1.45;font-variant-numeric:tabular-nums}
 .pbrow .pbt{font-size:24px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
 .pbrow .pbt.dim{color:var(--muted);font-weight:500}
@@ -147,7 +147,7 @@ nav.tabs button.on{color:var(--brand)}
 <div class="app">
   <header class="top">
     <div class="top-row">
-      <div class="brandrow"><img class="logo" src="logo.png?v=2026-11-01.0854" alt="Emma Swim"><button class="who" id="who"></button></div>
+      <div class="brandrow"><img class="logo" src="logo.png?v=2026-11-01.0856" alt="Emma Swim"><button class="who" id="who"></button></div>
       <button class="add-btn" id="addBtn" aria-label="Add swim">+</button>
     </div>
     <div class="seg" id="courseSeg"><button data-c="LCM">Long course</button><button data-c="SCM">Short course</button></div>
@@ -796,7 +796,7 @@ function applyTheme(){ const t=DB.settings.theme||'auto'; if(t==='auto') documen
 
 /* ---------- Wire up ---------- */
 /* ---------- Auto-update: GitHub Pages lets phones cache the page ~10 min, so check for a newer build ---------- */
-const BUILD='2026-11-01.0854';
+const BUILD='2026-11-01.0856';
 async function checkUpdate(){
   if(location.protocol==='file:') return;
   try{
