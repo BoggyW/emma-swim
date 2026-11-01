@@ -9,10 +9,10 @@
 <meta name="apple-mobile-web-app-title" content="Emma Swim">
 <meta name="theme-color" content="#002356">
 <title>Emma Swim</title>
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-11-01.0908">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-11-01.0908">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-11-01.0908">
-<link rel="manifest" href="manifest.json?v=2026-11-01.0908">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2026-11-01.1144">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2026-11-01.1144">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2026-11-01.1144">
+<link rel="manifest" href="manifest.json?v=2026-11-01.1144">
 <style>
 :root{
   --bg:#f3f6f6; --surface:#ffffff; --surface2:#eef3f2; --ink:#14201f; --ink2:#4b5b59; --muted:#7c8a88;
@@ -149,7 +149,7 @@ nav.tabs button.on{color:var(--brand)}
 <div class="app">
   <header class="top">
     <div class="top-row">
-      <div class="brandrow"><img class="logo" src="logo.png?v=2026-11-01.0908" alt="Emma Swim"><button class="who" id="who"></button></div>
+      <div class="brandrow"><img class="logo" src="logo.png?v=2026-11-01.1144" alt="Emma Swim"><button class="who" id="who"></button></div>
       <button class="add-btn" id="addBtn" aria-label="Add swim">+</button>
     </div>
     <div class="seg" id="courseSeg"><button data-c="LCM">Long course</button><button data-c="SCM">Short course</button></div>
@@ -160,7 +160,7 @@ nav.tabs button.on{color:var(--brand)}
   <button data-tab="bests"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/></svg>Bests</button>
   <button data-tab="swims"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 17c2 0 2-1.5 4.5-1.5S10 17 12 17s2.5-1.5 4.5-1.5S19 17 21 17M3 21c2 0 2-1.5 4.5-1.5S10 21 12 21s2.5-1.5 4.5-1.5S19 21 21 21"/><circle cx="15.5" cy="6" r="2"/><path d="M5 13l5-4 3 3 4-1"/></svg>Swims</button>
   <button data-tab="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Progress</button>
-  <button data-tab="inbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8z"/><path d="M19 15l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z"/></svg>AI Inbox</button>
+  <button data-tab="inbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8z"/><path d="M19 15l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z"/></svg>EmmaAI</button>
   <button data-tab="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>More</button>
 </div></nav>
 
@@ -584,82 +584,150 @@ function drawChart(el,swims,sq,nq,course){
 }
 function niceStep(x){ const p=Math.pow(10,Math.floor(Math.log10(x))), f=x/p; return (f<1.5?1:f<3?2:f<7?5:10)*p; }
 
-/* ---------- AI Inbox: photos/files + instructions saved to emma-swim-data/inbox for Claude to process ---------- */
-const INBOX={items:null,loading:false,err:''};
-async function loadInbox(){
-  if(!token()){ INBOX.items=[]; return; }
-  INBOX.loading=true; INBOX.err='';
-  try{
-    const r=await gh('GET','/contents/inbox');
-    if(r.status===404){ INBOX.items=[]; }
-    else if(!r.ok) throw new Error('GitHub error '+r.status);
-    else{
-      const list=(await r.json()).filter(f=>f.name.endsWith('.json'));
-      const out=await Promise.all(list.map(async f=>{ const j=await (await gh('GET','/contents/inbox/'+encodeURIComponent(f.name))).json(); return JSON.parse(b64d(j.content)); }));
-      INBOX.items=out.sort((a,b)=>(b.created||'').localeCompare(a.created||''));
-    }
-  }catch(e){ INBOX.err=e instanceof TypeError?'No internet — connect to see the inbox':e.message; }
-  INBOX.loading=false;
-}
-function readAsB64(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(String(r.result).split(',')[1]); r.onerror=rej; r.readAsDataURL(file); }); }
-async function shrinkImage(file){ // phone photos -> max 2400px JPEG so uploads are quick
-  try{
-    const bmp=await createImageBitmap(file); const k=Math.min(1,2400/Math.max(bmp.width,bmp.height));
-    if(k===1&&file.size<2.5e6) return null;
+/* ---------- EmmaAI: drop in a photo/PDF, Claude reads it in the app, you confirm, it saves ---------- */
+const AIKEY='emmaSwim.aikey', AI_MODEL='claude-sonnet-5-5';
+const aiKey=()=>{ try{ return localStorage.getItem(AIKEY)||''; }catch(e){ return ''; } };
+const EAI={busy:false,result:null,err:'',note:''};
+async function fileToPart(file){
+  if(file.type==='application/pdf'||/\.pdf$/i.test(file.name)) return {type:'document',source:{type:'base64',media_type:'application/pdf',data:await readAsB64(file)}};
+  let blob=file;
+  try{ const bmp=await createImageBitmap(file); const k=Math.min(1,1800/Math.max(bmp.width,bmp.height));
     const c=document.createElement('canvas'); c.width=Math.round(bmp.width*k); c.height=Math.round(bmp.height*k);
-    c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);
-    const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',0.88)); return blob;
-  }catch(e){ return null; }
+    c.getContext('2d').drawImage(bmp,0,0,c.width,c.height); blob=await new Promise(r=>c.toBlob(r,'image/jpeg',0.88)); }catch(e){}
+  return {type:'image',source:{type:'base64',media_type:blob.type||'image/jpeg',data:await readAsB64(blob)}};
+}
+function eaiPrompt(note){
+  const sw=swimmer();
+  return `You read swimming results and qualifying-time sheets for ${sw.first} ${sw.last} (born ${sw.dob}, female). Today is ${todayISO()}.
+Look at the attached image(s)/PDF and reply with ONLY a JSON object, no other text:
+{"kind":"results"|"standards"|"other",
+ "summary":"one short plain-English sentence of what this is",
+ "swims":[{"date":"YYYY-MM-DD","dist":50,"stroke":"Free|Back|Breast|Fly|IM","course":"LCM|SCM","time":"28.26 or 1:19.25","meet":"meet name as shown","place":14,"event":4,"relay":false}],
+ "standards":{"target":"stateLC|nationalLC|stateSC|nationalSC","name":"e.g. NSW State Age SC 2026","from":"YYYY-MM-DD or empty","column":"which column you used, e.g. Girls 16","times":{"50 Free":"28.00","100 IM":"1:11.00"}},
+ "question":"only if something important is unclear"}
+Rules: only ${sw.first}'s own individual swims (ignore other swimmers; if it lists many swimmers, find ${sw.first} ${sw.last}). Skip DQ/NS/scratched. "SC"/"short course"/"25m" = SCM; "LC"/"long course"/"50m" = LCM. If only a meet date range is shown, use the first day. For standards use the girls/women column for age ${ageOn(sw.dob,todayISO())} unless told otherwise; event keys like "50 Free","200 Back","100 Breast","100 Fly","400 IM". Leave arrays/objects empty when not relevant.
+${note?'Note from Rob: '+note:''}`;
+}
+async function eaiRead(files,note){
+  EAI.busy=true; EAI.err=''; EAI.result=null; render();
+  try{
+    const parts=[]; for(const f of files) parts.push(await fileToPart(f));
+    parts.push({type:'text',text:eaiPrompt(note)});
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':aiKey(),'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:AI_MODEL,max_tokens:16000,messages:[{role:'user',content:parts}]})});
+    const j=await r.json();
+    if(!r.ok) throw new Error(r.status===401?'EmmaAI key not accepted — check it in the box below':r.status===429?'Too many requests — try again in a minute':(j.error&&j.error.message)||('Error '+r.status));
+    const txt=(j.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('\n');
+    const m=txt.match(/\{[\s\S]*\}/); if(!m) throw new Error('EmmaAI could not read that — try a clearer screenshot');
+    EAI.result=matchResult(JSON.parse(m[0]));
+  }catch(e){ EAI.err=e instanceof TypeError?'No internet — try again when connected':e.message; }
+  EAI.busy=false; render();
+}
+const dayDiff=(a,b)=>Math.abs((new Date(a)-new Date(b))/864e5);
+function findMeet(name,course,date){
+  const words=n=>new Set(String(n||'').toLowerCase().replace(/\b(20\d\d|the|nsw|championships?|meet|lc|sc)\b/g,' ').split(/[^a-z0-9]+/).filter(w=>w.length>2));
+  const want=words(name); let best=null,score=0;
+  DB.meets.filter(m=>m.course===course).forEach(m=>{
+    const near=mySwims().some(x=>x.meet===m.id&&dayDiff(x.date,date)<=4); if(!near) return;
+    const w=words(m.name); let sc=1; want.forEach(x=>{ if(w.has(x)) sc+=2; });
+    if(sc>score){score=sc;best=m;} });
+  return (score>1||!want.size)?best:null;
+}
+function matchResult(res){
+  res.swims=(res.swims||[]).map(f=>{
+    const t=parseTime(f.time), key=ek(+f.dist,f.stroke), course=f.course==='SCM'?'SCM':'LCM';
+    const o={...f,meetName:String(f.meet||'').trim(),meet:null,dist:+f.dist,course,t,key,use:true};
+    if(!t||!f.date||!EVENTS.some(e=>ek(...e)===key)){ o.status='skip'; o.use=false; o.why='Could not read this one'; return o; }
+    const same=mySwims().filter(x=>ek(x.dist,x.stroke)===key&&x.course===course);
+    const exact=same.find(x=>x.time===t&&dayDiff(x.date,f.date)<=7);
+    if(exact){ o.status='same'; o.existing=exact; o.use=!!(f.place&&!exact.place); o.why=o.use?'Already saved — add place':'Already saved'; return o; }
+    const meet=findMeet(o.meetName,course,f.date); o.meet=meet;
+    const clash=same.filter(x=>meet&&x.meet===meet.id&&dayDiff(x.date,f.date)<=4&&x.time!==t);
+    const others=(res.swims||[]).filter(g=>ek(+g.dist,g.stroke)===key&&g!==f).length;
+    if(clash.length===1&&!others){ o.status='update'; o.existing=clash[0]; o.why=`Fix ${fmt(clash[0].time)} → ${fmt(t)}`; return o; }
+    const pb=pbFor(key,course); o.status='new'; o.why=!pb?'New event':t<pb.time?`New PB by ${(pb.time-t).toFixed(2)}`:'New swim'; return o;
+  });
+  return res;
+}
+function eaiSave(){
+  const res=EAI.result, now=Date.now(); let added=0,fixed=0;
+  (res.swims||[]).forEach((o,i)=>{
+    if(!o.use) return;
+    if(o.status==='same'){ if(o.place){ o.existing.place=+o.place; if(o.event) o.existing.event=+o.event; o.existing.u=now; fixed++; } return; }
+    if(o.status==='update'){ Object.assign(o.existing,{time:o.t,date:o.date,u:now}); if(o.place) o.existing.place=+o.place; fixed++; return; }
+    if(o.status==='new'){
+      let meet=o.meet||findMeet(o.meetName,o.course,o.date);
+      if(!meet){ const nm=o.meetName||'Meet'; meet=DB.meets.find(m=>m.name===nm&&m.course===o.course);
+        if(!meet){ meet={id:'m'+uid(),name:nm,location:'',course:o.course,u:now}; DB.meets.push(meet); } o.meet=meet; }
+      const rec={id:'a'+uid(),swimmer:DB.settings.swimmer,date:o.date,dist:o.dist,stroke:o.stroke,time:o.t,meet:meet.id,course:o.course,u:now};
+      if(o.place) rec.place=+o.place; if(o.event) rec.event=+o.event; if(o.relay) rec.relay=true;
+      DB.swims.push(rec); added++; }
+  });
+  const st=res.standards;
+  if(res.useStd&&st&&st.times&&Object.keys(st.times).length){
+    const T={}; Object.entries(st.times).forEach(([k,v])=>{ const t=parseTime(v); if(t) T[k]=fmt(t); });
+    const tg=st.target;
+    if(tg==='nationalLC') Object.assign(DB.standards.national.times,T);
+    else if(tg==='nationalSC') DB.standards.nationalSC={name:st.name||natSC().name,from:st.from||natSC().from,times:{...natSC().times,...T}};
+    else if(tg==='stateSC') DB.standards.stateSC={name:st.name||stateSC().name,from:st.from||stateSC().from,times:{...stateSC().times,...T}};
+    else if(tg==='stateLC'){ const a=ageOn(swimmer().dob,DB.standards.state.ageDate), idx=a>=18?0:Math.max(0,Math.min(6,18-a));
+      Object.entries(T).forEach(([k,v])=>{ const row=DB.standards.state.table[k]||(DB.standards.state.table[k]=Array(7).fill('')); row[idx]=v; }); }
+    DB.standards.u=now; fixed+=Object.keys(T).length;
+  }
+  commit(); EAI.result=null; render(); toast(added||fixed?`Saved: ${added} new${fixed?`, ${fixed} updated`:''}`:'Nothing to save');
 }
 function renderInbox(m){
-  if(!token()){ m.innerHTML=`<div class="note" style="margin-top:4px"><b>Connect sync first.</b> Inbox items are saved privately in GitHub, so this device needs the key (More → Sync).</div>`; return; }
-  if(INBOX.items===null&&!INBOX.loading){ loadInbox().then(()=>{ if(UI.tab==='inbox') render(); }); }
-  const items=INBOX.items||[];
-  const stat=it=>it.status==='done'?'<span class="chip ok">✓ Done</span>':it.status==='question'?'<span class="chip near">Question</span>':'<span class="chip">Waiting for Claude</span>';
-  m.innerHTML=`<h2 class="sec">Send something to Claude</h2>
-  <div class="note">Add a photo, screenshot or PDF — e.g. new State or National Times, a results sheet or a meet program — and say what it is and what to do with it. Then ask Claude in the SwimTrackin project to <b>"check the inbox"</b>.</div>
-  <div class="form" style="margin-top:10px">
-    <label><span>Photo or file</span><input type="file" id="ibFile" accept="image/*,application/pdf,.pdf,.csv,.txt,.xlsx,.docx" style="text-align:left;font-size:14px"></label>
-    <div style="padding:10px 14px;border-top:1px solid var(--line)">
-      <div style="color:var(--ink2);margin-bottom:6px">What is it & what should Claude do?</div>
-      <textarea id="ibNote" rows="4" style="width:100%;border:0;background:var(--surface2);border-radius:8px;padding:10px;font:inherit;font-size:16px;resize:vertical" placeholder="e.g. 2027 National Times — use the Girls 16 column and replace the current long course National times."></textarea>
-    </div>
-  </div>
-  <div class="err" id="ibErr"></div>
-  <button class="btn" id="ibSend">Send to inbox</button>
-  <h2 class="sec">Inbox ${INBOX.loading?'· loading…':''}</h2>
-  ${INBOX.err?`<div class="note"><b style="color:var(--bad)">${esc(INBOX.err)}</b></div>`:''}
-  ${!INBOX.loading&&!items.length&&!INBOX.err?'<div class="empty">Nothing sent yet.</div>':''}
-  <div class="list">${items.map(it=>`<div class="item" style="display:block">
-      <div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><div class="t1" style="font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(it.name||it.file||'Note')}</div>${stat(it)}</div>
-      <div class="t2">${it.created?new Date(it.created).toLocaleString('en-AU',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'}):''}</div>
-      ${it.comment?`<div style="font-size:14px;margin-top:6px;white-space:pre-wrap">${esc(it.comment)}</div>`:''}
-      ${it.reply?`<div class="note" style="margin-top:8px;box-shadow:none;background:var(--surface2)"><b>Claude:</b> ${esc(it.reply)}</div>`:''}
-    </div>`).join('')}</div>
-  <button class="btn ghost" id="ibRefresh">Refresh</button>`;
-  $('#ibRefresh').onclick=()=>{ INBOX.items=null; render(); };
-  $('#ibSend').onclick=async()=>{
-    const f=$('#ibFile').files[0], note=$('#ibNote').value.trim(), err=$('#ibErr'), btn=$('#ibSend');
-    if(!f&&!note){ err.textContent='Add a photo/file or a note'; return; }
-    if(f&&f.size>40e6){ err.textContent='That file is too big (max 40 MB)'; return; }
-    btn.disabled=true; btn.textContent='Sending…'; err.textContent='';
-    try{
-      const d=new Date(), stamp=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'-'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')+'-'+uid().slice(0,4);
-      let fileName=null;
-      if(f){
-        let blob=f, ext=(f.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'');
-        if(f.type.startsWith('image/')){ const s2=await shrinkImage(f); if(s2){ blob=s2; ext='jpg'; } }
-        fileName=stamp+'.'+ext;
-        const up=await gh('PUT','/contents/inbox/'+fileName,{message:'Inbox file '+(f.name||fileName),content:await readAsB64(blob)});
-        if(!up.ok) throw new Error('Upload failed ('+up.status+')');
-      }
-      const meta={id:stamp,file:fileName,name:f?f.name:'Note',type:f?f.type:'',comment:note,created:d.toISOString(),status:'new',reply:''};
-      const up2=await gh('PUT','/contents/inbox/'+stamp+'.json',{message:'Inbox: '+(note.slice(0,60)||meta.name),content:b64e(JSON.stringify(meta,null,1))});
-      if(!up2.ok) throw new Error('Saving note failed ('+up2.status+')');
-      toast('Sent to inbox'); INBOX.items=[meta,...(INBOX.items||[])]; render();
-    }catch(e){ err.textContent=e instanceof TypeError?'No internet — try again when connected':e.message; btn.disabled=false; btn.textContent='Send to inbox'; }
-  };
+  const head=`<div class="note" style="margin-top:4px;text-align:center"><b style="font-size:17px">EmmaAI</b><br>Add a screenshot or photo of results or a times sheet. EmmaAI reads it and shows what it found — you check it and tap Save.</div>`;
+  if(!aiKey()){
+    m.innerHTML=head+`<h2 class="sec">Set up EmmaAI (once per device)</h2>
+    <div class="note">Paste your Anthropic API key (starts with <b>sk-ant-</b>). It stays on this device only.</div>
+    <div class="form" style="margin-top:10px"><label><span>Key</span><input id="eaiKey" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="sk-ant-…" style="text-align:left"></label></div>
+    <button class="btn" id="eaiKeyGo">Save key</button>`;
+    $('#eaiKeyGo').onclick=()=>{ const k=$('#eaiKey').value.trim(); if(!/^sk-ant-/.test(k)){ toast('That doesn\'t look like an Anthropic key'); return; } try{ localStorage.setItem(AIKEY,k); }catch(e){} render(); };
+    return;
+  }
+  let h=head;
+  if(EAI.busy){ h+=`<div class="empty" style="padding:40px 10px"><div style="font-size:30px">🏊‍♀️</div><b>EmmaAI is reading…</b><br>Usually 10–30 seconds</div>`; m.innerHTML=h; return; }
+  const res=EAI.result;
+  if(!res){
+    h+=`<label class="btn" style="text-align:center;margin-top:14px;font-size:18px;padding:18px">📷 Add results photo<input type="file" id="eaiFile" accept="image/*,application/pdf" multiple hidden></label>
+    <div class="form" style="margin-top:12px"><div style="padding:10px 14px">
+      <div style="color:var(--ink2);margin-bottom:6px;font-size:13px">Optional note (before adding the photo)</div>
+      <textarea id="eaiNote" rows="2" style="width:100%;border:0;background:var(--surface2);border-radius:8px;padding:10px;font:inherit;font-size:16px;resize:vertical" placeholder="e.g. 2027 National Times — use Girls 16 long course">${esc(EAI.note)}</textarea></div></div>
+    ${EAI.err?`<div class="note"><b style="color:var(--bad)">${esc(EAI.err)}</b></div>`:''}
+    <button class="btn ghost" id="eaiForget" style="margin-top:24px;font-size:13px">Change EmmaAI key</button>`;
+    m.innerHTML=h;
+    $('#eaiNote').oninput=e=>EAI.note=e.target.value;
+    $('#eaiFile').onchange=e=>{ const f=[...e.target.files]; if(f.length) eaiRead(f,EAI.note.trim()); };
+    $('#eaiForget').onclick=()=>{ if(confirm('Remove the EmmaAI key from this device?')){ try{ localStorage.removeItem(AIKEY); }catch(e){} render(); } };
+    return;
+  }
+  const lab={new:['New','chip ok'],update:['Fix','chip near'],same:['Saved','chip'],skip:['Skip','chip']};
+  h+=`<div class="note" style="margin-top:10px"><b>${esc(res.summary||'Here\'s what EmmaAI found')}</b>${res.question?`<br><span style="color:var(--warn)">${esc(res.question)}</span>`:''}</div>`;
+  if((res.swims||[]).length){
+    h+=`<h2 class="sec">Swims found</h2><div class="list">${res.swims.map((o,i)=>`<label class="item" style="cursor:pointer">
+      <input type="checkbox" data-i="${i}" ${o.use?'checked':''} ${o.status==='skip'||(o.status==='same'&&!o.use)?'disabled':''} style="width:22px;height:22px;accent-color:var(--brand);flex:none">
+      <div class="main"><div class="t1">${esc(o.key||((o.dist||'')+' '+(o.stroke||'')))} <span style="font-size:12px;color:var(--muted)">${o.course}</span></div>
+      <div class="t2">${o.date?fdate(o.date):''} · ${esc(o.meet?o.meet.name:o.meetName)}${o.status==='new'&&!o.meet?' <i>(new meet)</i>':''}${o.place?' · '+ordinal(+o.place):''}</div>
+      <div class="chips"><span class="${lab[o.status][1]}">${esc(o.why)}</span></div></div>
+      <div class="right"><div class="time">${o.t?fmt(o.t):'?'}</div></div></label>`).join('')}</div>`;
+  }
+  const st=res.standards;
+  if(st&&st.times&&Object.keys(st.times).length){
+    const tl={stateLC:'Long course State Times',nationalLC:'Long course National Times',stateSC:'Short course State Times',nationalSC:'Short course National Times'};
+    h+=`<h2 class="sec">Times found ${st.column?'· '+esc(st.column):''}</h2>
+    <div class="form"><label><span>Save as</span><select id="eaiTarget">${Object.entries(tl).map(([k,v])=>`<option value="${k}" ${k===st.target?'selected':''}>${v}</option>`).join('')}</select></label>
+    <label><span>Use these times</span><input type="checkbox" id="eaiUseStd" checked></label></div>
+    <div class="list" style="padding:2px 6px"><table class="qt-table"><tbody>${Object.entries(st.times).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${esc(v)}</td></tr>`).join('')}</tbody></table></div>`;
+  }
+  if(!(res.swims||[]).length&&!(st&&st.times&&Object.keys(st.times).length)) h+=`<div class="empty">Nothing to add from that one.</div>`;
+  h+=`<button class="btn" id="eaiSave">Save</button><button class="btn ghost" id="eaiCancel">Cancel</button>`;
+  m.innerHTML=h;
+  m.querySelectorAll('[data-i]').forEach(c=>c.onchange=()=>{ res.swims[+c.dataset.i].use=c.checked; });
+  $('#eaiSave').onclick=()=>{ if($('#eaiTarget')){ res.standards.target=$('#eaiTarget').value; res.useStd=$('#eaiUseStd').checked; } eaiSave(); };
+  $('#eaiCancel').onclick=()=>{ EAI.result=null; render(); };
 }
+function readAsB64(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(String(r.result).split(',')[1]); r.onerror=rej; r.readAsDataURL(file); }); }
 
 function renderMore(m){
   const st=DB.standards.state, nat=DB.standards.national, sw=swimmer();
@@ -806,7 +874,7 @@ function applyTheme(){ const t=DB.settings.theme||'auto'; if(t==='auto') documen
 
 /* ---------- Wire up ---------- */
 /* ---------- Auto-update: GitHub Pages lets phones cache the page ~10 min, so check for a newer build ---------- */
-const BUILD='2026-11-01.0908';
+const BUILD='2026-11-01.1144';
 async function checkUpdate(){
   if(location.protocol==='file:') return;
   try{
@@ -824,7 +892,7 @@ window.addEventListener('online',()=>sync());
 
 load(); applyTheme();
 document.querySelectorAll('#courseSeg button').forEach(b=>b.onclick=()=>{DB.settings.course=b.dataset.c;UI.filter='All';save();render();});
-document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{UI.tab=b.dataset.tab; if(UI.tab==='inbox') INBOX.items=null; render();scrollTo(0,0);});
+document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{UI.tab=b.dataset.tab; render();scrollTo(0,0);});
 $('#addBtn').onclick=()=>openSwim(null);
 $('#who').onclick=openSwimmerPicker;
 render();
